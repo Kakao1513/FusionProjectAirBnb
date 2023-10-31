@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.BoardMapper">
+    <resultMap id="result" type="persistence.dto.BoardDTO"> <!--type에 package name 잘 적용시키기 -->
+        <result property="id" column="board_id"/>
+        <result property="title" column="title"/>
+        <result property="writer" column="writer"/>
+        <result property="content" column="content"/>
+        <result property="regDate" column="regdate"/>
+        <result property="hit" column="hit"/>
+    </resultMap>
+    <select id="selectAll" resultMap="result"> <!--위의 id = 'result'-->
+        SELECT * FROM BOARD
+    </select>
+    <insert id="insertBoard"> <!---->
+        INSERT INTO BOARD(title, writer, contents, regdate, hit)
+        VALUES(#{title},#{writer},#{contents},#{regDate},#{hit}) <!--InsertBoardDTO의 맴버 변수와 동일하게-->
+    </insert>
+    <select id="findPostWithTitleLike" resultMap="result"> <!--위의 id = 'result'-->
+        SELECT * FROM BOARD
+        <trim prefix="where" prefixOverrides="AND | OR">
+            <if test="title!=null">
+                AND title like CONCAT('%', #{title}, '%') <!--문자열 조합 사용방법-->
+            </if>
+            <if test="writer!=null">
+                AND writer like CONCAT('%',#{writer}, '%')
+            </if>
+        </trim>
+    </select>
+</mapper>
