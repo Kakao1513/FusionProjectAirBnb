@@ -12,7 +12,7 @@ import java.util.Map;
 public class MyBoardDAO {
 	private final SqlSessionFactory sqlSessionFactory;
 
-	public MyBoardDAO(SqlSessionFactory sqlSessionFactory) {
+	public MyBoardDAO(SqlSessionFactory sqlSessionFactory) { //DI
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
 

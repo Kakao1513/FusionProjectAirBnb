@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 
-public class MyBatisConnectionFactory {
+public class MyBatisConnectionFactory { //싱글톤 패턴으로 만들어진 ConnectionFactory
 	@Getter
 	private static SqlSessionFactory sqlSessionFactory;
 
