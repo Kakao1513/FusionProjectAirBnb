@@ -26,7 +26,7 @@ public interface BoardMapper {
 	@ResultMap("boardResultSet")
 	BoardDTO selectById(@Param("id") Long id);
 
-	@SelectProvider(type = persistence.mapper.BoardSQL.class, method = "selectRecent")
+	@SelectProvider(type = BoardSQL.class, method = "selectRecent")
 	@ResultMap("boardResultSet")
 	List<BoardDTO> selectRecentPost(int day);
 }
