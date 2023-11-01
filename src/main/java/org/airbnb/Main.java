@@ -1,20 +1,29 @@
 package org.airbnb;
 
 import persistence.MyBatisConnectionFactory;
-import persistence.dao.MyBoardDAO;
-import persistence.dto.BoardDTO;
+import persistence.dao.UserDAO;
+import persistence.dto.UserDTO;
+import view.UserView;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class Main {
 	public static void main(String[] args) throws SQLException {
+		UserDAO myUserDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+		List<UserDTO> userDTOList = myUserDAO.selectAll();
+
+		List<UserDTO> userDTOS;
+		UserView userViewer = new UserView();
+		userViewer.printAll(userDTOList);
+/*
 		MyBoardDAO myBoardDAO = new MyBoardDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-		//List<BoardDTO> boardDTOS = myBoardDAO.selectAllWithAnnotation();
+		List<BoardDTO> boardDTOS = myBoardDAO.selectAllWithAnnotation();
 		List<BoardDTO> boardDTOS = myBoardDAO.selectRecentWithAnnotation(10);
 		boardDTOS.stream().forEach(v->{
 			System.out.println("v.toString() = " + v.toString());
 		});
+*/
 		//	boardDTOS.stream().forEach(v -> System.out.println("v.toString() = " + v.toString()));
 		//의존성 주입은 스프링의 핵심이면서 객체지향의 핵심
 	/*	BoardDAO boardDAO = new BoardDAO();
