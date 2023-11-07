@@ -3,7 +3,6 @@ package persistence.dao;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import persistence.dto.UserDTO;
-import persistence.mapper.Mapper;
 import persistence.mapper.UserMapper;
 
 import java.util.List;
@@ -14,7 +13,12 @@ public class UserDAO extends DAO<UserDTO>{
 		super(sqlSessionFactory);
 	}
 
-	@Override
+	public void insertHost(UserDTO host){
+
+	}
+
+
+
 	public List<UserDTO> selectAll() {
 		List<UserDTO> DTOs = null;
 		SqlSession session = sqlSessionFactory.openSession();
@@ -26,4 +30,6 @@ public class UserDAO extends DAO<UserDTO>{
 		}
 		return DTOs;
 	}
+
+
 }

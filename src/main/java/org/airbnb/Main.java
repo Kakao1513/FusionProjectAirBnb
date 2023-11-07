@@ -13,7 +13,6 @@ public class Main {
 		UserDAO myUserDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 		List<UserDTO> userDTOList = myUserDAO.selectAll();
 
-		List<UserDTO> userDTOS;
 		UserView userViewer = new UserView();
 		userViewer.printAll(userDTOList);
 /*

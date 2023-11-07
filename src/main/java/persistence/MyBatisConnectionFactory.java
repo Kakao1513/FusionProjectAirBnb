@@ -19,7 +19,7 @@ public class MyBatisConnectionFactory { //싱글톤 패턴으로 만들어진 Co
 			String resource = "config/config.xml";
 			Reader reader = Resources.getResourceAsReader(resource);
 			if (sqlSessionFactory == null) {
-				sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader, "development");
+				sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader,"development");
 				Class[] Mappers = {UserMapper.class};
 				for (Class mapper : Mappers) {
 					sqlSessionFactory.getConfiguration().addMapper(mapper);

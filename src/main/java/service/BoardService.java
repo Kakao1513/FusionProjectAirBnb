@@ -1,4 +1,5 @@
 package service;
+/*
 
 import persistence.dao.BoardDAO;
 import persistence.dto.BoardDTO;
@@ -14,3 +15,4 @@ public class BoardService {
 		return boardDAO.findAll();
 	}
 }
+*/

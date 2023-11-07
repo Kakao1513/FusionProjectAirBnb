@@ -1,14 +1,15 @@
 package persistence.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @Getter
 @Setter
 @ToString
-public class AccommodationDTO {
+@Builder
+public class AccommodationDTO extends DTO{
     int UserID;
     String HouseName;
     String Address;

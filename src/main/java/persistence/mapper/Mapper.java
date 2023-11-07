@@ -1,3 +1,5 @@
 package persistence.mapper;
 
-public interface Mapper { }
+public interface Mapper {
+
+}

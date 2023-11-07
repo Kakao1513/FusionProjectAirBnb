@@ -11,10 +11,9 @@ import java.sql.Date;
 @Setter
 @Builder
 @ToString
-public class UserDTO {
-	private String id;
+public class UserDTO extends DTO{
 	private String name;
-	private String phoneNum;
+	private String phone;
 	private Date birth;
 	private String accountId;
 	private String password;

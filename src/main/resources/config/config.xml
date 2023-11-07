@@ -5,7 +5,7 @@
 
 <configuration>
     <typeAliases>
-        <typeAlias alias="BoardDTO" type="persistence.dto.BoardDTO"/> <!--org.seong.persistence.dto.BoardDTO // pully qualifyed-->
+        <typeAlias alias="UserDTO" type="persistence.dto.UserDTO"/> <!--org.seong.persistence.dto.UserDTO // pully qualifyed-->
     </typeAliases>
 
     <environments default="development">
@@ -14,14 +14,12 @@
             <!--  connecting to Local MySql -->
             <dataSource type="POOLED"> <!-- POOL을 쓰겠다-->
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost/myDB"/>
+                <property name="url" value="jdbc:mysql://localhost/airBnb"/>
                 <property name="username" value="root"/>
                 <property name="password" value="mjmj0221"/>
             </dataSource>
 
         </environment>
     </environments>
-    <mappers>
-        <mapper resource="sqlmapper/board.xml"/>
-    </mappers>
+
 </configuration>
