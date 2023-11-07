@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Builder
-public class InsertBoardDTO {
+public class InsertBoardDTO implements DTO{
 	private String title;
 	private String writer;
 	private String contents;
