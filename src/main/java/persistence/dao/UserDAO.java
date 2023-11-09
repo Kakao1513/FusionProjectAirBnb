@@ -17,16 +17,19 @@ public class UserDAO extends DAO<UserDTO>{
 
 	}
 
-
-
+	public List<UserDTO> selectHost(){
+		List<UserDTO> DTOs = null;
+		try(SqlSession session = sqlSessionFactory.openSession()){
+			UserMapper mapper = session.getMapper(UserMapper.class);
+			DTOs = mapper.getHost();
+		}
+		return DTOs;
+	}
 	public List<UserDTO> selectAll() {
 		List<UserDTO> DTOs = null;
-		SqlSession session = sqlSessionFactory.openSession();
-		try {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
 			UserMapper mapper = session.getMapper(UserMapper.class);
 			DTOs = mapper.getAll();
-		} finally {
-			session.close();
 		}
 		return DTOs;
 	}

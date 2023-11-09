@@ -4,11 +4,11 @@ import org.apache.ibatis.jdbc.SQL;
 
 public class AccommodationSQL {
 
-	public String selectConfirmed(){
-		SQL sql = new SQL().SELECT("*").FROM("Accommodation").WHERE("STATUS = '승인됨'");
+	public static String selectConfirmed(){
+		SQL sql = new SQL().SELECT("userId, houseName, address, accommodationType ,capacity, accommodationComment, status").FROM("Accommodation").WHERE("STATUS like '승인됨'");
 		return sql.toString();
 	}
-	public String selectAll() {
+	public static String selectAll() {
 		SQL sql = new SQL().SELECT("*").FROM("Accommodation");
 
 		return sql.toString();

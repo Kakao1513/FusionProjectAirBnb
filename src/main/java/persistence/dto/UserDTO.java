@@ -1,5 +1,6 @@
 package persistence.dto;
 
+import Enums.UserType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

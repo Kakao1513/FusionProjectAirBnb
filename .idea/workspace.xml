@@ -4,37 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d073b4dc-47a6-480e-a3cd-066e603641cb" name="변경" comment="UserDTO 기반 출력">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Enums/AccommodationStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Enums/Enum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Enums/UserType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/MyThread.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/DTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistence/mapper/AccommodationSQL.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/view/Viewer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/MyThreadTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/UserDAOTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="d073b4dc-47a6-480e-a3cd-066e603641cb" name="변경" comment="AccommodationDAO 및 SQL, Enum 추가">
+      <change afterPath="$PROJECT_DIR$/src/main/java/network/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/network/Server.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/HostDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/persistence/mapper/AccommodationMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/view/AccommodationView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/airbnb/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airbnb/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/persistence/MyBatisConnectionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/MyBatisConnectionFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dao/BoardDAO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dao/DAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dao/DAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dao/MyBoardDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dao/AccommodationDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dao/AccommodationDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dao/UserDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/AccommodationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/AccommodationDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/BoardDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/InsertBoardDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/DTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/DTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/UserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/mapper/BoardMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/mapper/BoardSQL.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/mapper/Mapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/mapper/Mapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/mapper/AccommodationSQL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/mapper/AccommodationSQL.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/persistence/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/BoardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/BoardService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/BoardView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/config/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config/config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/config/db.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config/db.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/AccommodationDAOTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/AccommodationDAOTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/UserDAOTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UserDAOTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +115,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/minj2/IdeaProjects/SOCKET2023_01/build.gradle.kts&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/minj2/IdeaProjects/FusionProjectAirBnb/build.gradle&quot;,
     &quot;project.structure.last.edited&quot;: &quot;모듈&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.16113281&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -143,12 +129,32 @@
       <recent name="C:\Users\minj2\IdeaProjects\FusionProjectAirBnb\src\main\java" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.UserDAOTest.printAll">
-    <configuration name="MyThreadTest.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.UserDAOTest.printHost">
+    <configuration name="AccommodationDAOTest.selectAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FusionProjectAirBnb.test" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="MyThreadTest" />
-      <option name="METHOD_NAME" value="test" />
+      <option name="MAIN_CLASS_NAME" value="AccommodationDAOTest" />
+      <option name="METHOD_NAME" value="selectAll" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccommodationDAOTest.selectConfirmed" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FusionProjectAirBnb.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="AccommodationDAOTest" />
+      <option name="METHOD_NAME" value="selectConfirmed" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccommodationDAOTest.selectconfirmed" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FusionProjectAirBnb.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="AccommodationDAOTest" />
+      <option name="METHOD_NAME" value="selectconfirmed" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -164,11 +170,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserDAOTest.selectAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserDAOTest.printHost" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FusionProjectAirBnb.test" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="UserDAOTest" />
-      <option name="METHOD_NAME" value="selectAll" />
+      <option name="METHOD_NAME" value="printHost" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -176,9 +182,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.UserDAOTest.printHost" />
+        <item itemvalue="JUnit.AccommodationDAOTest.selectConfirmed" />
+        <item itemvalue="JUnit.AccommodationDAOTest.selectAll" />
+        <item itemvalue="JUnit.AccommodationDAOTest.selectconfirmed" />
         <item itemvalue="JUnit.UserDAOTest.printAll" />
-        <item itemvalue="JUnit.MyThreadTest.test" />
-        <item itemvalue="JUnit.UserDAOTest.selectAll" />
       </list>
     </recent_temporary>
   </component>
@@ -215,7 +223,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698837341136</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="AccommodationDAO 및 SQL, Enum 추가">
+      <option name="closed" value="true" />
+      <created>1699358453978</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1699358453978</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -240,6 +256,7 @@
     <MESSAGE value="ADD DTOs" />
     <MESSAGE value="ADD UserDTO" />
     <MESSAGE value="UserDTO 기반 출력" />
-    <option name="LAST_COMMIT_MESSAGE" value="UserDTO 기반 출력" />
+    <MESSAGE value="AccommodationDAO 및 SQL, Enum 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="AccommodationDAO 및 SQL, Enum 추가" />
   </component>
 </project>

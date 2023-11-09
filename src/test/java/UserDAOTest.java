@@ -1,3 +1,4 @@
+import Enums.UserType;
 import org.junit.jupiter.api.Test;
 import persistence.MyBatisConnectionFactory;
 import persistence.dao.UserDAO;
@@ -16,6 +17,20 @@ public class UserDAOTest {
 
 		UserView userViewer = new UserView();
 		userViewer.printAll(userDTOList);
+	}
+
+	@Test
+	public void printHost(){
+		userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+		List<UserDTO> userDTOList = userDAO.selectHost();
+
+		UserView userView = new UserView();
+		userView.printAll(userDTOList);
+	}
+
+	@Test
+	public void userType(){
+		UserType userType = UserType.valueOf("HOST");
 	}
 
 }
