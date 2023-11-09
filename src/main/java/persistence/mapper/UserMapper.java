@@ -1,6 +1,7 @@
 package persistence.mapper;
 
 import org.apache.ibatis.annotations.*;
+import persistence.dto.HostDto;
 import persistence.dto.UserDTO;
 
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.List;
 public interface UserMapper extends Mapper {
 	String getAll = "SELECT name,phone,birth,accountId,password,type FROM USER";
 	String getHost = "SELECT name,phone,birth,accountId,password,type FROM USER where type like 'HOST'";
+
+	String getPassword = "Select password from user";
 
 	@Select(getAll)
 	@Results(
@@ -24,12 +27,17 @@ public interface UserMapper extends Mapper {
 	List<UserDTO> getAll();
 	@Select(getHost)
 	@ResultMap("UserResultSet")
-	List<UserDTO> getHost();
-
-
-
+	List<HostDto> getHost();
 
 	@SelectProvider(type = UserSQL.class, method = "selectAll")
 	@ResultMap("UserResultSet")
 	List<UserDTO> selectAll();
+
+	@Select("SELECT password FROM user WHERE AccountID = #{id}")
+	String selectPassword(String id);
+
+	@Select("Select name,phone,birth,accountId,password,type from user where accountid= #{id} ")
+	UserDTO getUser(String id);
+
+
 }

@@ -15,15 +15,10 @@ public abstract class DAO<E> {
 	}
 	protected int insert(Executable exec) {
 		int sign = 0;
-		SqlSession session = sqlSessionFactory.openSession();
-		try {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
 			session.commit();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			return 0;
-		}
-		finally {
-			session.close();
 		}
 		return sign;
 	}

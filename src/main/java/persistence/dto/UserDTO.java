@@ -19,4 +19,5 @@ public class UserDTO extends DTO{
 	private String accountId;
 	private String password;
 	private String type;
+
 }
