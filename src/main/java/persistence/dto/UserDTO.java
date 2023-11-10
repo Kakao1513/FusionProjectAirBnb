@@ -13,6 +13,7 @@ import java.sql.Date;
 @Builder
 @ToString
 public class UserDTO extends DTO{
+	private int userId;
 	private String name;
 	private String phone;
 	private Date birth;

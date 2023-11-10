@@ -2,7 +2,6 @@ package persistence.dao;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import persistence.dto.HostDto;
 import persistence.dto.UserDTO;
 import persistence.mapper.UserMapper;
 
@@ -17,15 +16,6 @@ public class UserDAO extends DAO<UserDTO> {
 
 	public void insertHost(UserDTO host) {
 
-	}
-
-	public List<HostDto> selectHost() {
-		List<HostDto> DTOs = null;
-		try (SqlSession session = sqlSessionFactory.openSession()) {
-			UserMapper mapper = session.getMapper(UserMapper.class);
-			DTOs = mapper.getHost();
-		}
-		return DTOs;
 	}
 
 	public List<UserDTO> selectAll() {
@@ -48,6 +38,14 @@ public class UserDAO extends DAO<UserDTO> {
 		try (SqlSession session = sqlSessionFactory.openSession()){
 			UserMapper mapper = session.getMapper(UserMapper.class);
 			return mapper.getUser(id);
+		}
+	}
+
+	public void updateUser(UserDTO dto){
+		try (SqlSession session = sqlSessionFactory.openSession()){
+			UserMapper mapper = session.getMapper(UserMapper.class);
+			mapper.updateUser(dto);
+			session.commit();
 		}
 	}
 }

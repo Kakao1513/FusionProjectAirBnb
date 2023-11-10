@@ -4,17 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d073b4dc-47a6-480e-a3cd-066e603641cb" name="변경" comment="TEST">
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/GuestDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/UserServiceTest.java" afterDir="false" />
+    <list default="true" id="d073b4dc-47a6-480e-a3cd-066e603641cb" name="변경" comment="로그인 기능 추가">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/UserControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dao/DAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dao/DAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/airbnb/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airbnb/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dao/AccommodationDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dao/AccommodationDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dao/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/AccommodationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/AccommodationDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/GuestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/HostDto.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/UserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/mapper/AccommodationMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/mapper/AccommodationMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/mapper/Mapper.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/persistence/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/mapper/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/UserView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/UserView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/View.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/MyThreadTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MyThreadTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/UserDAOTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UserDAOTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -110,8 +116,8 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/minj2/IdeaProjects/FusionProjectAirBnb/build.gradle",
-    "project.structure.last.edited": "모듈",
+    "last_opened_file_path": "C:/Users/minj2/IdeaProjects/SOCKET2023_01/build.gradle.kts",
+    "project.structure.last.edited": "문제",
     "project.structure.proportion": "0.16113281",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
@@ -124,12 +130,25 @@
       <recent name="C:\Users\minj2\IdeaProjects\FusionProjectAirBnb\src\main\java" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.UserServiceTest.loginSuccess">
-    <configuration name="UserDAOTest.printHost" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.UserControllerTest.updateUser">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.airbnb.Main" />
+      <module name="FusionProjectAirBnb.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.airbnb.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserControllerTest.updateUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FusionProjectAirBnb.test" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="UserDAOTest" />
-      <option name="METHOD_NAME" value="printHost" />
+      <option name="MAIN_CLASS_NAME" value="UserControllerTest" />
+      <option name="METHOD_NAME" value="updateUser" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -140,16 +159,6 @@
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="UserServiceTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UserServiceTest.login" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="FusionProjectAirBnb.test" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="UserServiceTest" />
-      <option name="METHOD_NAME" value="login" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -176,11 +185,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.UserControllerTest.updateUser" />
+        <item itemvalue="애플리케이션.Main" />
         <item itemvalue="JUnit.UserServiceTest.loginSuccess" />
         <item itemvalue="JUnit.UserServiceTest" />
         <item itemvalue="JUnit.UserServiceTest.loginFail" />
-        <item itemvalue="JUnit.UserServiceTest.login" />
-        <item itemvalue="JUnit.UserDAOTest.printHost" />
       </list>
     </recent_temporary>
   </component>
@@ -233,7 +242,15 @@
       <option name="project" value="LOCAL" />
       <updated>1699506955196</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="로그인 기능 추가">
+      <option name="closed" value="true" />
+      <created>1699539265467</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1699539265467</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -260,6 +277,7 @@
     <MESSAGE value="UserDTO 기반 출력" />
     <MESSAGE value="AccommodationDAO 및 SQL, Enum 추가" />
     <MESSAGE value="TEST" />
-    <option name="LAST_COMMIT_MESSAGE" value="TEST" />
+    <MESSAGE value="로그인 기능 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="로그인 기능 추가" />
   </component>
 </project>

@@ -10,6 +10,7 @@ import lombok.ToString;
 @ToString
 @Builder
 public class AccommodationDTO extends DTO{
+    int AccommodationId;
     int userID;
     String houseName;
     String address;

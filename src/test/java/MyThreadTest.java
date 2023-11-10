@@ -13,8 +13,6 @@ public class MyThreadTest{
 
 		thread1.start();
 		thread2.start();
-
-
 	}
 
 }

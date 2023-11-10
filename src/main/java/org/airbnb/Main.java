@@ -1,21 +1,24 @@
 package org.airbnb;
 
+import Controller.UserController;
 import persistence.MyBatisConnectionFactory;
 import persistence.dao.UserDAO;
-import persistence.dto.UserDTO;
-import view.UserView;
+import service.UserService;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class Main {
-	public static void main(String[] args) throws SQLException {
-		UserDAO myUserDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-		List<UserDTO> userDTOList = myUserDAO.selectAll();
+	static UserController userController;
+	static UserService userService;
+	static UserDAO userDAO;
 
-		UserView userViewer = new UserView();
-		userViewer.printAll(userDTOList);
-/*
+	public static void main(String[] args) throws SQLException {
+		userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+		userService = new UserService(userDAO);
+		userController = new UserController(userService);
+		userController.login();
+		userController.updateUser();
+	/*
 		MyBoardDAO myBoardDAO = new MyBoardDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 		List<BoardDTO> boardDTOS = myBoardDAO.selectAllWithAnnotation();
 		List<BoardDTO> boardDTOS = myBoardDAO.selectRecentWithAnnotation(10);
