@@ -23,7 +23,7 @@ public class UserService {
 		}
 	}
 
-	public Optional<UserDTO> getRecognizedUser(String id, String pw) {
+	public Optional<UserDTO> loginUser(String id, String pw) {
 		if (login(id, pw)) {
 			return Optional.of(userDAO.getUser(id));
 		} else {
@@ -34,7 +34,7 @@ public class UserService {
 	public void changePrivacy(UserDTO userDTO, String name, Date birth, String phone) {
 		String newName, newPhone;
 		Date newBirth;
-		if (name == null) {
+		if (name.equalsIgnoreCase("x")) {
 			newName = userDTO.getName();
 		} else {
 			newName = name;
@@ -44,7 +44,7 @@ public class UserService {
 		} else {
 			newBirth = birth;
 		}
-		if (phone == null) {
+		if (phone.equalsIgnoreCase("x")) {
 			newPhone = userDTO.getPhone();
 		} else {
 			newPhone = phone;
@@ -54,4 +54,6 @@ public class UserService {
 		userDTO.setBirth(newBirth);
 		userDAO.updateUser(userDTO);
 	}
+
+
 }

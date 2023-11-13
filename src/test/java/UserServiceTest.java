@@ -23,7 +23,7 @@ public class UserServiceTest {
 		System.out.print("ID : "); //View로 변경
 
 		System.out.print("PW : ");
-		Optional<UserDTO> userDTO = userService.getRecognizedUser(id, pw);
+		Optional<UserDTO> userDTO = userService.loginUser(id, pw);
 		userDTO.ifPresent(dto -> userView.print(dto));
 	}
 
@@ -33,7 +33,7 @@ public class UserServiceTest {
 		userService = new UserService(userDAO);
 		userView = new UserView();
 		String id = "bell", pw = "fail";
-		Optional<UserDTO> userDTO = userService.getRecognizedUser(id, pw);
+		Optional<UserDTO> userDTO = userService.loginUser(id, pw);
 		userDTO.ifPresent(dto -> userView.print(dto));
 	}
 }

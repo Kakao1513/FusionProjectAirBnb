@@ -4,20 +4,25 @@ import Controller.UserController;
 import persistence.MyBatisConnectionFactory;
 import persistence.dao.UserDAO;
 import service.UserService;
+import view.UserView;
 
 import java.sql.SQLException;
 
 public class Main {
-	static UserController userController;
-	static UserService userService;
-	static UserDAO userDAO;
 
 	public static void main(String[] args) throws SQLException {
+		UserController userController;
+		UserView view;
+		UserService userService;
+		UserDAO userDAO;
 		userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 		userService = new UserService(userDAO);
-		userController = new UserController(userService);
+		view = new UserView();
+		userController = new UserController(userService, view);
+		userController.setInput(System.in);
 		userController.login();
-		userController.updateUser();
+		userController.jobOption();
+
 	/*
 		MyBoardDAO myBoardDAO = new MyBoardDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 		List<BoardDTO> boardDTOS = myBoardDAO.selectAllWithAnnotation();

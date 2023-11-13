@@ -1,25 +1,24 @@
 import Controller.UserController;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.jupiter.api.Test;
 import persistence.MyBatisConnectionFactory;
 import persistence.dao.UserDAO;
 import service.UserService;
-
-import java.io.ByteArrayInputStream;
+import view.UserView;
 
 public class UserControllerTest {
 	UserController userController;
+	UserView view;
 	UserService userService;
 	UserDAO userDAO;
-	@Test
-	void updateUser(){
-		String input = "minj21\ntest1\n성민제\n010-5432-5232\n2020-02-21";
 
+	@Test
+	void updateUser() {
 		userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 		userService = new UserService(userDAO);
-		userController = new UserController(userService);
-		userController.setInput(new ByteArrayInputStream(input.getBytes()));
+		view = new UserView();
+		userController = new UserController(userService, view);
+		userController.setInput(System.in);
 		userController.login();
-		userController.updateUser();
+		userController.jobOption();
 	}
 }

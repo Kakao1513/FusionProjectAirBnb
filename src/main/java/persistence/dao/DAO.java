@@ -8,8 +8,6 @@ import java.lang.reflect.Executable;
 public abstract class DAO<E> {
 	protected final SqlSessionFactory sqlSessionFactory;
 
-
-
 	public DAO(SqlSessionFactory sqlSessionFactory) {
 		this.sqlSessionFactory = sqlSessionFactory;
 	}

@@ -4,22 +4,54 @@ import persistence.dto.UserDTO;
 
 public class UserView extends View<UserDTO> {
 
-	public void loginView() { //수정 필요
-		System.out.println("=============로그인=============");
-		System.out.println("ID :");
-		System.out.println("PW :");
+	public void viewJobs(UserDTO dto){
+		System.out.println();
+		if (dto.getType().equalsIgnoreCase("ADMIN")) {
+			System.out.printf("===============관리자%s님 환영합니다.==============\n", dto.getName());
+		} else {
+			System.out.printf("===============%s님 환영합니다.==============\n", dto.getName());
+		}
+		System.out.println("================업무를 선택하세요==============");
+		System.out.println("(1) 게스트");
+		System.out.println("(2) 호스트");
+		if(dto.getType().equalsIgnoreCase("ADMIN")){
+			System.out.println("(3) 관리자");
+		}
+		System.out.println("============================================");
+		System.out.print("Input : ");
+	}
+
+	public void viewGuestJob(){
+		System.out.println();
+		System.out.println("=================GUEST==================");
+		System.out.println("(1) MyPage");
+		System.out.println("(2) 숙소 목록 보기");
+		System.out.println("(3) 숙소 필터링");
+		System.out.println("(4) 숙소 예약 신청");
+		System.out.println("========================================");
+		System.out.print("Input : ");
+
 	}
 
 	public void viewMyPage(UserDTO dto) {
-		System.out.printf("===============%s님의 MyPage==============", dto.getName());
+		System.out.println();
+		System.out.printf("===============%s님의 MyPage==============\n", dto.getName());
 		System.out.println("이름 : " + dto.getName());
 		System.out.println("전화번호 : " + dto.getPhone());
 		System.out.println("생년 월일 : " + dto.getBirth());
-		System.out.println("=============업무를 선택해주세요 =============");
-		System.out.println("1 ) 개인정보 수정");
-		System.out.println("2 ) 예약 현황 조회");
-		System.out.println("3 ) 예약 취소");
-		System.out.println("4 ) 리뷰와 별점 등록");
+		System.out.println("=========================================");
+		viewMyPageJobs();
 	}
+
+	public void viewMyPageJobs(){
+		System.out.println("===============MyPage==============");
+		System.out.println("(1) 숙소 예약 현황 조회");
+		System.out.println("(2) 예약 취소");
+		System.out.println("(3) 리뷰와 별점 등록");
+		System.out.println("(4) 개인 정보 수정");
+		System.out.println("====================================");
+		System.out.print("Input : ");
+	}
+
 
 }
