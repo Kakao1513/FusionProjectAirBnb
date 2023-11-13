@@ -15,9 +15,9 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 	public List<AccommodationDTO> selectAll() {
 		List<AccommodationDTO> DTOs = null;
 
-		try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-			AccommodationMapper accommodationMapper = sqlSession.getMapper(AccommodationMapper.class);
-			DTOs = accommodationMapper.getAll();
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
+			DTOs = accomMapper.getAll();
 		}
 		return DTOs;
 	}
@@ -25,10 +25,19 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 	public List<AccommodationDTO> selectConfirm() {
 		List<AccommodationDTO> DTOs = null;
 
-		try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-			AccommodationMapper accommodationMapper = sqlSession.getMapper(AccommodationMapper.class);
-			DTOs = accommodationMapper.getConfirm();
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
+			DTOs = accomMapper.getConfirm();
 		}
 		return DTOs;
 	}
+
+	public void insertAccom(AccommodationDTO dto){
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
+			accomMapper.insertAccom(dto);
+			session.commit();
+		}
+	}
+
 }
