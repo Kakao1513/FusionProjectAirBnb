@@ -23,9 +23,13 @@ public interface AccommodationMapper {
 	List<AccommodationDTO> getAll();
 
 
-	@SelectProvider(type = AccommodationSQL.class, method = "selectConfirmed")
+	@SelectProvider(type = AccommodationSQL.class, method = "selectByStatus")
 	@ResultMap("AccommodationResultSet")
-	List<AccommodationDTO> getConfirm();
+	List<AccommodationDTO> selectByStatus(String status);
+
+	@SelectProvider(type = AccommodationSQL.class, method = "getAccom")
+	@ResultMap("AccommodationResultSet")
+	AccommodationDTO getAccom(int accomID);
 
 	@InsertProvider(type = AccommodationSQL.class, method = "insertAccom")
 	int insertAccom(@Param("accom") AccommodationDTO accom);

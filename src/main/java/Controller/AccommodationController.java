@@ -30,6 +30,8 @@ public class AccommodationController {
 
     public void reserveAccom(){
         accomView.displayAccomList(accomService.getConfirmedAccomList());
+        int accomID = SCANNER.nextInt();
+        accomView.displayAccomInfo(accomService.getAccom(accomID), accomService.getAmenityList(accomID));
 
     }
 

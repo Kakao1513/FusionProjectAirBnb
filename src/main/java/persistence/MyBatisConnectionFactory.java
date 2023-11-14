@@ -5,6 +5,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import persistence.mapper.AccommodationMapper;
+import persistence.mapper.AmenityMapper;
 import persistence.mapper.UserMapper;
 
 import java.io.FileNotFoundException;
@@ -21,7 +22,11 @@ public class MyBatisConnectionFactory { //싱글톤 패턴으로 만들어진 Co
 			Reader reader = Resources.getResourceAsReader(resource);
 			if (sqlSessionFactory == null) {
 				sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader,"development");
-				Class[] Mappers = {UserMapper.class, AccommodationMapper.class};
+				Class[] Mappers = {
+						UserMapper.class,
+						AccommodationMapper.class,
+						AmenityMapper.class,
+				};
 				for (Class mapper : Mappers) {
 					sqlSessionFactory.getConfiguration().addMapper(mapper);
 				}

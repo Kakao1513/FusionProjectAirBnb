@@ -22,12 +22,12 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 		return DTOs;
 	}
 
-	public List<AccommodationDTO> selectConfirm() {
+	public List<AccommodationDTO> selectByStatus(String status) {
 		List<AccommodationDTO> DTOs = null;
 
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
-			DTOs = accomMapper.getConfirm();
+			DTOs = accomMapper.selectByStatus(status);
 		}
 		return DTOs;
 	}
@@ -38,6 +38,16 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 			accomMapper.insertAccom(dto);
 			session.commit();
 		}
+	}
+
+	public AccommodationDTO getAccom(int accomID){
+		AccommodationDTO DTO = null;
+
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
+			DTO = accomMapper.getAccom(accomID);
+		}
+		return DTO;
 	}
 
 }

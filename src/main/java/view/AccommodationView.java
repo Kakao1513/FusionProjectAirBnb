@@ -1,6 +1,7 @@
 package view;
 
 import persistence.dto.AccommodationDTO;
+import persistence.dto.AmenityDTO;
 
 import java.util.List;
 
@@ -23,9 +24,26 @@ public class AccommodationView extends View<AccommodationDTO> {
         System.out.println("===========================================================================================");
     }
 
-    public void displayAccom(AccommodationDTO dto) {
+    private void displayAccom(AccommodationDTO dto) {
         System.out.printf("|%-3d|%-14s|%-20s|%-7s|%-5s|%-25s|\n",
                 dto.getAccomId(), dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment());
+    }
+
+    public void displayAccomInfo(AccommodationDTO accomDTO, List<AmenityDTO> amenityDTOS){
+
+        System.out.printf("==========[%3d] %s==========\n",accomDTO.getAccomId(), accomDTO.getAccomName());
+        System.out.println("위치 : " + accomDTO.getAddress());
+        System.out.println("설명 : " + accomDTO.getComment());
+        displayAmenity(amenityDTOS);
+    }
+
+    public void displayAmenity(List<AmenityDTO> amenityDTOS){
+        System.out.println("=========편의시설 리스트=========");
+        for(AmenityDTO dto : amenityDTOS){
+            System.out.println(dto.getName());
+        }
+        System.out.println("==============================");
+
     }
 
     public void displayInsertMenu(){

@@ -21,7 +21,7 @@ public class AccommodationDAOTest {
 	@Test
 	public void selectConfirmed(){
 		acDAO = new AccommodationDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-		List<AccommodationDTO> acList = acDAO.selectConfirm();
+		List<AccommodationDTO> acList = acDAO.selectByStatus("승인됨");
 
 		AccommodationView acView = new AccommodationView();
 		acView.printAll(acList);

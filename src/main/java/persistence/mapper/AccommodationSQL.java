@@ -6,17 +6,25 @@ import persistence.dto.AccommodationDTO;
 
 public class AccommodationSQL {
 
-	public static String selectConfirmed(){
+	public static String selectByStatus(String status){
 		SQL sql = new SQL()
 				.SELECT("*")
 				.FROM("Accommodation")
-				.WHERE("STATUS like '승인됨'");
+				.WHERE("STATUS like #{status}");
 		return sql.toString();
 	}
 	public static String selectAll() {
 		SQL sql = new SQL()
 				.SELECT("*")
 				.FROM("Accommodation");
+		return sql.toString();
+	}
+
+	public static String getAccom(@Param("accomID") int accomID) {
+		SQL sql = new SQL()
+				.SELECT("*")
+				.FROM("Accommodation")
+				.WHERE("accommodationID=#{accomID}");
 		return sql.toString();
 	}
 
