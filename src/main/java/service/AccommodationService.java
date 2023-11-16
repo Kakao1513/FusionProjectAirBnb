@@ -33,18 +33,7 @@ public class AccommodationService {
         return amenityDAO.getAmenity(accomID);
     }
 
-    public void insertAccom(String accomName, String address, String type, int capacity, String comment){
-
-        AccommodationDTO accomDTO = AccommodationDTO.builder()
-                .userID(1)
-                .accomName(accomName)
-                .address(address)
-                .type(type)
-                .capacity(capacity)
-                .comment(comment)
-                .status("대기중")
-                .build();
-
+    public void insertAccom(AccommodationDTO accomDTO){
         accomDAO.insertAccom(accomDTO);
     }
 
