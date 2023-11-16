@@ -27,17 +27,17 @@ public class UserDAO extends DAO<UserDTO> {
 		return DTOs;
 	}
 
-	public String getPassword(String id) {
+	public String selectPwById(String id) {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			UserMapper mapper = session.getMapper(UserMapper.class);
 			return mapper.selectPassword(id);
 		}
 	}
 
-	public UserDTO getUser(String id){
+	public UserDTO selectById(String id){
 		try (SqlSession session = sqlSessionFactory.openSession()){
 			UserMapper mapper = session.getMapper(UserMapper.class);
-			return mapper.getUser(id);
+			return mapper.selectById(id);
 		}
 	}
 

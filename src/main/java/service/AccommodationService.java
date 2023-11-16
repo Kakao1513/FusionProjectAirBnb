@@ -10,7 +10,9 @@ import java.util.List;
 public class AccommodationService {
     private AccommodationDAO accomDAO;
     private AmenityDAO amenityDAO;
-
+    public AccommodationService(AccommodationDAO accomDAO){
+        this.accomDAO = accomDAO;
+    }
     public AccommodationService(AccommodationDAO accomDAO, AmenityDAO amenityDAO){
         this.accomDAO = accomDAO;
         this.amenityDAO = amenityDAO;

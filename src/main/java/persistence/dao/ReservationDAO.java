@@ -1,5 +1,13 @@
 package persistence.dao;
 
-public class ReservationDAO
-{
+import org.apache.ibatis.session.SqlSessionFactory;
+
+public class ReservationDAO {
+	SqlSessionFactory sessionFactory;
+
+	public ReservationDAO(SqlSessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+
 }

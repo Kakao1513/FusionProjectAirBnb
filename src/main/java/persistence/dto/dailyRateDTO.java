@@ -1,6 +1,6 @@
 package persistence.dto;
 
-public class dailyRateDTO
+public class dailyRateDTO extends DTO
 {
 
 }

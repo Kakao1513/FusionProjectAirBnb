@@ -4,24 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d073b4dc-47a6-480e-a3cd-066e603641cb" name="변경" comment="로그인 기능 추가">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/UserControllerTest.java" afterDir="false" />
+    <list default="true" id="d073b4dc-47a6-480e-a3cd-066e603641cb" name="변경" comment="UserController, UserView 수정">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Controller/ClientController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Controller/MainController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/network/SClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/persistence/mapper/ReservationMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/config/config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/config/db.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/network/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/network/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/network/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/airbnb/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airbnb/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dao/AccommodationDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dao/AccommodationDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dao/AdminDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dao/ReservationDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dao/ReservationDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dao/UserDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/AccommodationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/AccommodationDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/GuestDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/HostDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/UserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/mapper/AccommodationMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/mapper/AccommodationMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/mapper/Mapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/AdminDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/AmenityDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/AmenityDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/DTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/DTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/ReservationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/ReservationDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/persistence/dto/dailyRateDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/dto/dailyRateDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/persistence/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persistence/mapper/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/AccommodationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/AccommodationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/BoardService.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/UserView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/UserView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/MyThreadTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MyThreadTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/UserDAOTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UserDAOTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,11 +124,11 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/minj2/IdeaProjects/SOCKET2023_01/build.gradle.kts",
+    "last_opened_file_path": "C:/Users/minj2/IdeaProjects/FusionProjectAirBnb/build.gradle",
     "project.structure.last.edited": "문제",
     "project.structure.proportion": "0.16113281",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -130,7 +138,7 @@
       <recent name="C:\Users\minj2\IdeaProjects\FusionProjectAirBnb\src\main\java" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.UserControllerTest.updateUser">
+  <component name="RunManager" selected="애플리케이션.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.airbnb.Main" />
       <module name="FusionProjectAirBnb.main" />
@@ -185,8 +193,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.UserControllerTest.updateUser" />
         <item itemvalue="애플리케이션.Main" />
+        <item itemvalue="JUnit.UserControllerTest.updateUser" />
         <item itemvalue="JUnit.UserServiceTest.loginSuccess" />
         <item itemvalue="JUnit.UserServiceTest" />
         <item itemvalue="JUnit.UserServiceTest.loginFail" />
@@ -250,7 +258,23 @@
       <option name="project" value="LOCAL" />
       <updated>1699539265467</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="AccommodationDTO, UserDTO 구조 변경 및 개인정보 변경기능 추가">
+      <option name="closed" value="true" />
+      <created>1699603352884</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1699603352884</updated>
+    </task>
+    <task id="LOCAL-00008" summary="UserController, UserView 수정">
+      <option name="closed" value="true" />
+      <created>1699861380083</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1699861380083</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -278,6 +302,8 @@
     <MESSAGE value="AccommodationDAO 및 SQL, Enum 추가" />
     <MESSAGE value="TEST" />
     <MESSAGE value="로그인 기능 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="로그인 기능 추가" />
+    <MESSAGE value="AccommodationDTO, UserDTO 구조 변경 및 개인정보 변경기능 추가" />
+    <MESSAGE value="UserController, UserView 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="UserController, UserView 수정" />
   </component>
 </project>

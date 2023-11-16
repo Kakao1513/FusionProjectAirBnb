@@ -1,20 +1,32 @@
 package service;
 
+import lombok.Builder;
+import persistence.dao.AccommodationDAO;
+import persistence.dao.ReservationDAO;
 import persistence.dao.UserDAO;
 import persistence.dto.UserDTO;
 
 import java.sql.Date;
 import java.util.Optional;
 
+@Builder
 public class UserService {
-	private final UserDAO userDAO;
+	private UserDAO userDAO;
+	private AccommodationDAO acDAO;
+	private ReservationDAO rDAO;
 
 	public UserService(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
 
+
+	public UserService(UserDAO userDAO, AccommodationDAO accommodationDAO, ReservationDAO rDAO) {
+		this.userDAO = userDAO;
+		acDAO = accommodationDAO;
+		this.rDAO = rDAO;
+	}
 	private boolean login(String id, String pw) {
-		if (pw.equals(userDAO.getPassword(id))) {
+		if (pw.equals(userDAO.selectPwById(id))) {
 			System.out.println("로그인 성공!");
 			return true;
 		} else {
@@ -25,7 +37,7 @@ public class UserService {
 
 	public Optional<UserDTO> loginUser(String id, String pw) {
 		if (login(id, pw)) {
-			return Optional.of(userDAO.getUser(id));
+			return Optional.of(userDAO.selectById(id));
 		} else {
 			return Optional.empty();
 		}
@@ -55,5 +67,8 @@ public class UserService {
 		userDAO.updateUser(userDTO);
 	}
 
+	public void reserveRequest(){
+
+	}
 
 }

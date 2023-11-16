@@ -1,4 +1,7 @@
 package network;
 
-public class Message {
+public interface Message {
+	public enum TYPE {
+		LOGIN, ACK
+	}
 }

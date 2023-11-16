@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
-public class AmenityDTO {
+public class AmenityDTO extends DTO {
     int amenityID;
     String name;
     String category;

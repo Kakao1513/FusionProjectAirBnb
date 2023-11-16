@@ -42,7 +42,6 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 
 	public AccommodationDTO getAccom(int accomID){
 		AccommodationDTO DTO = null;
-
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
 			DTO = accomMapper.getAccom(accomID);
