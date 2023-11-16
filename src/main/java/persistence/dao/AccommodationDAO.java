@@ -49,4 +49,14 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 		return DTO;
 	}
 
+	public List<AccommodationDTO> selectByDate(String startDate, String endDate) {
+		List<AccommodationDTO> DTOs = null;
+
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
+			DTOs = accomMapper.selectByDate(startDate, endDate);
+		}
+		return DTOs;
+	}
+
 }

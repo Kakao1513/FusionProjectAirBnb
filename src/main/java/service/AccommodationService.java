@@ -23,6 +23,11 @@ public class AccommodationService {
         return accomDAO.selectByStatus("승인됨");
     }
 
+    public List<AccommodationDTO> selectByDate(String startDate, String endDate){
+        return accomDAO.selectByDate(startDate, endDate);
+    }
+
+
     public List<AccommodationDTO> getPendingAccomList(){
         return accomDAO.selectByStatus("대기중");
     }

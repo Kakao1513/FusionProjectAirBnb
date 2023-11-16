@@ -14,7 +14,9 @@ public class AccommodationView extends View<AccommodationDTO> {
         System.out.println("(1) 숙소 예약");
         System.out.println("(2) 숙소 등록");
         System.out.println("(3) 나가기");
-        System.out.print("================> ");
+        System.out.println("==========================");
+
+        System.out.print("선택할 번호를 입력하세요 : ");
         return SCANNER.nextInt();
     }
     public void displayAccomList(List<AccommodationDTO> accommodationDTOS) {
@@ -29,9 +31,24 @@ public class AccommodationView extends View<AccommodationDTO> {
         System.out.println("===========================================================================================");
     }
 
+    public int getOrder(){
+        System.out.print("선택할 번호를 입력하세요 : ");
+        return SCANNER.nextInt();
+    }
+
     public int getAccomNumberFromUser(){
         System.out.print("선택할 숙소 번호를 입력하세요 : ");
         return SCANNER.nextInt();
+    }
+
+    public String[] getPeriodFromUser(){
+        String startDate, endDate;
+        System.out.print("시작 날짜 : ");
+        startDate = SCANNER.next();
+        System.out.print("끝 날짜 : ");
+        endDate = SCANNER.next();
+
+        return new String[]{startDate, endDate};
     }
 
     public void displayAccomInfo(AccommodationDTO accomDTO, List<AmenityDTO> amenityDTOS){

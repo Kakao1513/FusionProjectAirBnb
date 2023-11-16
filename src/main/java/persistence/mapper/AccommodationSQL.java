@@ -6,7 +6,7 @@ import persistence.dto.AccommodationDTO;
 
 public class AccommodationSQL {
 
-	public static String selectByStatus(String status){
+	public static String selectByStatus(@Param("status") String status){
 		SQL sql = new SQL()
 				.SELECT("*")
 				.FROM("Accommodation")
@@ -36,4 +36,20 @@ public class AccommodationSQL {
 						"#{accom.type}", "#{accom.capacity}", "#{accom.comment}","#{accom.status}");
 		return sql.toString();
 	}
+
+	public static String selectByDate(@Param("startDate") String startDate, @Param("endDate") String endDate){
+		SQL sql = new SQL()
+				.SELECT("*")
+				.FROM("Accommodation")
+				.WHERE("AccommodationID IN (SELECT AccommodationID " +
+						"FROM room " +
+						"WHERE NOT EXISTS (SELECT 1 " +
+						"FROM accommodation AS accom " +
+						"JOIN reservation ON accom.AccommodationID = reservation.AccommodationID " +
+						"WHERE CheckOut >= date(#{startDate}) AND CheckIn <= date(#{endDate}) " +
+						"AND room.AccommodationID = accom.AccommodationID " +
+						"AND room.RoomID = reservation.RoomID))");
+		return sql.toString();
+	}
+
 }

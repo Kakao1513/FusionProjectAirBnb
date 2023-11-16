@@ -25,16 +25,18 @@ public interface AccommodationMapper {
 
 	@SelectProvider(type = AccommodationSQL.class, method = "selectByStatus")
 	@ResultMap("AccommodationResultSet")
-	List<AccommodationDTO> selectByStatus(String status);
+	List<AccommodationDTO> selectByStatus(@Param("status") String status);
 
 	@SelectProvider(type = AccommodationSQL.class, method = "getAccom")
 	@ResultMap("AccommodationResultSet")
-	AccommodationDTO getAccom(int accomID);
+	AccommodationDTO getAccom(@Param("accomID") int accomID);
 
 	@InsertProvider(type = AccommodationSQL.class, method = "insertAccom")
 	int insertAccom(@Param("accom") AccommodationDTO accom);
 
-
+	@SelectProvider(type = AccommodationSQL.class, method = "selectByDate")
+	@ResultMap("AccommodationResultSet")
+	List<AccommodationDTO> selectByDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
 
 
 }
