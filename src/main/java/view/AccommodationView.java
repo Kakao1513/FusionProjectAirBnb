@@ -31,6 +31,7 @@ public class AccommodationView extends View<AccommodationDTO> {
         System.out.println("===========================================================================================");
     }
 
+
     public int getOrder(){
         System.out.print("선택할 번호를 입력하세요 : ");
         return SCANNER.nextInt();
@@ -40,6 +41,64 @@ public class AccommodationView extends View<AccommodationDTO> {
         System.out.print("선택할 숙소 번호를 입력하세요 : ");
         return SCANNER.nextInt();
     }
+
+
+    public int displayFilterList(){
+        System.out.println("==========검색 필터==========");
+        System.out.println("1. 숙소 이름으로 검색");
+        System.out.println("2. 날짜로 검색");
+        System.out.println("3. 인원 수로 검색");
+        System.out.println("4. 숙소 타입으로 검색");
+        System.out.println("5. 완료");
+        System.out.println("============================");
+        System.out.print("사용할 필터를 선택하세요 : ");
+        return SCANNER.nextInt();
+    }
+
+    public void displayAppliedFilters(
+            String accomName,
+            String startDate, String endDate,
+            String capacity,
+            String accomType
+    ){
+        System.out.println("==========적용된 필터==========");
+        if (accomName != null){
+            System.out.println("숙소 이름 : " + accomName);
+        }
+        if (startDate != null){
+            System.out.println("검색 날짜 : " + startDate + " ~ " + endDate);
+        }
+        if (capacity != null){
+            System.out.println("최소 수용 인원 : " + capacity);
+        }
+        if (accomType != null){
+            System.out.println("숙소 타입 : " + accomType);
+        }
+    }
+
+    public String getAccomNameFromUser(){
+        String accomName;
+        System.out.print("숙소 이름 : ");
+        accomName = SCANNER.next();
+
+        return "%"+accomName+"%";
+    }
+
+    public String getCapacityFromUser(){
+        String capacity;
+        System.out.print("수용 인원 : ");
+        capacity = SCANNER.next();
+
+        return capacity;
+    }
+    public String getAccomTypeFromUser(){
+        String accomType;
+        System.out.print("숙소 타입 : ");
+        accomType = SCANNER.next();
+
+        return accomType;
+    }
+
 
     public String[] getPeriodFromUser(){
         String startDate, endDate;

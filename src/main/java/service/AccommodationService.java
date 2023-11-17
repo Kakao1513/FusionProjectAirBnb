@@ -18,18 +18,20 @@ public class AccommodationService {
         this.amenityDAO = amenityDAO;
     }
 
-
     public List<AccommodationDTO> getConfirmedAccomList(){
-        return accomDAO.selectByStatus("승인됨");
+        return accomDAO.selectAccom("승인됨", null, null, null, null, null);
     }
-
-    public List<AccommodationDTO> selectByDate(String startDate, String endDate){
-        return accomDAO.selectByDate(startDate, endDate);
-    }
-
 
     public List<AccommodationDTO> getPendingAccomList(){
-        return accomDAO.selectByStatus("대기중");
+        return accomDAO.selectAccom("대기중", null, null, null, null, null);
+    }
+
+    public List<AccommodationDTO> selectAccom(String status,
+                                              String accomName,
+                                              String startDate, String endDate,
+                                              String capacity,
+                                              String accomType){
+        return accomDAO.selectAccom(status, accomName, startDate, endDate, capacity, accomType);
     }
 
     public AccommodationDTO getAccom(int accomID){

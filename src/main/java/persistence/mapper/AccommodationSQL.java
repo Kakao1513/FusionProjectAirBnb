@@ -6,13 +6,6 @@ import persistence.dto.AccommodationDTO;
 
 public class AccommodationSQL {
 
-	public static String selectByStatus(@Param("status") String status){
-		SQL sql = new SQL()
-				.SELECT("*")
-				.FROM("Accommodation")
-				.WHERE("STATUS like #{status}");
-		return sql.toString();
-	}
 	public static String selectAll() {
 		SQL sql = new SQL()
 				.SELECT("*")
@@ -28,28 +21,50 @@ public class AccommodationSQL {
 		return sql.toString();
 	}
 
-	public static String insertAccom(@Param("accom") AccommodationDTO accom){
+	public static String insertAccom(@Param("accom") AccommodationDTO accom) {
 		SQL sql = new SQL()
 				.INSERT_INTO("Accommodation")
-				.INTO_COLUMNS("userId", "houseName", "address", "accommodationType" ,"capacity", "accommodationComment", "status")
+				.INTO_COLUMNS("userId", "houseName", "address", "accommodationType", "capacity", "accommodationComment", "status")
 				.INTO_VALUES("#{accom.userID}", "#{accom.accomName}", "#{accom.address}",
-						"#{accom.type}", "#{accom.capacity}", "#{accom.comment}","#{accom.status}");
+						"#{accom.type}", "#{accom.capacity}", "#{accom.comment}", "#{accom.status}");
 		return sql.toString();
 	}
 
-	public static String selectByDate(@Param("startDate") String startDate, @Param("endDate") String endDate){
-		SQL sql = new SQL()
+	public static String selectAccom(
+			@Param("status") String status,
+			@Param("accomName") String accomName,
+			@Param("startDate") String startDate, @Param("endDate") String endDate,
+			@Param("capacity") String capacity,
+			@Param("type") String accomType
+	) {
+		SQL mainQuery = new SQL()
 				.SELECT("*")
-				.FROM("Accommodation")
-				.WHERE("AccommodationID IN (SELECT AccommodationID " +
-						"FROM room " +
-						"WHERE NOT EXISTS (SELECT 1 " +
-						"FROM accommodation AS accom " +
-						"JOIN reservation ON accom.AccommodationID = reservation.AccommodationID " +
-						"WHERE CheckOut >= date(#{startDate}) AND CheckIn <= date(#{endDate}) " +
-						"AND room.AccommodationID = accom.AccommodationID " +
-						"AND room.RoomID = reservation.RoomID))");
-		return sql.toString();
-	}
+				.FROM("Accommodation");
+		if (status != null) {
+			mainQuery.WHERE("status like #{status}");
+		}
+		if (accomName != null) {
+			mainQuery.WHERE("houseName like #{accomName}");
+		}
+		if (startDate != null && endDate != null) {
+			SQL subSubQuery = new SQL()
+					.SELECT("r.RoomID, r.AccommodationID")
+					.FROM("reservation r")
+					.WHERE("CheckOut >= date(#{startDate})")
+					.WHERE("CheckIn <= date(#{endDate})");
+			SQL subQuery = new SQL()
+					.SELECT("accommodationID")
+					.FROM("room")
+					.WHERE("(RoomID, AccommodationID) NOT IN(" + subSubQuery.toString() + ")");
 
+			mainQuery.WHERE("AccommodationID IN (" + subQuery.toString() + ")");
+		}
+		if (capacity != null) {
+			mainQuery.WHERE("capacity >= #{capacity}");
+		}
+		if (accomType != null) {
+			mainQuery.WHERE("accommodationType like #{accomType}");
+		}
+		return mainQuery.toString();
+	}
 }
