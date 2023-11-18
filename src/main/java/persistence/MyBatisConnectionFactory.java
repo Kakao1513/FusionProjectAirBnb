@@ -4,9 +4,7 @@ import lombok.Getter;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import persistence.mapper.AccommodationMapper;
-import persistence.mapper.AmenityMapper;
-import persistence.mapper.UserMapper;
+import persistence.mapper.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,6 +24,9 @@ public class MyBatisConnectionFactory { //싱글톤 패턴으로 만들어진 Co
 						UserMapper.class,
 						AccommodationMapper.class,
 						AmenityMapper.class,
+						ReservationMapper.class,
+						RatePolicyMapper.class,
+						ReviewMapper.class
 				};
 				for (Class mapper : Mappers) {
 					sqlSessionFactory.getConfiguration().addMapper(mapper);

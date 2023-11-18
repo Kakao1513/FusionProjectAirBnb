@@ -87,7 +87,7 @@ public class UserController {
 					myPageJob();
 				}
 				case 2 -> {
-					List<AccommodationDTO> acDTOs = acService.getConfirmedAccomList();
+					List<AccommodationDTO> acDTOs = acService.selectAccom("승인됨");
 					acView.displayAccomList(acDTOs);
 				}
 				case 3 -> {

@@ -1,7 +1,22 @@
 package network;
 
-public interface Message {
-	public enum TYPE {
-		LOGIN, ACK
+import java.io.Serializable;
+
+public class Message implements Serializable {
+	private String order;
+	private Object object;
+
+	public Message(String order, Object object){
+		this.order = order;
+		this.object = object;
 	}
+
+	public String getOrder() {
+		return order;
+	}
+	public Object getObject(){
+		return object;
+	}
+
+
 }

@@ -7,9 +7,11 @@ import java.util.List;
 
 public interface AmenityMapper {
     String getAmenity = """
-            SELECT amenity.amenityID, name, category FROM accommodation_amenity
-            JOIN Amenity ON accommodation_amenity.amenityID = Amenity.amenityID
-            WHERE accommodationID=#{accomID};""";
+            SELECT amenity.amenityID, name, category 
+            FROM accommodation_amenity 
+            JOIN Amenity 
+            ON accommodation_amenity.amenityID = Amenity.amenityID 
+            WHERE accommodationID = #{accomID};""";
     @Select(getAmenity)
     @Results(
             id = "AmenityResultSet",

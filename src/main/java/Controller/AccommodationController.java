@@ -1,8 +1,12 @@
 package Controller;
 
+import persistence.dto.AccommodationDTO;
+import persistence.dto.ReservationDTO;
 import persistence.dto.UserDTO;
 import service.AccommodationService;
 import view.AccommodationView;
+
+import java.util.List;
 
 public class AccommodationController {
     private UserDTO currentUser;
@@ -24,7 +28,7 @@ public class AccommodationController {
     }
 
     public void getAccomList(){
-        accomView.displayAccomList(accomService.getConfirmedAccomList());
+        accomView.displayAccomList(accomService.selectAccom("승인됨"));
         System.out.println("1: 상세보기, 2: 필터로 검색");
         int order = accomView.getOrder();
         switch (order) {
@@ -33,16 +37,19 @@ public class AccommodationController {
             default -> System.out.println("잘못 입력 하셨습니다.");
         }
 
-
     }
 
     public void getAccomInfo(){
         int accomID = accomView.getAccomNumberFromUser();
-        accomView.displayAccomInfo(accomService.getAccom(accomID), accomService.getAmenityList(accomID));
+        AccommodationDTO curAccom = accomService.getAccom(accomID);
+        accomView.displayAccomInfo(curAccom, accomService.getRate(accomID));
+        accomView.displayAmenity(accomService.getAmenityList(accomID));
+        accomView.displayReviews(accomService.getReviews(accomID));
+        List<ReservationDTO> reservationDTOS = accomService.getReservationList(accomID, "20231101", "20231201");
+        accomView.displayReservationCalendar(2023,11, curAccom, reservationDTOS);
     }
 
     public void setSearchFilters(){
-        String status = "승인됨";
         String accomName = null;
         String[] period = {null, null};
         String capacity = null;
@@ -55,15 +62,13 @@ public class AccommodationController {
                 case 3 -> capacity = accomView.getCapacityFromUser();
                 case 4 -> accomType = accomView.getAccomTypeFromUser();
                 default -> {
-                    accomView.displayAccomList(
-                            accomService.selectAccom(
-                                    status,
-                                    accomName,
-                                    period[0], period[1],
-                                    capacity,
-                                    accomType
-                            )
+                    List<AccommodationDTO> filterdAccomList = accomService.selectAccom(
+                            accomName,
+                            period[0], period[1],
+                            capacity,
+                            accomType
                     );
+                    accomView.displayAccomList(filterdAccomList);
                     return;
                 }
             }
@@ -74,10 +79,6 @@ public class AccommodationController {
                     accomType
             );
         }
-    }
-
-    public void searchByFilter(){
-
     }
 
     public void insertAccom(){

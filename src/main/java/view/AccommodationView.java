@@ -1,8 +1,9 @@
 package view;
 
-import persistence.dto.AccommodationDTO;
-import persistence.dto.AmenityDTO;
+import persistence.dto.*;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -110,12 +111,12 @@ public class AccommodationView extends View<AccommodationDTO> {
         return new String[]{startDate, endDate};
     }
 
-    public void displayAccomInfo(AccommodationDTO accomDTO, List<AmenityDTO> amenityDTOS){
+    public void displayAccomInfo(AccommodationDTO accomDTO, RatePolicyDTO rateDTO){
 
         System.out.printf("==========[%3d] %s==========\n",accomDTO.getAccomId(), accomDTO.getAccomName());
         System.out.println("위치 : " + accomDTO.getAddress());
         System.out.println("설명 : " + accomDTO.getComment());
-        displayAmenity(amenityDTOS);
+        System.out.printf("숙박요금 : [평일] %d, [주말] %d\n" ,rateDTO.getWeekday(), rateDTO.getWeekend());
     }
 
     public void displayAmenity(List<AmenityDTO> amenityDTOS){
@@ -124,7 +125,67 @@ public class AccommodationView extends View<AccommodationDTO> {
             System.out.println(dto.getName());
         }
         System.out.println("==============================");
+    }
 
+    public void displayReservations(List<ReservationDTO> reservationDTOS){
+        System.out.println("=========예약 리스트=========");
+        for(ReservationDTO dto : reservationDTOS){
+            System.out.println(dto.getCheckIn() + " ~ " + dto.getCheckOut());
+        }
+
+    }
+
+    public void displayReviews(List<ReviewDTO> reviewDTOS){
+        System.out.println("=========리뷰 리스트=========");
+        for(ReviewDTO dto : reviewDTOS){
+            System.out.printf("[%d] %d : %s\n",dto.getRate(), dto.getUserID(), dto.getText());
+        }
+    }
+
+    public void displayReservationCalendar(int year, int month, AccommodationDTO accomDTO, List<ReservationDTO> reservationDTOS){
+        int capacity = accomDTO.getCapacity();
+
+        // 해당 월의 첫 날의 요일을 구합니다.
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, 1);
+        int startDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        // 해당 월의 마지막 날짜를 구합니다.
+        int lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        int[] roomCount = new int[lastDayOfMonth+1];
+
+        for(ReservationDTO dto : reservationDTOS) {
+            int start = dto.getCheckIn().getDayOfMonth();
+            int end = dto.getCheckOut().getDayOfMonth();
+
+            for(int i=start;i<=end;i++){
+                roomCount[i] += 1;
+            }
+        }
+
+        System.out.println("<< " + year + "년 " + month + "월 >>");
+        System.out.println("Su    Mo    Tu    We    Th    Fr    Sa");
+
+        // 첫 주 전까지 공백을 출력합니다.
+        for (int i = 1; i < startDayOfWeek; i++) {
+            System.out.print("      ");
+        }
+
+        // 날짜를 출력합니다.
+        for (int day = 1; day <= lastDayOfMonth; day++) {
+            char status = '*';
+            if (roomCount[day] == 0)
+                status = 'O';
+            else if (roomCount[day] >= capacity)
+                status = 'X';
+
+            System.out.printf("%2d(%c) ", day, status);
+            if ((startDayOfWeek + day - 1) % 7 == 0) {
+                System.out.println();
+            }
+        }
+        System.out.println();
     }
 
     public AccommodationDTO getAccomInfoFromUser() {
