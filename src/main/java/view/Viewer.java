@@ -24,6 +24,12 @@ public class Viewer {
 	}
 
 	public void hostView(UserDTO user) {
-
+		System.out.println("============호스트============");
+		System.out.println("1. 숙소 등록 신청");
+		System.out.println("2. 요금 정책 설정");
+		System.out.println("3. 숙박 예약 현황 보기");
+		System.out.println("4. 숙박 예약 승인/거절");
+		System.out.println("5. 리뷰 답글 등록");
+		System.out.println("=============================");
 	}
 }
