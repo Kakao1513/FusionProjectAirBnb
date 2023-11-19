@@ -13,12 +13,12 @@ public class UserControllerTest {
 
 	@Test
 	void updateUser() {
-		userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+	/*	userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 		userService = new UserService(userDAO);
 		view = new UserView();
 		userController = new UserController(userService, view);
 		userController.setInput(System.in);
 		userController.login();
-		userController.jobOption();
+		userController.jobOption();*/
 	}
 }

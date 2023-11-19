@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class Main {
 
 	public static void main(String[] args) throws SQLException {
-		UserController userController;
+		/*UserController userController;
 		UserView view;
 		AccommodationView acView = new AccommodationView();
 		UserService userService;
@@ -27,7 +27,7 @@ public class Main {
 		userController = new UserController(userService, view, acService, acView);
 		userController.setInput(System.in);
 		userController.login();
-		userController.jobOption();
+		userController.jobOption();*/
 
 	}
 }

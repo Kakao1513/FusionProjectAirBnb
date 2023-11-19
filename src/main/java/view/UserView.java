@@ -1,8 +1,22 @@
 package view;
 
+import network.Protocol.UserLoginInfo;
 import persistence.dto.UserDTO;
 
+import java.net.Socket;
+import java.util.Scanner;
+
 public class UserView extends View<UserDTO> {
+
+	public UserLoginInfo loginRequestView(){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("================로그인===================");
+		System.out.print("ID : ");
+		String id = sc.nextLine();
+		System.out.print("PW : ");
+		String pw = sc.nextLine();
+		return new UserLoginInfo(id,pw);
+	}
 
 	public void viewJobs(UserDTO dto){
 		System.out.println();

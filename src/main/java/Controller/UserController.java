@@ -1,5 +1,6 @@
 package Controller;
 
+import network.Protocol.UserLoginInfo;
 import persistence.dto.AccommodationDTO;
 import persistence.dto.UserDTO;
 import service.AccommodationService;
@@ -12,7 +13,6 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-
 
 public class UserController {
 	private static Scanner sc;
@@ -31,6 +31,10 @@ public class UserController {
 		this.userView = userView;
 		this.acService = accommodationService;
 		this.acView = acView;
+	}
+
+	public UserController(UserService userService) {
+		this.userService = userService;
 	}
 
 	public void setInput(InputStream in) {
@@ -64,14 +68,11 @@ public class UserController {
 		}
 	}
 
-	public void login() {
-		System.out.println("==========로그인===========");
-		System.out.print("ID : ");
-		String id = sc.nextLine();
-		System.out.print("PW : ");
-		String pw = sc.nextLine();
+	public UserDTO login(UserLoginInfo loginInfo) {
+		String id = loginInfo.getId();
+		String pw = loginInfo.getPw();
 		Optional<UserDTO> userDTO = userService.loginUser(id, pw); //추후에 service 객체를 네트워크를 통해서 전달하여 serverDB에서 정보를 가져옴.
-		userDTO.ifPresent(userDTO1 -> currentUser = userDTO1);
+		return userDTO.orElse(null);
 	}
 
 	public void guestJob() {
