@@ -44,7 +44,7 @@ public class AccommodationSQL {
 			mainQuery.WHERE("status like #{status}");
 		}
 		if (accomName != null) {
-			mainQuery.WHERE("houseName like #{accomName}");
+			mainQuery.WHERE("houseName like CONCAT('%', #{accomName}, '%')");
 		}
 		if (startDate != null && endDate != null) {
 			SQL subSubQuery = new SQL()

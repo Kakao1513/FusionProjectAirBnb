@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.*;
 import persistence.dto.AccommodationDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AccommodationMapper {
 	@SelectProvider(type = AccommodationSQL.class, method = "selectAll")
@@ -32,13 +33,7 @@ public interface AccommodationMapper {
 
 	@SelectProvider(type = AccommodationSQL.class, method = "selectAccom")
 	@ResultMap("AccommodationResultSet")
-	List<AccommodationDTO> selectAccom(
-			@Param("status") String status,
-			@Param("accomName") String accomName,
-			@Param("startDate") String startDate, @Param("endDate") String endDate,
-			@Param("capacity") String capacity,
-			@Param("type") String accomType
-	);
+	List<AccommodationDTO> selectAccom(Map<String, Object> filters);
 
 
 }

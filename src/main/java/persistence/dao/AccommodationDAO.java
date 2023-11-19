@@ -6,29 +6,18 @@ import persistence.dto.AccommodationDTO;
 import persistence.mapper.AccommodationMapper;
 
 import java.util.List;
+import java.util.Map;
 
 public class AccommodationDAO extends DAO<AccommodationDTO> {
 	public AccommodationDAO(SqlSessionFactory sqlSessionFactory) {
 		super(sqlSessionFactory);
 	}
-	public List<AccommodationDTO> selectAccom(
-			String status,
-		  	String accomName,
-		  	String startDate, String endDate,
-		  	String capacity,
-		  	String accomType
-	) {
+	public List<AccommodationDTO> selectAccom(Map<String, Object> filters) {
 		List<AccommodationDTO> DTOs = null;
 
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
-			DTOs = accomMapper.selectAccom(
-					status,
-					accomName,
-					startDate, endDate,
-					capacity,
-					accomType
-			);
+			DTOs = accomMapper.selectAccom(filters);
 		}
 		return DTOs;
 	}

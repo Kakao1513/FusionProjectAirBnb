@@ -4,7 +4,9 @@ import persistence.dao.*;
 import persistence.dto.*;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AccommodationService {
     private AccommodationDAO accomDAO;
@@ -22,14 +24,13 @@ public class AccommodationService {
     }
 
     public List<AccommodationDTO> selectAccom(String status){
-        return accomDAO.selectAccom(status, null, null, null, null, null);
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("status", status);
+        return accomDAO.selectAccom(filters);
     }
 
-    public List<AccommodationDTO> selectAccom(String accomName,
-                                              String startDate, String endDate,
-                                              String capacity,
-                                              String accomType){
-        return accomDAO.selectAccom("승인됨", accomName, startDate, endDate, capacity, accomType);
+    public List<AccommodationDTO> selectAccom(Map<String, Object> filters){
+        return accomDAO.selectAccom(filters);
     }
 
     public AccommodationDTO getAccom(int accomID){
