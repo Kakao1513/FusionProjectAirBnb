@@ -26,13 +26,7 @@ public class UserService {
 		this.rDAO = rDAO;
 	}
 	private boolean login(String id, String pw) {
-		if (pw.equals(userDAO.selectPwById(id))) {
-			System.out.println("로그인 성공!");
-			return true;
-		} else {
-			System.out.println("로그인 실패!");
-			return false;
-		}
+		return pw.equals(userDAO.selectPwById(id));
 	}
 
 	public Optional<UserDTO> loginUser(String id, String pw) {

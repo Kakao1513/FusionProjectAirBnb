@@ -212,7 +212,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 
     public Accommodation_amenityDTO getAccomAmenityInfoFromUser() {
         System.out.println("해당되는 숙소의 편의시설을 선택하세요: ");
-        ShowAmenityList();
+        //ShowAmenityList();
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         String[] Accom_amenityId = input.split(",");

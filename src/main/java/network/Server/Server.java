@@ -1,6 +1,6 @@
 package network.Server;
 
-import Controller.UserController;
+import persistence.dao.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -14,18 +14,27 @@ public class Server {
 	private final ExecutorService exr;
 	private final ServerSocket serverSocket;
 
-	private UserController userController;
-	public Server() {
+	private final AccommodationDAO accommodationDAO;
+	private final UserDAO userDAO;
+	private final ReviewDAO reviewDAO;
+	private final ReservationDAO reservationDAO;
+	private final RatePolicyDAO ratePolicyDAO;
+	private final AmenityDAO amenityDAO;
+
+	public Server(AccommodationDAO accommodationDAO, UserDAO userDAO, ReviewDAO reviewDAO, ReservationDAO reservationDAO, RatePolicyDAO ratePolicyDAO, AmenityDAO amenityDAO) {
 		try {
 			serverSocket = new ServerSocket(SERVER_PORT);
+
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		exr = Executors.newFixedThreadPool(4);
-	}
-	public Server(UserController controller){
-		this();
-		this.userController = controller;
+		exr = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		this.amenityDAO = amenityDAO;
+		this.accommodationDAO = accommodationDAO;
+		this.ratePolicyDAO = ratePolicyDAO;
+		this.reviewDAO = reviewDAO;
+		this.userDAO = userDAO;
+		this.reservationDAO = reservationDAO;
 	}
 
 	public void run() {
@@ -35,9 +44,8 @@ public class Server {
 				System.out.println("Client Request Ready");
 				Socket socket = serverSocket.accept();
 				System.out.println("client accept");
-				Runnable task = new ClientHandler(socket, userController);
+				Runnable task = new ClientHandler(socket,accommodationDAO,userDAO,reviewDAO,reservationDAO,ratePolicyDAO,amenityDAO);
 				exr.submit(task);
-
 			} catch (IOException e) {
 				System.err.println(e);
 			}
@@ -51,35 +59,5 @@ public class Server {
 
 
 
-
-	/*private static void accept() {
-		Runnable accept = () -> {
-			ObjectInputStream ois = null;
-			ObjectOutputStream oos = null;
-			try (serverSocket = new ServerSocket(SERVER_PORT)) {
-				Socket socket;
-				System.out.println("Server running");
-				socket = serverSocket.accept(); // client연결 catch
-				System.out.println("before connection");
-				ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-				oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			Object data = null;
-			while (true) {
-				try {
-					if ((data = ois.readObject()) == null) break;
-					//설계된 프로토콜 메시지를 처리하는 부분
-					System.out.println(data);
-
-				} catch (IOException | ClassNotFoundException e) {
-					throw new RuntimeException(e);
-				}
-
-			}
-		};
-		exr.submit(accept);
-	}*/
 
 }

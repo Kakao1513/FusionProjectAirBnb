@@ -1,6 +1,5 @@
 package persistence.dto;
 
-import Enums.UserType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,9 +9,8 @@ import java.sql.Date;
 
 @Getter
 @Setter
-@Builder
 @ToString
-public class UserDTO extends DTO{
+public class UserDTO extends DTO {
 	private int userId;
 	private String name;
 	private String phone;
@@ -20,5 +18,10 @@ public class UserDTO extends DTO{
 	private String accountId;
 	private String password;
 	private String type;
+
+	public UserDTO(String id, String pw) {
+		accountId = id;
+		password = pw;
+	}
 
 }
