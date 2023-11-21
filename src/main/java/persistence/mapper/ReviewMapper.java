@@ -1,16 +1,22 @@
 package persistence.mapper;
 
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import persistence.dto.ReviewDTO;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReviewMapper {
     String selectReviews = "SELECT * FROM Review WHERE AccommodationID = #{accomID};";
+    String insertReview = """
+            INSERT INTO `reservation`
+            (`accommodationID`, `userID`, `roomID`, 
+            `parentCommentID`, `text`, `dateCreated`, 
+            `modificationTime`, `rate`)
+            VALUES
+            (#{review.accommodationID}, #{review.userID}, #{review.roomID},
+             #{review.parentCommentID}, #{review.text}, #{review.dateCreated},
+             #{review.modificationTime}, #{review.rate});
+            """;
 
     @Select(selectReviews)
     @Results(
@@ -28,4 +34,9 @@ public interface ReviewMapper {
             }
     )
     List<ReviewDTO> selectReviews(@Param("accomID") int accomID);
+
+    @Select(insertReview)
+    int insertAccom(@Param("review") ReviewDTO review);
+
+
 }

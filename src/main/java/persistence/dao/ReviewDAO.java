@@ -21,4 +21,11 @@ public class ReviewDAO {
         }
         return DTOS;
     }
+    public void insertReview(ReviewDTO dto){
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            ReviewMapper reviewMapper = session.getMapper(ReviewMapper.class);
+            reviewMapper.insertAccom(dto);
+            session.commit();
+        }
+    }
 }
