@@ -4,6 +4,7 @@ import persistence.dao.*;
 import persistence.dto.*;
 
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +46,8 @@ public class AccommodationService {
         return amenityDAO.getAmenity(accomID);
     }
 
-    public List<ReservationDTO> getReservationList(int accomID, String startDate, String endDate){
-        return reservationDAO.getReservations(accomID, startDate, endDate);
+    public List<ReservationDTO> getReservationList(int accomID, LocalDate date){
+        return reservationDAO.getReservations(accomID, date);
     }
 
     public RatePolicyDTO getRate(int accomID){

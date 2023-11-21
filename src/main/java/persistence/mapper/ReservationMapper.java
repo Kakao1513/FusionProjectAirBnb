@@ -3,15 +3,16 @@ package persistence.mapper;
 import org.apache.ibatis.annotations.*;
 import persistence.dto.ReservationDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 public interface ReservationMapper {
     String getReservations =
             """
-            SELECT * 
-            FROM reservation 
+            SELECT *
+            FROM reservation
             WHERE accommodationID = #{accomID} 
-            AND CheckOut >= date(#{startDate}) 
-            AND CheckIn <= date(#{endDate});
+            AND CheckOut >= #{date}
+            AND CheckIn <= DATE_ADD(#{date}, INTERVAL 1 MONTH)
             """;
     @Select(getReservations)
     @Results(
@@ -28,7 +29,7 @@ public interface ReservationMapper {
             }
     )
     List<ReservationDTO> selectReservations(@Param("accomID") int accomID,
-                                            @Param("startDate") String startDate, @Param("endDate") String endDate);
+                                            @Param("date") LocalDate date);
 
 
 

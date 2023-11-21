@@ -2,6 +2,7 @@ package view;
 
 import persistence.dto.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class AccommodationView extends View<AccommodationDTO> {
@@ -137,16 +138,22 @@ public class AccommodationView extends View<AccommodationDTO> {
         System.out.println("================================");
     }
 
-    public void displayReservationCalendar(int year, int month, AccommodationDTO accomDTO, List<ReservationDTO> reservationDTOS){
-        int capacity = accomDTO.getCapacity();
+    public LocalDate getReservationDate(){
+        System.out.println("예약할 날짜를 입력하세요");
+        System.out.print("년 : ");
+        int year = SCANNER.nextInt();
+        System.out.print("월 : ");
+        int month = SCANNER.nextInt();
 
-        // 해당 월의 첫 날의 요일을 구합니다.
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, 1);
-        int startDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        LocalDate date = LocalDate.of(year, month, 1);
+        return date;
+    }
+
+    public void displayReservationCalendar(LocalDate date, int capacity, List<ReservationDTO> reservationDTOS){
+        int startDayOfWeek = date.getDayOfWeek().getValue();
 
         // 해당 월의 마지막 날짜를 구합니다.
-        int lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int lastDayOfMonth = date.lengthOfMonth();
 
         int[] roomCount = new int[lastDayOfMonth+1];
 
@@ -159,7 +166,7 @@ public class AccommodationView extends View<AccommodationDTO> {
             }
         }
 
-        System.out.println("<< " + year + "년 " + month + "월 >>");
+        System.out.println("<< " + date.getYear() + "년 " + date.getMonth() + "월 >>");
         System.out.println("Su    Mo    Tu    We    Th    Fr    Sa");
 
         // 첫 주 전까지 공백을 출력합니다.
@@ -169,11 +176,11 @@ public class AccommodationView extends View<AccommodationDTO> {
 
         // 날짜를 출력합니다.
         for (int day = 1; day <= lastDayOfMonth; day++) {
-            char status = '*';
+            char status = '^';
             if (roomCount[day] == 0)
                 status = 'O';
             else if (roomCount[day] >= capacity)
-                status = 'X';
+                status = '*';
 
             System.out.printf("%2d(%c) ", day, status);
             if ((startDayOfWeek + day - 1) % 7 == 0) {
