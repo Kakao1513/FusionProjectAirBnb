@@ -3,7 +3,9 @@ package service;
 import lombok.Builder;
 import persistence.dao.AccommodationDAO;
 import persistence.dao.ReservationDAO;
+import persistence.dao.ReviewDAO;
 import persistence.dao.UserDAO;
+import persistence.dto.ReviewDTO;
 import persistence.dto.UserDTO;
 
 import java.sql.Date;
@@ -14,16 +16,18 @@ public class UserService {
 	private UserDAO userDAO;
 	private AccommodationDAO acDAO;
 	private ReservationDAO rDAO;
+	private ReviewDAO reviewDAO;
 
 	public UserService(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
 
 
-	public UserService(UserDAO userDAO, AccommodationDAO accommodationDAO, ReservationDAO rDAO) {
+	public UserService(UserDAO userDAO, AccommodationDAO accommodationDAO, ReservationDAO rDAO, ReviewDAO reviewDAO) {
 		this.userDAO = userDAO;
 		acDAO = accommodationDAO;
 		this.rDAO = rDAO;
+		this.reviewDAO = reviewDAO;
 	}
 	private boolean login(String id, String pw) {
 		return pw.equals(userDAO.selectPwById(id));
@@ -62,6 +66,10 @@ public class UserService {
 	}
 
 	public void reserveRequest(){
+
+	}
+
+	public void insertReview(ReviewDTO reviewDTO){
 
 	}
 
