@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.Date;
+import java.util.Scanner;
 
 public class Client {
 	private final String ip;
@@ -30,11 +32,8 @@ public class Client {
 		this.port = port;
 		try {
 			socket = new Socket(ip, port);
-			System.out.println("Client socket open : " + socket.getInetAddress().getCanonicalHostName());
 			oos = new ObjectOutputStream(socket.getOutputStream());
-			System.out.println("OutputStream Is Open");
 			ois = new ObjectInputStream(socket.getInputStream());
-			System.out.println("inputStream Is Open");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -60,13 +59,8 @@ public class Client {
 				isSuccess = true;
 			} else {
 				System.out.println(response.getErrorMessage());
-				closeResource();
-				socket = new Socket(ip, port);
-				oos = new ObjectOutputStream(socket.getOutputStream());
-				ois = new ObjectInputStream(socket.getInputStream());
-				//해당 방식에 문제가 없는가?
 			}
-		} catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return isSuccess;
@@ -76,11 +70,110 @@ public class Client {
 	public void run() {
 		try {
 			while (!login()) ;
-			userView.viewJobs(currentUser);
+			int select = 1;
+			while (select != 0) {
+				select = userView.viewJobs(currentUser);
+				switch (select) {
+					case 0 -> {
+						System.out.println("로그아웃.");
+					}
+					case 1 -> {
+						int jobOption = userView.selectGuestJob();
+						selectGuestJob(jobOption);
+					}
+					case 2 -> {
+
+					}
+					case 3 -> {
+
+					}
+					default -> {
+
+					}
+				}
+			}
 		} finally {
 			closeResource();
 		}
 	}
+
+	public void selectGuestJob(int select) {
+		switch (select) {
+			case 0 -> {
+				System.out.println("이전 페이지로.");
+				return;
+			}
+			case 1 -> {
+				int jopOption = userView.selectMyPageJobs(currentUser);
+				myPageJobHandle(jopOption);
+			}
+			case 2 -> {
+
+			}
+			case 3 -> {
+
+			}
+			case 4 -> {
+
+			}
+		}
+	}
+
+	public void myPageJobHandle(int select) {
+		switch (select) {
+			case 0 -> {
+				System.out.println("이전 페이지로 돌아갑니다.");
+			}
+			case 1 -> {
+
+			}
+			case 2 -> {
+
+			}
+			case 3 -> {
+
+			}
+			case 4 -> {
+				changePrivacy();
+			}
+		}
+	}
+
+	public void changePrivacy() {
+		Scanner sc = new Scanner(System.in);
+		String newName, newPhone;
+		Date newBirth;
+		System.out.println("이름 입력:");
+		newName = sc.nextLine();
+		System.out.println("생일 입력:");
+		newBirth = Date.valueOf(sc.nextLine());
+		System.out.println("전화번호 입력:");
+		newPhone = sc.nextLine();
+
+		Request req = new Request();
+		req.setMethod(Method.PUT);
+		req.setJobType(JobType.GUEST);
+		req.setPayloadType(PayloadType.USER);
+		UserDTO userDTO = new UserDTO(currentUser);
+		Object[] body = {userDTO, newName, newBirth, newPhone};
+		req.setPayload(body);
+		Response response;
+		try {
+			oos.writeObject(req);
+			oos.flush();
+
+			response = (Response) ois.readObject();
+			if (response.getIsSuccess()) {
+				System.out.println("개인정보 수정 성공.");
+				currentUser = (UserDTO) response.getPayload();
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+
+	}
+
 
 	private void closeResource() {
 		try {
@@ -97,4 +190,5 @@ public class Client {
 			throw new RuntimeException(e);
 		}
 	}
+
 }

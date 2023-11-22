@@ -23,22 +23,27 @@ class ClientHandler implements Runnable {
 		System.out.println("Server OutputStream Is Open");
 		ois = new ObjectInputStream(client.getInputStream());
 		System.out.println("Server InputStream Is Open");
-		mainController = new MainController(userDAO,accommodationDAO,amenityDAO,reservationDAO,ratePolicyDAO,reviewDAO);
+		mainController = new MainController(userDAO, accommodationDAO, amenityDAO, reservationDAO, ratePolicyDAO, reviewDAO);
 	}
 
 	@Override
 	public void run() {
 		System.out.println("Client Connection.");
 		try {
-			Request request = (Request) ois.readObject();
-			Response response = mainController.handle(request);
-			oos.writeObject(response);
-			oos.flush();
-
+			while (!client.isClosed()) {
+				Request request = (Request) ois.readObject();
+				Response response = mainController.handle(request);
+				oos.writeObject(response);
+				oos.flush();
+			}
 		} catch (IOException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
+		} finally {
+			resourceCloser();
 		}
+	}
 
+	private void resourceCloser(){
 		try {
 			if (ois != null) {
 				ois.close();
@@ -52,9 +57,5 @@ class ClientHandler implements Runnable {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public void login() {
-
 	}
 }

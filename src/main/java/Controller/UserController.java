@@ -1,5 +1,6 @@
 package Controller;
 
+import lombok.AllArgsConstructor;
 import network.Protocol.Enums.JobType;
 import network.Protocol.Enums.Method;
 import network.Protocol.Request;
@@ -10,33 +11,18 @@ import service.UserService;
 import view.AccommodationView;
 import view.UserView;
 
+import java.sql.Date;
 import java.util.Optional;
 import java.util.Scanner;
 
+@AllArgsConstructor
 public class UserController implements Controller {
-	private static Scanner sc;
-	private UserView userView;
 	private UserService userService;
 	private AccommodationService acService;
-	private AccommodationView acView;
-	private UserDTO currentUser;
-
-	public UserController(UserService userService, UserView userView) {
-		this.userService = userService;
-		this.userView = userView;
-	}
-
-	public UserController(UserService userService, UserView userView, AccommodationService accommodationService, AccommodationView acView) {
-		this.userService = userService;
-		this.userView = userView;
-		this.acService = accommodationService;
-		this.acView = acView;
-	}
 
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
-
 
 	public UserDTO login(UserDTO loginInfo) {
 		String id = loginInfo.getAccountId();
@@ -61,30 +47,106 @@ public class UserController implements Controller {
 		return response;
 	}
 
+	public Response changeInfo(Request req) {
+		Object[] body = (Object[]) req.getPayload();
+		UserDTO chUser = userService.changePrivacy((UserDTO) body[0], (String) body[1], (Date) body[2], (String) body[3]);
+		Response res = new Response();
+		res.setPayload(chUser);
+		res.setIsSuccess(true);
+		res.setMethod(req.getMethod());
+		res.setJobType(req.getJobType());
+		res.setPayloadType(req.getPayloadType());
+		return res;
+	}
+
+
 	@Override
 	public Response handle(Request req) {
 		Method method = req.getMethod();
-		JobType count = req.getJobType();
+		Response res = null;
 		switch (method) {
 			case GET -> {
-				return null; //TODO:구현 요
+				res = getHandle(req);
 			}
 			case PUT -> {
-				return null; //TODO:구현 요
+				res = putHandle(req);
 			}
 			case POST -> {
-				if (count == JobType.COMMON) {
-					return loginProcess(req);
-				} else {
-					return null; //TODO:다른 프로세스가 들어감
-				}
+				res = postHandle(req);
 			}
 			case DELETE -> {
-				return null; //TODO:구현 요
-			}
-			default -> {
-				return null;
+				res = deleteHandle(req);
 			}
 		}
+		return res;
+	}
+
+	public Response getHandle(Request req) {
+		JobType jobType = req.getJobType();
+		Response res = null;
+		switch (jobType) {
+			case COMMON -> {
+			}
+			case ADMIN -> {
+			}
+			case HOST -> {
+			}
+			case GUEST -> {
+			}
+		}
+		return res;
+	}
+
+	public Response putHandle(Request req) {
+		JobType jobType = req.getJobType();
+		Response res = null;
+		switch (jobType) {
+			case COMMON -> {
+			}
+			case ADMIN -> {
+			}
+			case HOST -> {
+			}
+			case GUEST -> {
+				res = changeInfo(req);
+			}
+		}
+
+		return res;
+	}
+
+	public Response postHandle(Request req) {
+		JobType jobType = req.getJobType();
+		Response res = null;
+		switch (jobType) {
+			case HOST -> {
+			}
+			case ADMIN -> {
+			}
+			case GUEST -> {
+			}
+			case COMMON -> {
+				res = loginProcess(req);
+			}
+		}
+
+		return res;
+	}
+
+	public Response deleteHandle(Request req) {
+		JobType jobType = req.getJobType();
+		Response res = null;
+		switch (jobType) {
+			case COMMON -> {
+			}
+			case ADMIN -> {
+			}
+			case HOST -> {
+			}
+			case GUEST -> {
+			}
+		}
+
+		return res;
 	}
 }

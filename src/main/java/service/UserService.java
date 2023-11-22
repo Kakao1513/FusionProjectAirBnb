@@ -29,6 +29,7 @@ public class UserService {
 		this.rDAO = rDAO;
 		this.reviewDAO = reviewDAO;
 	}
+
 	private boolean login(String id, String pw) {
 		return pw.equals(userDAO.selectPwById(id));
 	}
@@ -41,7 +42,7 @@ public class UserService {
 		}
 	}
 
-	public void changePrivacy(UserDTO userDTO, String name, Date birth, String phone) {
+	public UserDTO changePrivacy(UserDTO userDTO, String name, Date birth, String phone) {
 		String newName, newPhone;
 		Date newBirth;
 		if (name.equalsIgnoreCase("x")) {
@@ -63,9 +64,10 @@ public class UserService {
 		userDTO.setPhone(newPhone);
 		userDTO.setBirth(newBirth);
 		userDAO.updateUser(userDTO);
+		return userDTO;
 	}
 
-	public void reserveRequest(){
+	public void reserveRequest() {
 
 	}
 
