@@ -8,12 +8,9 @@ import network.Protocol.Response;
 import persistence.dto.UserDTO;
 import service.AccommodationService;
 import service.UserService;
-import view.AccommodationView;
-import view.UserView;
 
 import java.sql.Date;
 import java.util.Optional;
-import java.util.Scanner;
 
 @AllArgsConstructor
 public class UserController implements Controller {
@@ -119,15 +116,16 @@ public class UserController implements Controller {
 		JobType jobType = req.getJobType();
 		Response res = null;
 		switch (jobType) {
-			case HOST -> {
-			}
-			case ADMIN -> {
-			}
-			case GUEST -> {
-			}
 			case COMMON -> {
 				res = loginProcess(req);
 			}
+			case ADMIN -> {
+			}
+			case HOST -> {
+			}
+			case GUEST -> {
+			}
+
 		}
 
 		return res;

@@ -5,10 +5,13 @@ import persistence.dao.AccommodationDAO;
 import persistence.dao.ReservationDAO;
 import persistence.dao.ReviewDAO;
 import persistence.dao.UserDAO;
+import persistence.dto.ReservationDTO;
 import persistence.dto.ReviewDTO;
 import persistence.dto.UserDTO;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Builder
@@ -67,11 +70,22 @@ public class UserService {
 		return userDTO;
 	}
 
-	public void reserveRequest() {
+	synchronized public boolean reserveRequest(ReservationDTO userInputReserve) {
+		int accomId = userInputReserve.getReservationID();
+		int roomID = userInputReserve.getRoomID();
+		LocalDate checkIn = userInputReserve.getCheckIn();
+		LocalDate checkOut = userInputReserve.getCheckOut();
 
+		List<ReservationDTO> reserves = rDAO.reservationCheck(accomId, roomID, checkIn, checkOut);
+		if (reserves.isEmpty()) { //해당 날짜에 예약된 방이 없음을 의미.
+			rDAO.insertReservation(userInputReserve);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	public void insertReview(ReviewDTO reviewDTO){
+	public void insertReview(ReviewDTO reviewDTO) {
 
 	}
 

@@ -14,6 +14,7 @@ public class ReservationDAO {
 	public ReservationDAO(SqlSessionFactory sessionFactory) {
 		this.sqlSessionFactory = sessionFactory;
 	}
+
 	public List<ReservationDTO> getReservations(int accomID, LocalDate date) {
 		List<ReservationDTO> DTOS = null;
 
@@ -22,6 +23,22 @@ public class ReservationDAO {
 			DTOS = reservationMapper.selectReservations(accomID, date);
 		}
 		return DTOS;
+	}
+
+	public List<ReservationDTO> reservationCheck(int accomID, int roomID, LocalDate checkIn, LocalDate checkOut) {
+		List<ReservationDTO> dtos = null;
+
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			ReservationMapper reservationMapper = session.getMapper(ReservationMapper.class);
+			dtos = reservationMapper.reservationCheck(accomID, roomID, checkIn, checkOut);
+		}
+		return dtos;
+	}
+
+	public void insertReservation(ReservationDTO rDTO) {
+		try (SqlSession session = sqlSessionFactory.openSession()){
+            //TODO:숙소예약 해야됨
+		}
 	}
 
 

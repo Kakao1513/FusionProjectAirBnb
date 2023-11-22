@@ -45,5 +45,6 @@ public interface UserMapper {
 	@Update("Update user SET name=#{name}, phone=#{phone}, birth=#{birth} WHERE accountid=#{accountId}")
 	void updateUser(UserDTO userDTO);
 
+	
 
 }
