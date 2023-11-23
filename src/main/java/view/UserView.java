@@ -5,7 +5,6 @@ import persistence.dto.UserDTO;
 import java.util.Scanner;
 
 public class UserView extends View<UserDTO> {
-	Scanner sc = new Scanner(System.in);
 
 	public UserDTO loginRequestView() {
 		System.out.println("================로그인===================");
@@ -20,7 +19,7 @@ public class UserView extends View<UserDTO> {
 		System.out.println();
 		String userType = dto.getType();
 		if (userType.equalsIgnoreCase("ADMIN")) {
-			System.out.printf("===============관리자%s님 환영합니다.==============\n", dto.getName());
+			System.out.printf("===============관리자 %s님 환영합니다.==============\n", dto.getName());
 		} else {
 			System.out.printf("===============%s님 환영합니다.==============\n", dto.getName());
 		}

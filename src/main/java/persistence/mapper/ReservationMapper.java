@@ -49,10 +49,9 @@ public interface ReservationMapper {
     @ResultMap("ReservationResultSet")
     List<ReservationDTO> reservationCheck(@Param("accomID") int accomID, @Param("roomID") int roomID, @Param("checkIn") LocalDate checkIn, @Param("checkOut") LocalDate checkOut);
 
-
+/*
     @Insert("INSERT INTO reservation (UserID, AccommodationID, RoomID, ReserveDate, CheckIn, CheckOut, Charge, ReservationInfo) " +
             "VALUES (#{userID}, #{accommodationID} #{} )") //TODO:추가작성
-    @Options(useGeneratedKeys = true, keyProperty = "reservationID", keyColumn = "ReservationID")
-    void insertReservation(ReservationDTO rDTO);
+    void insertReservation(ReservationDTO rDTO);*/
 
 }

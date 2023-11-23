@@ -18,7 +18,7 @@ import java.util.Scanner;
 public class Client {
 	private final String ip;
 	private final int port;
-	UserView userView;
+	private UserView userView;
 	private Socket socket;
 
 	private UserDTO currentUser;
@@ -143,13 +143,12 @@ public class Client {
 		Scanner sc = new Scanner(System.in);
 		String newName, newPhone;
 		Date newBirth;
-		System.out.println("이름 입력:");
+		System.out.print("이름 입력:");
 		newName = sc.nextLine();
-		System.out.println("생일 입력:");
+		System.out.print("생일 입력( format : 1999-01-01 ):");
 		newBirth = Date.valueOf(sc.nextLine());
-		System.out.println("전화번호 입력:");
+		System.out.print("전화번호 입력 ( format : 010-1234-5678) : ");
 		newPhone = sc.nextLine();
-
 		Request req = new Request();
 		req.setMethod(Method.PUT);
 		req.setRoleType(RoleType.GUEST);

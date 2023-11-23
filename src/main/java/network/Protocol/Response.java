@@ -10,9 +10,9 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Response implements Serializable {
 
 	@Serial

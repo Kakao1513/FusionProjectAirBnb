@@ -10,9 +10,9 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Request implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 362498821L;
@@ -22,4 +22,6 @@ public class Request implements Serializable {
 	private RoleType roleType; //header
 
 	private Object payload;
+
+
 }
