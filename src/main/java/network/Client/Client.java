@@ -84,8 +84,8 @@ public class Client {
 						selectGuestJob(jobOption);
 					}
 					case 2 -> {
-						int jobOption = userView.selectHostJob();
-						selectHostJob(jobOption);
+					/*	int jobOption = userView.selectHostJob();
+						selectHostJob(jobOption);*/
 					}
 					case 3 -> {
 

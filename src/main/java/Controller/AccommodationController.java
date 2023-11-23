@@ -90,7 +90,7 @@ public class AccommodationController {
                 accomMenu();
                 return;
             } else {
-                accomService.setAccomPolicy(accomView.getRatePolicyFromUser(order));
+              //TODO:  accomService.setAccomPolicy(accomView.getRatePolicyFromUser(order));
             }
         }
     }
