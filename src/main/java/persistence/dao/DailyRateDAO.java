@@ -31,5 +31,4 @@ public class DailyRateDAO {
             session.commit();
         }
     }
-
 }

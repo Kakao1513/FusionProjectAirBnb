@@ -49,5 +49,4 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 			session.commit();
 		}
 	}
-
 }

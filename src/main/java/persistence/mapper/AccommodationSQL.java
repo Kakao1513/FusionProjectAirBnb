@@ -92,5 +92,4 @@ public class AccommodationSQL {
 				.INTO_VALUES("#{daily.accomID}, #{daily.startdate}, #{daily.enddate}, #{daily.charge})");
 		return sql.toString();
 	}
-
 }

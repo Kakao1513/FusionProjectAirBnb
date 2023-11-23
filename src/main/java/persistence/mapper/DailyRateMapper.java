@@ -21,5 +21,4 @@ public interface DailyRateMapper {
 
     @InsertProvider(type = AccommodationSQL.class, method = "setAccomDaily")
     int setAccomDaily(@Param("daily") DailyRateDTO daily);
-
 }
