@@ -3,6 +3,7 @@ package persistence.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 import persistence.dto.AccommodationDTO;
+import persistence.dto.DailyRateDTO;
 import persistence.dto.RatePolicyDTO;
 
 public class AccommodationSQL {
@@ -32,6 +33,7 @@ public class AccommodationSQL {
 	}
 
 	public static String selectAccom(
+			@Param("userID") Integer userID,
 			@Param("status") String status,
 			@Param("accomName") String accomName,
 			@Param("startDate") String startDate, @Param("endDate") String endDate,
@@ -41,6 +43,9 @@ public class AccommodationSQL {
 		SQL mainQuery = new SQL()
 				.SELECT("*")
 				.FROM("Accommodation");
+		if (userID != null) {
+			mainQuery.WHERE("userID like #{userID}");
+		}
 		if (status != null) {
 			mainQuery.WHERE("status like #{status}");
 		}
@@ -68,11 +73,23 @@ public class AccommodationSQL {
 		}
 		return mainQuery.toString();
 	}
+
+	public static String updateStatusById(){
+		return null;
+	}
 	public static String setAccomPolicy(@Param("rate") RatePolicyDTO rate) {
 		SQL sql = new SQL()
 				.INSERT_INTO("rate policy")
 				.INTO_COLUMNS("AccommodationID", "weekday", "weekend")
 				.INTO_VALUES("#{rate.accomID}, #{rate.weekday}, #{rate.weekend})");
+		return sql.toString();
+	}
+
+	public static String setAccomDaily(@Param("daily") DailyRateDTO daily) {
+		SQL sql = new SQL()
+				.INSERT_INTO("daily rate")
+				.INTO_COLUMNS("AccommodationID", "startdate", "enddate", "charge")
+				.INTO_VALUES("#{daily.accomID}, #{daily.startdate}, #{daily.enddate}, #{daily.charge})");
 		return sql.toString();
 	}
 }

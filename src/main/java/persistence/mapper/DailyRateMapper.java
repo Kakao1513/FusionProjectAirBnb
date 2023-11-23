@@ -2,11 +2,12 @@ package persistence.mapper;
 
 import org.apache.ibatis.annotations.*;
 import persistence.dto.DailyRateDTO;
+import persistence.dto.RatePolicyDTO;
 
 
 public interface DailyRateMapper {
-    String getRate = "SELECT * FROM daily_rate WHERE AccommodationID = #{accomID};";
-    @Select(getRate)
+    String getDaily = "SELECT * FROM daily_rate WHERE AccommodationID = #{accomID};";
+    @Select(getDaily)
     @Results(
             id = "RateResultSet",
             value = {
@@ -16,5 +17,8 @@ public interface DailyRateMapper {
                     @Result(property = "Value", column = "Value"),
             }
     )
-    DailyRateDTO getRate(@Param("accomID") int accomID);
+    DailyRateDTO getDaily(@Param("accomID") int accomID);
+
+    @InsertProvider(type = AccommodationSQL.class, method = "setAccomDaily")
+    int setAccomDaily(@Param("daily") DailyRateDTO daily);
 }

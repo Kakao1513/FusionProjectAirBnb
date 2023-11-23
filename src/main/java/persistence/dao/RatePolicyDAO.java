@@ -21,4 +21,12 @@ public class RatePolicyDAO {
         }
         return DTO;
     }
+
+    public void setAccomPolicy(RatePolicyDTO rateDTO) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            RatePolicyMapper ratepolicyMapper = session.getMapper(RatePolicyMapper.class);
+            ratepolicyMapper.setAccomPolicy(rateDTO);
+            session.commit();
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package persistence.mapper;
 
+import Enums.AccommodationStatus;
 import org.apache.ibatis.annotations.*;
 import persistence.dto.AccommodationDTO;
 
@@ -34,6 +35,7 @@ public interface AccommodationMapper {
 	@SelectProvider(type = AccommodationSQL.class, method = "selectAccom")
 	@ResultMap("AccommodationResultSet")
 	List<AccommodationDTO> selectAccom(Map<String, Object> filters);
-
-
+	
+	@UpdateProvider(type = AccommodationSQL.class, method = "updateStatusById")
+	int updateAccomStatus(@Param("id") int id, @Param("status") AccommodationStatus status);
 }
