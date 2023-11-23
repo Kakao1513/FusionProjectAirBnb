@@ -42,6 +42,16 @@ public class AccommodationService {
         accomDAO.insertAccom(accomDTO);
     }
 
+//    public void setAccomPolicy(RatePolicyDTO rateDTO){
+//        ratePolicyDAO.setAccomPolicy(rateDTO);
+//    }
+
+    public void setAccomDaily(DailyRateDTO dailyDTO) {
+
+    }
+
+//    public void setAccomDiscountPolicy()
+
     public List<AmenityDTO> getAmenityList(int accomID){
         return amenityDAO.getAmenity(accomID);
     }

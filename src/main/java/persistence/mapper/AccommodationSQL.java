@@ -3,6 +3,7 @@ package persistence.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 import persistence.dto.AccommodationDTO;
+import persistence.dto.RatePolicyDTO;
 
 public class AccommodationSQL {
 
@@ -66,5 +67,12 @@ public class AccommodationSQL {
 			mainQuery.WHERE("accommodationType like #{accomType}");
 		}
 		return mainQuery.toString();
+	}
+	public static String setAccomPolicy(@Param("rate") RatePolicyDTO rate) {
+		SQL sql = new SQL()
+				.INSERT_INTO("rate policy")
+				.INTO_COLUMNS("AccommodationID", "weekday", "weekend")
+				.INTO_VALUES("#{rate.accomID}, #{rate.weekday}, #{rate.weekend})");
+		return sql.toString();
 	}
 }

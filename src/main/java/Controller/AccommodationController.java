@@ -3,6 +3,7 @@ package Controller;
 import persistence.dto.AccommodationDTO;
 import persistence.dto.ReservationDTO;
 import persistence.dto.UserDTO;
+import persistence.dto.RatePolicyDTO;
 import service.AccommodationService;
 import view.AccommodationView;
 
@@ -25,13 +26,14 @@ public class AccommodationController {
         switch (order) {
             case 1 -> accomListMenu();
             case 2 -> insertAccom();
+            case 3 -> setAccomPolicy();
+            case 4 -> setAccomDiscount();
             default -> System.out.println("잘못 입력 하셨습니다.");
         }
     }
 
     public void accomListMenu(){
         List<AccommodationDTO> curAccomList = accomService.selectAccom("승인됨");
-
         while(true){
             accomView.displayAccomList(curAccomList);
             int order = accomView.getOrder();
@@ -76,5 +78,37 @@ public class AccommodationController {
 
     public void insertAccom(){
         accomService.insertAccom(accomView.getAccomInfoFromUser());
+    }
+
+    private void setAccomPolicy() {
+        List<AccommodationDTO> curAccomList = accomService.selectAccom("승인됨");
+        while(true){
+            accomView.displayAccomList(curAccomList);
+            accomView.Return();
+            int order = accomView.getAccomNumberFromUser();
+            if (order == 0) {
+                accomMenu();
+                return;
+            } else {
+                accomService.setAccomPolicy(accomView.getRatePolicyFromUser(order));
+            }
+        }
+    }
+
+    public void setAccomDiscount() {
+        List<AccommodationDTO> curAccomList = accomService.selectAccom("승인됨");
+        while(true){
+            accomView.displayAccomList(curAccomList);
+            accomView.Return();
+            int order = accomView.getDailyOrDiscount();
+            switch (order) {
+                case 1 -> getAccomInfo();
+                case 2 -> curAccomList = setSearchFilters();
+                default -> {
+                    System.out.println("<<종료>>");
+                    return;
+                }
+            }
+        }
     }
 }

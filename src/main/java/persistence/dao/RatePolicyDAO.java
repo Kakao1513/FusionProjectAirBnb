@@ -16,8 +16,8 @@ public class RatePolicyDAO {
         RatePolicyDTO DTO = null;
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            RatePolicyMapper reservationMapper = session.getMapper(RatePolicyMapper.class);
-            DTO = reservationMapper.getRate(accomID);
+            RatePolicyMapper ratepolicyMapper = session.getMapper(RatePolicyMapper.class);
+            DTO = ratepolicyMapper.getRate(accomID);
         }
         return DTO;
     }

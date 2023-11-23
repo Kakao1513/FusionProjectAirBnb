@@ -1,9 +1,6 @@
 package persistence.mapper;
 
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import persistence.dto.RatePolicyDTO;
 
 
@@ -19,4 +16,6 @@ public interface RatePolicyMapper {
             }
     )
     RatePolicyDTO getRate(@Param("accomID") int accomID);
+    @InsertProvider(type = AccommodationSQL.class, method = "setAccomPolicy")
+    int setAccomPolicy(@Param("rate") RatePolicyDTO rate);
 }

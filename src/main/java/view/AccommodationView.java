@@ -12,7 +12,9 @@ public class AccommodationView extends View<AccommodationDTO> {
         System.out.println("=========숙소 메뉴=========");
         System.out.println("(1) 숙소 예약");
         System.out.println("(2) 숙소 등록");
-        System.out.println("(3) 나가기");
+        System.out.println("(3) 숙소 요금 설정");
+        System.out.println("(4) 숙소 할인 설정");
+        System.out.println("(5) 나가기");
         System.out.println("==========================");
 
         System.out.print("선택할 번호를 입력하세요 : ");
@@ -37,11 +39,16 @@ public class AccommodationView extends View<AccommodationDTO> {
         return SCANNER.nextInt();
     }
 
+    public int getDailyOrDiscount() {
+        System.out.println("1: 일별 요금 설정, 2: 할인 정책 설정");
+        System.out.println("선택할 번호를 입력하세요 : ");
+        return SCANNER.nextInt();
+    }
+
     public int getAccomNumberFromUser(){
         System.out.print("선택할 숙소 번호를 입력하세요 : ");
         return SCANNER.nextInt();
     }
-
 
     public int displayFilterList(){
         System.out.println("==========검색 필터==========");
@@ -217,17 +224,22 @@ public class AccommodationView extends View<AccommodationDTO> {
                 .build();
     }
 
-    public Accommodation_amenityDTO getAccomAmenityInfoFromUser() {
-        System.out.println("해당되는 숙소의 편의시설을 선택하세요: ");
-        //ShowAmenityList();
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        String[] Accom_amenityId = input.split(",");
+    public RatePolicyDTO getRatePolicyFromUser(int accomID) {
+        System.out.println("설정할 평일 요금을 입력하세요: ");
+        int weekday = SCANNER.nextInt();
+        System.out.println("설정할 주말 요금을 입력하세요: ");
+        int weekend = SCANNER.nextInt();
 
-
-        return Accommodation_amenityDTO.builder()
-                .Accom_amenityId(Arrays.toString(Accom_amenityId))
+        return RatePolicyDTO.builder()
+                .accomID(accomID)
+                .weekday(weekday)
+                .weekend(weekend)
                 .build();
     }
+
+    public void Return() {
+        System.out.println("(0 입력시 이전 메뉴로 돌아갑니다.)");
+    }
+
 
 }

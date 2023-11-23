@@ -15,6 +15,8 @@ import java.net.Socket;
 import java.sql.Date;
 import java.util.Scanner;
 
+import static persistence.mapper.AccommodationSQL.setAccomPolicy;
+
 public class Client {
 	private final String ip;
 	private final int port;
@@ -82,7 +84,8 @@ public class Client {
 						selectGuestJob(jobOption);
 					}
 					case 2 -> {
-
+						int jobOption = userView.selectHostJob();
+						selectHostJob(jobOption);
 					}
 					case 3 -> {
 
@@ -104,8 +107,8 @@ public class Client {
 				return;
 			}
 			case 1 -> {
-				int jopOption = userView.selectMyPageJobs(currentUser);
-				myPageJobHandle(jopOption);
+				int jobOption = userView.selectMyPageJobs(currentUser);
+				myPageJobHandle(jobOption);
 			}
 			case 2 -> {
 
@@ -114,6 +117,33 @@ public class Client {
 
 			}
 			case 4 -> {
+
+			}
+		}
+	}
+
+	public void selectHostJob(int select) {
+		switch (select) {
+			case 0 -> {
+				System.out.println("이전 페이지로.");
+				return;
+			}
+			case 1 -> {
+
+			}
+			case 2 -> {
+//				setAccomPolicy();
+			}
+			case 3 -> {
+
+			}
+			case 4 -> {
+
+			}
+			case 5 -> {
+
+			}
+			case 6 -> {
 
 			}
 		}
@@ -138,6 +168,7 @@ public class Client {
 			}
 		}
 	}
+
 
 	public void changePrivacy() {
 		Scanner sc = new Scanner(System.in);

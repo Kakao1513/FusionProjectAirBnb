@@ -7,7 +7,7 @@ import persistence.mapper.AmenityMapper;
 import java.util.List;
 
 
-public class AmenityDAO extends DAO<AmenityDTO>{
+public class AmenityDAO extends DAO<AmenityDTO> {
     public AmenityDAO(SqlSessionFactory sqlSessionFactory) {
         super(sqlSessionFactory);
     }
@@ -21,3 +21,4 @@ public class AmenityDAO extends DAO<AmenityDTO>{
         return DTOS;
     }
 }
+

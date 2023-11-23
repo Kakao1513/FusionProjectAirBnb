@@ -68,6 +68,29 @@ public class UserView extends View<UserDTO> {
 		return select;
 	}
 
+	public int selectHostJob(UserDTO dto) {
+		System.out.println();
+		System.out.println("=================HOST==================");
+		System.out.println("(0) 이전 페이지로");
+		System.out.println("(1) 숙소 등록 신청");
+		System.out.println("(2) 요금 정책 설정");
+		System.out.println("(3) 할인 정책 설정");
+		System.out.println("(4) 숙박 예약 현황 보기");
+		System.out.println("(5) 게스트의 숙박 예약 승인/거절");
+		System.out.println("(6) 게스트 리뷰에 대한 답글 등록");
+		int select = 1;
+		while (select != 0) {
+			System.out.print("Input : ");
+			select = Integer.parseInt(sc.nextLine());
+			if (0 <= select && select <= 6) {
+				break;
+			} else {
+				System.out.println("잘못된 입력입니다.");
+			}
+		}
+		return select;
+	}
+
 
 
 	public int selectMyPageJobs(UserDTO dto) {

@@ -9,8 +9,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
-public class Accommodation_amenityDTO extends DTO{
-    private String Accom_amenityId;
-    private int AccomId;
-    private int AmenityID;
+public class Accommodation_amenityDTO extends DTO {
+    private String accommodationAmenityID;
+    private int accommodationID;
+    private int amenityID;
 }
