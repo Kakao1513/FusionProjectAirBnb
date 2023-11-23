@@ -9,10 +9,9 @@ import service.AccommodationService;
 import service.UserService;
 
 @AllArgsConstructor
-public class ReservationController implements Controller {
+public class ReservationController implements MethodController {
 	private UserService userService;
 	private AccommodationService accommodationService;
-
 
 	@Override
 	public Response handle(Request req) {

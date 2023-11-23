@@ -1,5 +1,6 @@
 package network.Server;
 
+import Container.IocContainer;
 import Controller.MainController;
 import network.Protocol.Request;
 import network.Protocol.Response;
@@ -24,6 +25,16 @@ class ClientHandler implements Runnable {
 		ois = new ObjectInputStream(client.getInputStream());
 		System.out.println("Server InputStream Is Open");
 		mainController = new MainController(userDAO, accommodationDAO, amenityDAO, reservationDAO, ratePolicyDAO, reviewDAO);
+	}
+
+	ClientHandler(Socket socket, IocContainer iocContainer) throws IOException{
+		client = socket;
+		oos = new ObjectOutputStream(client.getOutputStream());
+		System.out.println("Server OutputStream Is Open");
+		ois = new ObjectInputStream(client.getInputStream());
+		System.out.println("Server InputStream Is Open");
+		mainController = new MainController(iocContainer);
+
 	}
 
 	@Override

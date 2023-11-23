@@ -1,11 +1,13 @@
 package network.Client;
 
-import network.Protocol.Enums.RoleType;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
+import network.Protocol.Enums.RoleType;
 import network.Protocol.Request;
 import network.Protocol.Response;
+import persistence.dto.AccommodationDTO;
 import persistence.dto.UserDTO;
+import view.AccommodationView;
 import view.UserView;
 
 import java.io.IOException;
@@ -13,23 +15,24 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
-import static persistence.mapper.AccommodationSQL.setAccomPolicy;
-
 public class Client {
+	private final Scanner sc = new Scanner(System.in);
 	private final String ip;
 	private final int port;
 	private UserView userView;
+	private AccommodationView accommodationView;
 	private Socket socket;
 
 	private UserDTO currentUser;
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 
-	//contorller
-
-	public Client(String ip, int port, UserView view) {
+	public Client(String ip, int port, UserView view, AccommodationView accommodationView) {
 		this.ip = ip;
 		this.port = port;
 		try {
@@ -40,6 +43,7 @@ public class Client {
 			e.printStackTrace();
 		}
 		userView = view;
+		this.accommodationView = accommodationView;
 	}
 
 	private boolean login() {
@@ -66,7 +70,6 @@ public class Client {
 			e.printStackTrace();
 		}
 		return isSuccess;
-
 	}
 
 	public void run() {
@@ -74,24 +77,29 @@ public class Client {
 			while (!login()) ;
 			int select = 1;
 			while (select != 0) {
+				int jobOption = -1;
 				select = userView.viewJobs(currentUser);
 				switch (select) {
 					case 0 -> {
 						System.out.println("로그아웃.");
 					}
 					case 1 -> {
-						int jobOption = userView.selectGuestJob();
-						selectGuestJob(jobOption);
+						while (jobOption != 0) {
+							jobOption = userView.selectGuestJob();
+							selectGuestJob(jobOption);
+						}
 					}
 					case 2 -> {
-					/*	int jobOption = userView.selectHostJob();
-						selectHostJob(jobOption);*/
+						while (jobOption != 0) {
+							jobOption = userView.selectHostJob();
+							selectHostJob(jobOption);
+						}
 					}
 					case 3 -> {
-
-					}
-					default -> {
-
+						while (jobOption != 0) {
+							jobOption = userView.selectAdminJob();
+							selectAdminJob(jobOption);
+						}
 					}
 				}
 			}
@@ -100,33 +108,53 @@ public class Client {
 		}
 	}
 
-	public void selectGuestJob(int select) {
+	private void selectAdminJob(int select) {
 		switch (select) {
 			case 0 -> {
-				System.out.println("이전 페이지로.");
-				return;
+				System.out.println("이전 페이지로");
 			}
-			case 1 -> {
-				int jobOption = userView.selectMyPageJobs(currentUser);
-				myPageJobHandle(jobOption);
-			}
-			case 2 -> {
+			case 1 -> { // TODO:숙소 등록 승인 거절
 
 			}
-			case 3 -> {
+			case 2 -> { //TODO : 숙소별 월별 예약 현황확인
 
 			}
-			case 4 -> {
+			case 3 -> { //TODO : 숙소별 월별 총매출 확인
 
 			}
 		}
 	}
 
+	public void selectGuestJob(int select) {
+
+		switch (select) {
+			case 0 -> {
+				System.out.println("이전 페이지로.");
+			}
+			case 1 -> { //마이페이지 보기
+				int jobOption = -1;
+				while (jobOption != 0) {
+					jobOption = userView.selectMyPageJobs(currentUser);
+					myPageJobHandle(jobOption);
+				}
+			}
+			case 2 -> { //숙소 목록 보기
+				viewAccomList();
+			}
+			case 3 -> { //숙소 필터링
+				accomFiltering();
+			}
+			case 4 -> { //숙소 예약 신청
+
+			}
+		}
+	}
+
+
 	public void selectHostJob(int select) {
 		switch (select) {
 			case 0 -> {
 				System.out.println("이전 페이지로.");
-				return;
 			}
 			case 1 -> {
 
@@ -148,6 +176,27 @@ public class Client {
 			}
 		}
 	}
+
+	public void viewAccomList() {
+		List<AccommodationDTO> acList = null;
+		Request req = new Request();
+		req.setMethod(Method.GET);
+		req.setRoleType(RoleType.GUEST);
+		req.setPayloadType(PayloadType.ACCOMMODATION);
+		Response response;
+		try {
+			oos.writeObject(req);
+			oos.flush();
+			response = (Response) ois.readObject();
+			if (response.getIsSuccess()) {
+				acList = (List<AccommodationDTO>) response.getPayload();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		accommodationView.displayAccomList(acList);
+	}
+
 
 	public void myPageJobHandle(int select) {
 		switch (select) {
@@ -171,7 +220,6 @@ public class Client {
 
 
 	public void changePrivacy() {
-		Scanner sc = new Scanner(System.in);
 		String newName, newPhone;
 		Date newBirth;
 		System.out.print("이름 입력:");
@@ -200,8 +248,41 @@ public class Client {
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
 
 
+	private void accomFiltering() {
+		Map<String, Object> filters = new HashMap<>(); //Request의 Payload에 담겨서 온다.
+		int order = 0;
+		while (order != 5) {
+			order = accommodationView.displayFilterList(); // Client로 가야됨.
+			switch (order) {
+				case 1 -> filters.put("accomName", accommodationView.getAccomNameFromUser());
+				case 2 -> filters.put("period", accommodationView.getPeriodFromUser());
+				case 3 -> filters.put("capacity", accommodationView.getCapacityFromUser());
+				case 4 -> filters.put("accomType", accommodationView.getAccomTypeFromUser());
+			}
+		}
+		accommodationView.displayAppliedFilters(filters);
+		Request request = new Request();
+		request.setMethod(Method.PUT);
+		request.setPayloadType(PayloadType.ACCOMMODATION);
+		request.setRoleType(RoleType.GUEST);
+		request.setPayload(filters);
+
+		Response response = null;
+		try{
+			oos.writeObject(request);
+			oos.flush();
+
+			response = (Response) ois.readObject();
+			if(response.getIsSuccess()){
+				List<AccommodationDTO> accommodationDTOS = (List<AccommodationDTO>) response.getPayload();
+				accommodationView.displayAccomList(accommodationDTOS);
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 
 
@@ -220,5 +301,4 @@ public class Client {
 			throw new RuntimeException(e);
 		}
 	}
-
 }

@@ -1,25 +1,19 @@
 package network.Server;
 
-import Controller.UserController;
+import Container.IocContainer;
 import persistence.MyBatisConnectionFactory;
 import persistence.dao.*;
-import service.UserService;
 
 public class ServerRunner {
-	public static void main(String[] args){
-		/*UserController userController;
-		UserView view;
-		AccommodationView acView = new AccommodationView();
-		UserService userService;
-		UserDAO userDAO;
-		AccommodationDAO acDAO= new AccommodationDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-		AccommodationService acService = new AccommodationService(acDAO);
-		userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-		userService = new UserService(userDAO);
-		view = new UserView();
-		userController = new UserController(userService, view, acService, acView);
-		userController.setInput(System.in);
-		userController.login();
-		userController.jobOption();*/
+	public static void main(String[] args) {/*
+		UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+		ReviewDAO reviewDAO = new ReviewDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+		AccommodationDAO accommodationDAO = new AccommodationDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+		RatePolicyDAO ratePolicyDAO = new RatePolicyDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+		ReservationDAO reservationDAO = new ReservationDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+		AmenityDAO amenityDAO = new AmenityDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+		IocContainer iocContainer =new IocContainer();*/
+		Server server = new Server(new IocContainer());
+		server.run();
 	}
 }

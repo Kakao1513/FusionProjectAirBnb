@@ -2,8 +2,6 @@ package view;
 
 import persistence.dto.UserDTO;
 
-import java.util.Scanner;
-
 public class UserView extends View<UserDTO> {
 
 	public UserDTO loginRequestView() {
@@ -31,19 +29,8 @@ public class UserView extends View<UserDTO> {
 			System.out.println("(3) 관리자");
 		}
 		System.out.println("============================================");
-		int select;
 		int upperLimit = userType.equalsIgnoreCase("ADMIN") ? 3 : 2;
-		while (true) {
-			System.out.print("Input : ");
-			select = Integer.parseInt(sc.nextLine());
-			if (0 <= select && select <= upperLimit) {
-				break;
-			} else {
-				System.out.println("잘못된 입력입니다.");
-			}
-		}
-
-		return select;
+		return rangeSelect(0, upperLimit);
 	}
 
 	public int selectGuestJob() {
@@ -55,20 +42,10 @@ public class UserView extends View<UserDTO> {
 		System.out.println("(3) 숙소 필터링");
 		System.out.println("(4) 숙소 예약 신청");
 		System.out.println("========================================");
-		int select = 1;
-		while (select != 0) {
-			System.out.print("Input : ");
-			select = Integer.parseInt(sc.nextLine());
-			if (0 <= select && select <= 4) {
-				break;
-			} else {
-				System.out.println("잘못된 입력입니다.");
-			}
-		}
-		return select;
+		return rangeSelect(0, 4);
 	}
 
-	public int selectHostJob(UserDTO dto) {
+	public int selectHostJob() {
 		System.out.println();
 		System.out.println("=================HOST==================");
 		System.out.println("(0) 이전 페이지로");
@@ -78,19 +55,9 @@ public class UserView extends View<UserDTO> {
 		System.out.println("(4) 숙박 예약 현황 보기");
 		System.out.println("(5) 게스트의 숙박 예약 승인/거절");
 		System.out.println("(6) 게스트 리뷰에 대한 답글 등록");
-		int select = 1;
-		while (select != 0) {
-			System.out.print("Input : ");
-			select = Integer.parseInt(sc.nextLine());
-			if (0 <= select && select <= 6) {
-				break;
-			} else {
-				System.out.println("잘못된 입력입니다.");
-			}
-		}
-		return select;
+		System.out.println("=======================================");
+		return rangeSelect(0, 6);
 	}
-
 
 
 	public int selectMyPageJobs(UserDTO dto) {
@@ -106,18 +73,17 @@ public class UserView extends View<UserDTO> {
 		System.out.println("(3) 리뷰와 별점 등록");
 		System.out.println("(4) 개인 정보 수정");
 		System.out.println("====================================");
-		System.out.print("Input : ");
-		int select = 1;
-		while(select!=0){
-			select = Integer.parseInt(sc.nextLine());
-			if (0 <= select && select <= 4) {
-				break;
-			} else {
-				System.out.println("잘못된 입력입니다.");
-			}
-		}
-		return select;
+		return rangeSelect(0, 4);
 	}
 
 
+	public int selectAdminJob() {
+		System.out.println("===============업무를 선택하세요=============");
+		System.out.println("(0) 이전 페이지로");
+		System.out.println("(1) 숙소 등록 승인/거절");
+		System.out.println("(2) 숙소별 월별 예약 현황 확인");
+		System.out.println("(3) 숙소별 월별 총매출 확인");
+		System.out.println("==========================================");
+		return rangeSelect(0, 3);
+	}
 }

@@ -1,5 +1,6 @@
 package service;
 
+import Container.IocContainer;
 import persistence.dao.*;
 import persistence.dto.*;
 
@@ -16,12 +17,20 @@ public class AccommodationService {
     private RatePolicyDAO ratePolicyDAO;
     private ReviewDAO reviewDAO;
     public AccommodationService(AccommodationDAO accomDAO, AmenityDAO amenityDAO,
-                                ReservationDAO reservationDAO, RatePolicyDAO ratePolicyDAO, ReviewDAO reviewDAO){
+                                 ReservationDAO reservationDAO, RatePolicyDAO ratePolicyDAO, ReviewDAO reviewDAO){
         this.accomDAO = accomDAO;
         this.amenityDAO = amenityDAO;
         this.reservationDAO = reservationDAO;
         this.ratePolicyDAO = ratePolicyDAO;
         this.reviewDAO = reviewDAO;
+    }
+
+    public AccommodationService(IocContainer iocContainer){
+        this.accomDAO = iocContainer.accommodationDAO();
+        this.amenityDAO = iocContainer.amenityDAO();
+        this.reservationDAO = iocContainer.reservationDAO();
+        this.ratePolicyDAO = iocContainer.ratePolicyDAO();
+        this.reviewDAO = iocContainer.reviewDAO();
     }
 
     public List<AccommodationDTO> selectAccom(String status){

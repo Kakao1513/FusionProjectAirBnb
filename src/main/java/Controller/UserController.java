@@ -13,7 +13,7 @@ import java.sql.Date;
 import java.util.Optional;
 
 @AllArgsConstructor
-public class UserController implements Controller {
+public class UserController implements MethodController {
 	private UserService userService;
 	private AccommodationService acService;
 
@@ -78,6 +78,7 @@ public class UserController implements Controller {
 		return res;
 	}
 
+	@Override
 	public Response getHandle(Request req) {
 		RoleType roleType = req.getRoleType();
 		Response res = null;
@@ -93,7 +94,7 @@ public class UserController implements Controller {
 		}
 		return res;
 	}
-
+	@Override
 	public Response putHandle(Request req) {
 		RoleType roleType = req.getRoleType();
 		Response res = null;
@@ -112,6 +113,7 @@ public class UserController implements Controller {
 		return res;
 	}
 
+	@Override
 	public Response postHandle(Request req) {
 		RoleType roleType = req.getRoleType();
 		Response res = null;
@@ -131,6 +133,7 @@ public class UserController implements Controller {
 		return res;
 	}
 
+	@Override
 	public Response deleteHandle(Request req) {
 		RoleType roleType = req.getRoleType();
 		Response res = null;

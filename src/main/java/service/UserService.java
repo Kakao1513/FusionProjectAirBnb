@@ -70,7 +70,7 @@ public class UserService {
 		return userDTO;
 	}
 
-	synchronized public boolean reserveRequest(ReservationDTO userInputReserve) {
+	synchronized public boolean reserveRequest(ReservationDTO userInputReserve) { //TODO : 구현요
 		int accomId = userInputReserve.getReservationID();
 		int roomID = userInputReserve.getRoomID();
 		LocalDate checkIn = userInputReserve.getCheckIn();
