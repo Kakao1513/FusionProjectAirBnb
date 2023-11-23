@@ -5,13 +5,8 @@ import network.Protocol.Enums.RoleType;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.AccommodationDTO;
-import persistence.dto.ReservationDTO;
-import persistence.dto.UserDTO;
 import service.AccommodationService;
-import view.AccommodationView;
 
-import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

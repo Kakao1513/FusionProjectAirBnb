@@ -18,14 +18,14 @@ class ClientHandler implements Runnable {
 	private MainController mainController;
 
 
-	ClientHandler(Socket soc, AccommodationDAO accommodationDAO, UserDAO userDAO, ReviewDAO reviewDAO, ReservationDAO reservationDAO, RatePolicyDAO ratePolicyDAO, AmenityDAO amenityDAO) throws IOException {
+	/*ClientHandler(Socket soc, AccommodationDAO accommodationDAO, UserDAO userDAO, ReviewDAO reviewDAO, ReservationDAO reservationDAO, RatePolicyDAO ratePolicyDAO, AmenityDAO amenityDAO) throws IOException {
 		client = soc;
 		oos = new ObjectOutputStream(client.getOutputStream());
 		System.out.println("Server OutputStream Is Open");
 		ois = new ObjectInputStream(client.getInputStream());
 		System.out.println("Server InputStream Is Open");
 		mainController = new MainController(userDAO, accommodationDAO, amenityDAO, reservationDAO, ratePolicyDAO, reviewDAO);
-	}
+	}*/
 
 	ClientHandler(Socket socket, IocContainer iocContainer) throws IOException{
 		client = socket;
