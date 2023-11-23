@@ -11,7 +11,9 @@ import persistence.dto.UserDTO;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Builder
@@ -71,12 +73,13 @@ public class UserService {
 	}
 
 	synchronized public boolean reserveRequest(ReservationDTO userInputReserve) {
-		int accomId = userInputReserve.getReservationID();
-		int roomID = userInputReserve.getRoomID();
-		LocalDate checkIn = userInputReserve.getCheckIn();
-		LocalDate checkOut = userInputReserve.getCheckOut();
+		Map<String, Object> filters = new HashMap<>();
+		filters.put("accomID", userInputReserve.getReservationID());
+		filters.put("roomID", userInputReserve.getRoomID());
+		filters.put("checkIn", userInputReserve.getCheckIn());
+		filters.put("checkOut", userInputReserve.getCheckOut());
 
-		List<ReservationDTO> reserves = rDAO.reservationCheck(accomId, roomID, checkIn, checkOut);
+		List<ReservationDTO> reserves = rDAO.getReservations(filters);
 		if (reserves.isEmpty()) { //해당 날짜에 예약된 방이 없음을 의미.
 			rDAO.insertReservation(userInputReserve);
 			return true;

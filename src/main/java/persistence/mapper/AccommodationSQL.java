@@ -32,6 +32,7 @@ public class AccommodationSQL {
 	}
 
 	public static String selectAccom(
+			@Param("userID") Integer userID,
 			@Param("status") String status,
 			@Param("accomName") String accomName,
 			@Param("startDate") String startDate, @Param("endDate") String endDate,
@@ -41,6 +42,9 @@ public class AccommodationSQL {
 		SQL mainQuery = new SQL()
 				.SELECT("*")
 				.FROM("Accommodation");
+		if (userID != null) {
+			mainQuery.WHERE("userID like #{userID}");
+		}
 		if (status != null) {
 			mainQuery.WHERE("status like #{status}");
 		}
@@ -67,6 +71,10 @@ public class AccommodationSQL {
 			mainQuery.WHERE("accommodationType like #{accomType}");
 		}
 		return mainQuery.toString();
+	}
+
+	public static String updateStatusById(){
+		return null;
 	}
 	public static String setAccomPolicy(@Param("rate") RatePolicyDTO rate) {
 		SQL sql = new SQL()

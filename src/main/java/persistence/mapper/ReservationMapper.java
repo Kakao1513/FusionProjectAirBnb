@@ -5,29 +5,10 @@ import persistence.dto.ReservationDTO;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+
 public interface ReservationMapper {
-    String getOneMonthReservations =
-            """
-            SELECT *
-            FROM reservation
-            WHERE accommodationID = #{accomID}
-            AND CheckOut >= #{date}
-            AND CheckIn <= DATE_ADD(#{date}, INTERVAL 1 MONTH)
-            """;
-    String reservationCheck =
-            """
-            SELECT *
-            FROM reservation
-            WHERE accommodationID = #{accomID}
-            AND roomID = #{roomID}
-            AND (ReservationInform = '예약중' OR ReservationInform = '승인대기중')
-            AND CheckOut >= #{checkIn}
-            AND CheckIn <= #{checkOut}
-            """;
-
-
-
-    @Select(getOneMonthReservations)
+    @SelectProvider(type = ReservationSQL.class, method = "selectReservations")
     @Results(
             id = "ReservationResultSet",
             value = {
@@ -39,19 +20,13 @@ public interface ReservationMapper {
                     @Result(property = "checkIn", column = "checkIn"),
                     @Result(property = "checkOut", column = "checkOut"),
                     @Result(property = "charge", column = "charge"),
-                    @Result(property = "reservationInfo", column = "reservationInfo"),
+                    @Result(property = "reservationInfo", column = "ReservationInform"),
             }
     )
-    List<ReservationDTO> selectReservations(@Param("accomID") int accomID,
-                                            @Param("date") LocalDate date);
+    List<ReservationDTO> selectReservations(Map<String, Object> filters);
 
-    @Select(reservationCheck)
-    @ResultMap("ReservationResultSet")
-    List<ReservationDTO> reservationCheck(@Param("accomID") int accomID, @Param("roomID") int roomID, @Param("checkIn") LocalDate checkIn, @Param("checkOut") LocalDate checkOut);
-
-/*
-    @Insert("INSERT INTO reservation (UserID, AccommodationID, RoomID, ReserveDate, CheckIn, CheckOut, Charge, ReservationInfo) " +
-            "VALUES (#{userID}, #{accommodationID} #{} )") //TODO:추가작성
-    void insertReservation(ReservationDTO rDTO);*/
+    @Insert("INSERT INTO reservation (UserID, AccommodationID, RoomID, ReserveDate, CheckIn, CheckOut, Charge, ReservationInform) " +
+            "VALUES (#{userID}, #{accommodationID} #{accommodationID}, #{roomID}, #{reserveDate}, #{checkIn}, #{checkOut}, #{charge}, #{reservationInfo} )") //TODO:추가작성
+    void insertReservation(ReservationDTO rDTO);
 
 }

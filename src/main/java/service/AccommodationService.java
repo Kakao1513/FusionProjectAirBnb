@@ -13,16 +13,20 @@ import java.util.Map;
 public class AccommodationService {
     private AccommodationDAO accomDAO;
     private AmenityDAO amenityDAO;
-    private ReservationDAO reservationDAO;
     private RatePolicyDAO ratePolicyDAO;
     private ReviewDAO reviewDAO;
     public AccommodationService(AccommodationDAO accomDAO, AmenityDAO amenityDAO,
                                 ReservationDAO reservationDAO, RatePolicyDAO ratePolicyDAO, ReviewDAO reviewDAO){
         this.accomDAO = accomDAO;
         this.amenityDAO = amenityDAO;
-        this.reservationDAO = reservationDAO;
         this.ratePolicyDAO = ratePolicyDAO;
         this.reviewDAO = reviewDAO;
+    }
+
+    public List<AccommodationDTO> selectAccom(Integer userID){
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("userID", userID);
+        return accomDAO.selectAccom(filters);
     }
 
     public List<AccommodationDTO> selectAccom(String status){
@@ -57,10 +61,6 @@ public class AccommodationService {
         return amenityDAO.getAmenity(accomDTO.getAccomId());
     }
 
-    public List<ReservationDTO> getReservationList(AccommodationDTO accomDTO, LocalDate date){
-        return reservationDAO.getReservations(accomDTO.getAccomId(), date);
-    }
-
     public RatePolicyDTO getRate(AccommodationDTO accomDTO){
         return ratePolicyDAO.getRate(accomDTO.getAccomId());
     }
@@ -73,14 +73,6 @@ public class AccommodationService {
     {
         accomDAO.updateAccomStatus(id, status);
     }
-    
-    public List<ReservationDTO> checkReservationStatus(int id, int month)
-    {
-        LocalDate date = LocalDate.now().withMonth(month);
-        List<ReservationDTO> reservationList;
-        reservationList = reservationDAO.getReservations(id, date);
-        
-        return reservationList;
-    }
+
 
 }
