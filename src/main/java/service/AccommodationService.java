@@ -61,20 +61,20 @@ public class AccommodationService {
 
 //    public void setAccomDiscountPolicy()
 
-    public List<AmenityDTO> getAmenityList(int accomID){
-        return amenityDAO.getAmenity(accomID);
+    public List<AmenityDTO> getAmenityList(AccommodationDTO accomDTO){
+        return amenityDAO.getAmenity(accomDTO.getAccomId());
     }
 
-    public List<ReservationDTO> getReservationList(int accomID, LocalDate date){
-        return reservationDAO.getReservations(accomID, date);
+    public List<ReservationDTO> getReservationList(AccommodationDTO accomDTO, LocalDate date){
+        return reservationDAO.getReservations(accomDTO.getAccomId(), date);
     }
 
-    public RatePolicyDTO getRate(int accomID){
-        return ratePolicyDAO.getRate(accomID);
+    public RatePolicyDTO getRate(AccommodationDTO accomDTO){
+        return ratePolicyDAO.getRate(accomDTO.getAccomId());
     }
 
-    public List<ReviewDTO> getReviews(int accomID){
-        return reviewDAO.selectReviews(accomID);
+    public List<ReviewDTO> getReviews(AccommodationDTO accomDTO){
+        return reviewDAO.selectReviews(accomDTO.getAccomId());
     }
 
 }
