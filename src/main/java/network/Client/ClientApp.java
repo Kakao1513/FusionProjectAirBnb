@@ -6,7 +6,7 @@ import view.UserView;
 public class ClientApp {
 	public static void main(String[] args){
 
-		Client client = new Client("127.0.0.1", Server.SERVER_PORT, new UserView());
+		Client client = new Client("192.168.0.10", Server.SERVER_PORT, new UserView());
 		client.run();
 	}
 }

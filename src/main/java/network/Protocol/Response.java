@@ -1,8 +1,7 @@
 package network.Protocol;
 
-import lombok.Getter;
-import lombok.Setter;
-import network.Protocol.Enums.JobType;
+import lombok.*;
+import network.Protocol.Enums.RoleType;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
 
@@ -11,6 +10,9 @@ import java.io.Serializable;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Response implements Serializable {
 
 	@Serial
@@ -18,7 +20,7 @@ public class Response implements Serializable {
 
 	private Method method;  //header
 	private PayloadType payloadType;  //header
-	private JobType jobType; //header
+	private RoleType roleType; //header
 
 	private Boolean isSuccess;
 	private String errorMessage;

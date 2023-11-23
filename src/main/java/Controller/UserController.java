@@ -1,7 +1,7 @@
 package Controller;
 
 import lombok.AllArgsConstructor;
-import network.Protocol.Enums.JobType;
+import network.Protocol.Enums.RoleType;
 import network.Protocol.Enums.Method;
 import network.Protocol.Request;
 import network.Protocol.Response;
@@ -51,7 +51,7 @@ public class UserController implements Controller {
 		res.setPayload(chUser);
 		res.setIsSuccess(true);
 		res.setMethod(req.getMethod());
-		res.setJobType(req.getJobType());
+		res.setRoleType(req.getRoleType());
 		res.setPayloadType(req.getPayloadType());
 		return res;
 	}
@@ -79,9 +79,9 @@ public class UserController implements Controller {
 	}
 
 	public Response getHandle(Request req) {
-		JobType jobType = req.getJobType();
+		RoleType roleType = req.getRoleType();
 		Response res = null;
-		switch (jobType) {
+		switch (roleType) {
 			case COMMON -> {
 			}
 			case ADMIN -> {
@@ -95,9 +95,9 @@ public class UserController implements Controller {
 	}
 
 	public Response putHandle(Request req) {
-		JobType jobType = req.getJobType();
+		RoleType roleType = req.getRoleType();
 		Response res = null;
-		switch (jobType) {
+		switch (roleType) {
 			case COMMON -> {
 			}
 			case ADMIN -> {
@@ -113,9 +113,9 @@ public class UserController implements Controller {
 	}
 
 	public Response postHandle(Request req) {
-		JobType jobType = req.getJobType();
+		RoleType roleType = req.getRoleType();
 		Response res = null;
-		switch (jobType) {
+		switch (roleType) {
 			case COMMON -> {
 				res = loginProcess(req);
 			}
@@ -132,9 +132,9 @@ public class UserController implements Controller {
 	}
 
 	public Response deleteHandle(Request req) {
-		JobType jobType = req.getJobType();
+		RoleType roleType = req.getRoleType();
 		Response res = null;
-		switch (jobType) {
+		switch (roleType) {
 			case COMMON -> {
 			}
 			case ADMIN -> {

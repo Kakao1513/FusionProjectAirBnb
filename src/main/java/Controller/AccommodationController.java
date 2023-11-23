@@ -16,7 +16,7 @@ public class AccommodationController {
     private AccommodationView accomView;
     private AccommodationService accomService;
 
-    public AccommodationController( AccommodationService accomService){
+    public AccommodationController(AccommodationService accomService){
         this.accomService = accomService;
     }
 

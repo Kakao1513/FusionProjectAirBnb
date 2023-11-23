@@ -37,7 +37,8 @@ public class ReservationDAO {
 
 	public void insertReservation(ReservationDTO rDTO) {
 		try (SqlSession session = sqlSessionFactory.openSession()){
-            //TODO:숙소예약 해야됨
+            ReservationMapper reservationMapper = session.getMapper(ReservationMapper.class);
+			reservationMapper.insertReservation(rDTO);
 		}
 	}
 

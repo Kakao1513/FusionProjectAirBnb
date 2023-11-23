@@ -1,6 +1,6 @@
 package network.Client;
 
-import network.Protocol.Enums.JobType;
+import network.Protocol.Enums.RoleType;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
 import network.Protocol.Request;
@@ -44,7 +44,7 @@ public class Client {
 		boolean isSuccess = false;
 		UserDTO loginInfo = userView.loginRequestView();
 		Request loginRequest = new Request();
-		loginRequest.setJobType(JobType.COMMON);
+		loginRequest.setRoleType(RoleType.COMMON);
 		loginRequest.setMethod(Method.POST);
 		loginRequest.setPayloadType(PayloadType.USER);
 		loginRequest.setPayload(loginInfo);
@@ -152,7 +152,7 @@ public class Client {
 
 		Request req = new Request();
 		req.setMethod(Method.PUT);
-		req.setJobType(JobType.GUEST);
+		req.setRoleType(RoleType.GUEST);
 		req.setPayloadType(PayloadType.USER);
 		UserDTO userDTO = new UserDTO(currentUser);
 		Object[] body = {userDTO, newName, newBirth, newPhone};
