@@ -29,4 +29,5 @@ public class RatePolicyDAO {
             session.commit();
         }
     }
+
 }

@@ -17,4 +17,5 @@ public class DailyRateDTO extends DTO
     private LocalDate startDate;
     private LocalDate endDate;
     private int Charge;
+
 }
