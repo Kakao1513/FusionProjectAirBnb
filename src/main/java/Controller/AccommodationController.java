@@ -51,12 +51,14 @@ public class AccommodationController {
     public void getAccomInfo(){
         int accomID = accomView.getAccomNumberFromUser();
         AccommodationDTO curAccom = accomService.getAccom(accomID);
-        accomView.displayAccomInfo(curAccom, accomService.getRate(accomID));
-        accomView.displayAmenity(accomService.getAmenityList(accomID));
-        accomView.displayReviews(accomService.getReviews(accomID));
-        LocalDate date = accomView.getReservationDate();
-        List<ReservationDTO> reservationDTOS = accomService.getReservationList(accomID, date);
-        accomView.displayReservationCalendar(date, curAccom.getCapacity(), reservationDTOS);
+        if (curAccom != null){
+            accomView.displayAccomInfo(curAccom, accomService.getRate(curAccom));
+            accomView.displayAmenity(accomService.getAmenityList(curAccom));
+            accomView.displayReviews(accomService.getReviews(curAccom));
+            LocalDate date = accomView.getReservationDate();
+            List<ReservationDTO> reservationDTOS = accomService.getReservationList(curAccom, date);
+            accomView.displayReservationCalendar(date, curAccom.getCapacity(), reservationDTOS);
+        }
     }
 
     public List<AccommodationDTO> setSearchFilters(){
