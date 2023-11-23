@@ -1,5 +1,6 @@
 package Controller;
 
+import Enums.AccommodationStatus;
 import persistence.dto.AccommodationDTO;
 import persistence.dto.ReservationDTO;
 import persistence.dto.UserDTO;
@@ -11,11 +12,14 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class AccommodationController {
     private UserDTO currentUser;
     private AccommodationView accomView;
     private AccommodationService accomService;
+    private AccommodationStatus status;
+    private Scanner sc = new Scanner(System.in);
 
     public AccommodationController(AccommodationService accomService){
         this.accomService = accomService;
@@ -111,6 +115,41 @@ public class AccommodationController {
                     return;
                 }
             }
+        }
+    }
+    
+    public void updateAccomStatus() {
+        System.out.println("숙소 등록 (1.승인 2.거절): ");
+        int id = sc.nextInt();
+        int statusIdx = sc.nextInt();
+        
+        switch (statusIdx) {
+            case 1->{
+                status = AccommodationStatus.Confirmed;
+                accomService.updateAccomStatus(id, status);
+            }
+            case 2->{
+                status = AccommodationStatus.Refused;
+                accomService.updateAccomStatus(id, status);
+            }
+            default ->{
+                System.out.println("잘못된 입력입니다.");
+            }
+        }
+    }
+    
+    public void checkReservationStatus() {
+        System.out.println("확인하고 싶은 월 입력 : ");
+        int month = sc.nextInt();
+        
+        if (!(1 <= month && month <= 12))
+            System.out.println("올바른 값을 입력하세요.");
+        else {
+            LocalDate date = LocalDate.now().withMonth(month);
+            int accomID = accomView.getAccomNumberFromUser();
+            
+            List<ReservationDTO> reservationList = accomService.checkReservationStatus(accomID, month);
+            accomView.displayReservationCalendar(date, reservationList.size(), reservationList);
         }
     }
 }

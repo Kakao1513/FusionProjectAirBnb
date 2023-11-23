@@ -1,5 +1,6 @@
 package persistence.dao;
 
+import Enums.AccommodationStatus;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import persistence.dto.AccommodationDTO;
@@ -38,5 +39,14 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 		}
 		return DTO;
 	}
-
+	
+	public void updateAccomStatus(int id, AccommodationStatus status)
+	{
+		try (SqlSession session = sqlSessionFactory.openSession())
+		{
+			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
+			accomMapper.updateAccomStatus(id, status);
+			session.commit();
+		}
+	}
 }

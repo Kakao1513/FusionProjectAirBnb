@@ -1,5 +1,6 @@
 package service;
 
+import Enums.AccommodationStatus;
 import persistence.dao.*;
 import persistence.dto.*;
 
@@ -66,6 +67,20 @@ public class AccommodationService {
 
     public List<ReviewDTO> getReviews(AccommodationDTO accomDTO){
         return reviewDAO.selectReviews(accomDTO.getAccomId());
+    }
+    
+    public void updateAccomStatus(int id, AccommodationStatus status)
+    {
+        accomDAO.updateAccomStatus(id, status);
+    }
+    
+    public List<ReservationDTO> checkReservationStatus(int id, int month)
+    {
+        LocalDate date = LocalDate.now().withMonth(month);
+        List<ReservationDTO> reservationList;
+        reservationList = reservationDAO.getReservations(id, date);
+        
+        return reservationList;
     }
 
 }
