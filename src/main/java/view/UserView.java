@@ -68,7 +68,7 @@ public class UserView extends View<UserDTO> {
 		return select;
 	}
 
-	public int selectHostJob(UserDTO dto) {
+	public int selectHostJob() {
 		System.out.println();
 		System.out.println("=================HOST==================");
 		System.out.println("(0) 이전 페이지로");

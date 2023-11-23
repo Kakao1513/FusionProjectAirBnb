@@ -3,6 +3,8 @@ package view;
 import persistence.dto.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class AccommodationView extends View<AccommodationDTO> {
@@ -237,9 +239,34 @@ public class AccommodationView extends View<AccommodationDTO> {
                 .build();
     }
 
-    public void Return() {
-        System.out.println("(0 입력시 이전 메뉴로 돌아갑니다.)");
+    public DailyRateDTO getDailyRateFromUser() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        System.out.println("설정할 숙소를 선택하세요: ");
+        int accomID = SCANNER.nextInt();
+        SCANNER.nextLine();
+
+        System.out.println("요금 설정을 시작할 날짜를 입력하세요 (형식: yyyy-MM-dd): ");
+        String startDateStr = SCANNER.nextLine();
+        LocalDate startDate = LocalDate.parse(startDateStr, formatter);
+
+        System.out.println("요금 설정을 종료할 날짜를 입력하세요 (형식: yyyy-MM-dd): ");
+        String endDateStr = SCANNER.nextLine();
+        LocalDate endDate = LocalDate.parse(endDateStr, formatter);
+
+        System.out.println("설정할 요금을 입력하세요: ");
+        int charge = SCANNER.nextInt();
+
+        return DailyRateDTO.builder()
+                .AccomId(accomID)
+                .startDate(startDate)
+                .endDate(endDate)
+                .Charge(charge)
+                .build();
     }
 
 
+    public void Return() {
+        System.out.println("(0 입력시 이전 메뉴로 돌아갑니다.)");
+    }
 }

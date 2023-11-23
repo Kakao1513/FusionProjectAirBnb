@@ -7,19 +7,28 @@ import persistence.mapper.DailyRateMapper;
 
 
 public class DailyRateDAO {
-    SqlSessionFactory sqlSessionFactory;
+    static SqlSessionFactory sqlSessionFactory;
 
     public DailyRateDAO(SqlSessionFactory sessionFactory) {
         this.sqlSessionFactory = sessionFactory;
     }
-    public DailyRateDTO getRate(int accomID) {
+
+
+    public static DailyRateDTO getDaily(int accomID) {
         DailyRateDTO DTO = null;
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             DailyRateMapper dailyrateMapper = session.getMapper(DailyRateMapper.class);
-            DTO = dailyrateMapper.getRate(accomID);
+            DTO = dailyrateMapper.getDaily(accomID);
         }
         return DTO;
     }
 
+    public static void setAccomDaily(DailyRateDTO dailyDTO) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            DailyRateMapper dailyrateMapper = session.getMapper(DailyRateMapper.class);
+            dailyrateMapper.setAccomDaily(dailyDTO);
+            session.commit();
+        }
+    }
 }

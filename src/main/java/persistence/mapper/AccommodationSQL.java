@@ -3,6 +3,7 @@ package persistence.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 import persistence.dto.AccommodationDTO;
+import persistence.dto.DailyRateDTO;
 import persistence.dto.RatePolicyDTO;
 
 public class AccommodationSQL {
@@ -81,6 +82,14 @@ public class AccommodationSQL {
 				.INSERT_INTO("rate policy")
 				.INTO_COLUMNS("AccommodationID", "weekday", "weekend")
 				.INTO_VALUES("#{rate.accomID}, #{rate.weekday}, #{rate.weekend})");
+		return sql.toString();
+	}
+
+	public static String setAccomDaily(@Param("daily") DailyRateDTO daily) {
+		SQL sql = new SQL()
+				.INSERT_INTO("daily rate")
+				.INTO_COLUMNS("AccommodationID", "startdate", "enddate", "charge")
+				.INTO_VALUES("#{daily.accomID}, #{daily.startdate}, #{daily.enddate}, #{daily.charge})");
 		return sql.toString();
 	}
 }

@@ -13,20 +13,17 @@ import java.util.Map;
 public class AccommodationService {
     private AccommodationDAO accomDAO;
     private AmenityDAO amenityDAO;
+    private ReservationDAO reservationDAO;
     private RatePolicyDAO ratePolicyDAO;
+    private DailyRateDAO dailyRateDAO;
     private ReviewDAO reviewDAO;
     public AccommodationService(AccommodationDAO accomDAO, AmenityDAO amenityDAO,
                                 ReservationDAO reservationDAO, RatePolicyDAO ratePolicyDAO, ReviewDAO reviewDAO){
         this.accomDAO = accomDAO;
         this.amenityDAO = amenityDAO;
+        this.reservationDAO = reservationDAO;
         this.ratePolicyDAO = ratePolicyDAO;
         this.reviewDAO = reviewDAO;
-    }
-
-    public List<AccommodationDTO> selectAccom(Integer userID){
-        Map<String, Object> filters = new HashMap<>();
-        filters.put("userID", userID);
-        return accomDAO.selectAccom(filters);
     }
 
     public List<AccommodationDTO> selectAccom(String status){
@@ -46,13 +43,12 @@ public class AccommodationService {
     public void insertAccom(AccommodationDTO accomDTO){
         accomDAO.insertAccom(accomDTO);
     }
-
-//    public void setAccomPolicy(RatePolicyDTO rateDTO){
-//        ratePolicyDAO.setAccomPolicy(rateDTO);
-//    }
+    public void setAccomPolicy(RatePolicyDTO rateDTO){
+        ratePolicyDAO.setAccomPolicy(rateDTO);
+    }
 
     public void setAccomDaily(DailyRateDTO dailyDTO) {
-
+        dailyRateDAO.setAccomDaily(dailyDTO);
     }
 
 //    public void setAccomDiscountPolicy()
@@ -61,10 +57,14 @@ public class AccommodationService {
         return amenityDAO.getAmenity(accomDTO.getAccomId());
     }
 
+
+
     public RatePolicyDTO getRate(AccommodationDTO accomDTO){
         return ratePolicyDAO.getRate(accomDTO.getAccomId());
     }
-
+    public DailyRateDTO getDaily(int accomID) {
+        return DailyRateDAO.getDaily(accomID);
+    }
     public List<ReviewDTO> getReviews(AccommodationDTO accomDTO){
         return reviewDAO.selectReviews(accomDTO.getAccomId());
     }
@@ -73,6 +73,7 @@ public class AccommodationService {
     {
         accomDAO.updateAccomStatus(id, status);
     }
+    
 
 
 }
