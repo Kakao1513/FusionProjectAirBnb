@@ -1,6 +1,7 @@
 package service;
 
 import Container.IocContainer;
+import Enums.AccommodationStatus;
 import persistence.dao.*;
 import persistence.dto.*;
 
@@ -15,9 +16,10 @@ public class AccommodationService {
     private AmenityDAO amenityDAO;
     private ReservationDAO reservationDAO;
     private RatePolicyDAO ratePolicyDAO;
+    private DailyRateDAO dailyRateDAO;
     private ReviewDAO reviewDAO;
     public AccommodationService(AccommodationDAO accomDAO, AmenityDAO amenityDAO,
-                                 ReservationDAO reservationDAO, RatePolicyDAO ratePolicyDAO, ReviewDAO reviewDAO){
+                                ReservationDAO reservationDAO, RatePolicyDAO ratePolicyDAO, ReviewDAO reviewDAO){
         this.accomDAO = accomDAO;
         this.amenityDAO = amenityDAO;
         this.reservationDAO = reservationDAO;
@@ -50,31 +52,37 @@ public class AccommodationService {
     public void insertAccom(AccommodationDTO accomDTO){
         accomDAO.insertAccom(accomDTO);
     }
-
-//    public void setAccomPolicy(RatePolicyDTO rateDTO){
-//        ratePolicyDAO.setAccomPolicy(rateDTO);
-//    }
+    public void setAccomPolicy(RatePolicyDTO rateDTO){
+        ratePolicyDAO.setAccomPolicy(rateDTO);
+    }
 
     public void setAccomDaily(DailyRateDTO dailyDTO) {
-
+        dailyRateDAO.setAccomDaily(dailyDTO);
     }
 
 //    public void setAccomDiscountPolicy()
 
-    public List<AmenityDTO> getAmenityList(int accomID){
-        return amenityDAO.getAmenity(accomID);
+    public List<AmenityDTO> getAmenityList(AccommodationDTO accomDTO){
+        return amenityDAO.getAmenity(accomDTO.getAccomId());
     }
 
-    public List<ReservationDTO> getReservationList(int accomID, LocalDate date){
-        return reservationDAO.getReservations(accomID, date);
-    }
 
-    public RatePolicyDTO getRate(int accomID){
-        return ratePolicyDAO.getRate(accomID);
-    }
 
-    public List<ReviewDTO> getReviews(int accomID){
-        return reviewDAO.selectReviews(accomID);
+    public RatePolicyDTO getRate(AccommodationDTO accomDTO){
+        return ratePolicyDAO.getRate(accomDTO.getAccomId());
     }
+    public DailyRateDTO getDaily(int accomID) {
+        return DailyRateDAO.getDaily(accomID);
+    }
+    public List<ReviewDTO> getReviews(AccommodationDTO accomDTO){
+        return reviewDAO.selectReviews(accomDTO.getAccomId());
+    }
+    
+    public void updateAccomStatus(int id, AccommodationStatus status)
+    {
+        accomDAO.updateAccomStatus(id, status);
+    }
+    
+
 
 }
