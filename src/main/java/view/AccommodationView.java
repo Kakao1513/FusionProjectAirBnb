@@ -84,7 +84,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 	public String getAccomNameFromUser() {
 		String accomName;
 		System.out.print("숙소 이름 : ");
-		accomName = SCANNER.next();
+		accomName = SCANNER.nextLine();
 
 		return accomName;
 	}
@@ -92,7 +92,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 	public String getCapacityFromUser() {
 		String capacity;
 		System.out.print("수용 인원 : ");
-		capacity = SCANNER.next();
+		capacity = SCANNER.nextLine();
 
 		return capacity;
 	}
@@ -100,7 +100,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 	public String getAccomTypeFromUser() {
 		String accomType;
 		System.out.print("숙소 타입 (개인실/공간 전체) : ");
-		accomType = SCANNER.next();
+		accomType = SCANNER.nextLine();
 
 		return accomType;
 	}
@@ -108,10 +108,10 @@ public class AccommodationView extends View<AccommodationDTO> {
 
 	public String[] getPeriodFromUser() {
 		String startDate, endDate;
-		System.out.print("시작 날짜 (ex. 1999-01-01) : ");
-		startDate = SCANNER.next();
-		System.out.print("끝 날짜 (ex. 2000-01-01) : ");
-		endDate = SCANNER.next();
+		System.out.print("시작 날짜 (ex. 2023-10-01) : ");
+		startDate = SCANNER.nextLine();
+		System.out.print("끝 날짜 (ex. 2023-10-30) : ");
+		endDate = SCANNER.nextLine();
 
 		return new String[]{startDate, endDate};
 	}
