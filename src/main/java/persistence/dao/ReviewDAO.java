@@ -24,7 +24,7 @@ public class ReviewDAO {
     public void insertReview(ReviewDTO dto){
         try (SqlSession session = sqlSessionFactory.openSession()) {
             ReviewMapper reviewMapper = session.getMapper(ReviewMapper.class);
-            reviewMapper.insertAccom(dto);
+            reviewMapper.insertReview(dto);
             session.commit();
         }
     }

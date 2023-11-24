@@ -6,19 +6,7 @@ import persistence.dto.ReviewDTO;
 import java.util.List;
 
 public interface ReviewMapper {
-    String selectReviews = "SELECT * FROM Review WHERE AccommodationID = #{accomID};";
-    String insertReview = """
-            INSERT INTO `reservation`
-            (`accommodationID`, `userID`, `roomID`, 
-            `parentCommentID`, `text`, `dateCreated`, 
-            `modificationTime`, `rate`)
-            VALUES
-            (#{review.accommodationID}, #{review.userID}, #{review.roomID},
-             #{review.parentCommentID}, #{review.text}, #{review.dateCreated},
-             #{review.modificationTime}, #{review.rate});
-            """;
-
-    @Select(selectReviews)
+    @SelectProvider(type = ReservationSQL.class, method = "selectReviews")
     @Results(
             id = "AmenityResultSet",
             value = {
@@ -35,8 +23,7 @@ public interface ReviewMapper {
     )
     List<ReviewDTO> selectReviews(@Param("accomID") int accomID);
 
-    @Select(insertReview)
-    int insertAccom(@Param("review") ReviewDTO review);
-
+    @SelectProvider(type = ReservationSQL.class, method = "insertReview")
+    int insertReview(ReviewDTO review);
 
 }
