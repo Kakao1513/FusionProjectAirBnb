@@ -1,18 +1,25 @@
 package persistence.mapper;
 
 import org.apache.ibatis.annotations.*;
+import persistence.dto.AccommodationDTO;
 import persistence.dto.AmenityDTO;
 
 import java.util.List;
 
 public interface AmenityMapper {
-    String getAmenity = """
+    String getAmenityByAccomID = """
             SELECT amenity.amenityID, name, category 
             FROM accommodation_amenity 
             JOIN Amenity 
             ON accommodation_amenity.amenityID = Amenity.amenityID 
             WHERE accommodationID = #{accomID};""";
-    @Select(getAmenity)
+
+    String selectAll = "SELECT * FROM Amenity";
+
+    String insertAccomAmenity = "INSERT INTO Accommodation_amenity (accommodationID, amenityID)" +
+            "VALUES (#{accomID}, #{amenityID})";
+
+    @Select(getAmenityByAccomID)
     @Results(
             id = "AmenityResultSet",
             value = {
@@ -21,5 +28,13 @@ public interface AmenityMapper {
                     @Result(property = "category", column = "Category")
             }
     )
-    List<AmenityDTO> getAmenity(int accomID);
+    List<AmenityDTO> selectAmenityByAccomID(int accomID);
+
+    @Select(selectAll)
+    List<AmenityDTO> selectAll();
+
+    @Insert(insertAccomAmenity)
+    int insertAccomAmenity(int accomID, int amenityID);
+
+
 }

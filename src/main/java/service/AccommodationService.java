@@ -63,7 +63,7 @@ public class AccommodationService {
 //    public void setAccomDiscountPolicy()
 
     public List<AmenityDTO> getAmenityList(AccommodationDTO accomDTO){
-        return amenityDAO.getAmenity(accomDTO.getAccomId());
+        return amenityDAO.selectAmenityByAccomID(accomDTO.getAccomId());
     }
 
 
