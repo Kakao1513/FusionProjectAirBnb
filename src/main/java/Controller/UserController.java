@@ -1,5 +1,6 @@
 package Controller;
 
+import Container.IocContainer;
 import lombok.AllArgsConstructor;
 import network.Protocol.Enums.RoleType;
 import network.Protocol.Enums.Method;
@@ -19,6 +20,10 @@ public class UserController implements MethodController {
 
 	public UserController(UserService userService) {
 		this.userService = userService;
+	}
+	public UserController(IocContainer iocContainer){
+		this.userService = iocContainer.userService();
+		this.acService = iocContainer.accommodationService();
 	}
 
 	public UserDTO login(UserDTO loginInfo) {

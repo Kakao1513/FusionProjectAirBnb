@@ -13,7 +13,7 @@ public class ServerRunner {
 		ReservationDAO reservationDAO = new ReservationDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 		AmenityDAO amenityDAO = new AmenityDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 		IocContainer iocContainer =new IocContainer();*/
-		Server server = new Server(new IocContainer());
+		Server server = new Server(IocContainer.iocContainer());
 		server.run();
 	}
 }

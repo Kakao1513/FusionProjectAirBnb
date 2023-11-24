@@ -33,13 +33,9 @@ public class MainController implements Controller {
 	}
 
 	public MainController(IocContainer iocContainer) {
-
-
-		UserService userService = new UserService(iocContainer.userDAO());
-		AccommodationService acService = new AccommodationService(iocContainer);
-		userController = new UserController(userService);
-		accommodationController = new AccommodationController(acService);
-		reservationController = new ReservationController(userService, acService);
+		userController = new UserController(iocContainer);
+		accommodationController = new AccommodationController(iocContainer);
+		reservationController = new ReservationController(iocContainer);
 		controllerMap = new HashMap<>();
 		controllerMap.put(PayloadType.USER, userController);
 		controllerMap.put(PayloadType.ACCOMMODATION, accommodationController);

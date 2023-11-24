@@ -1,5 +1,6 @@
 package Controller;
 
+import Container.IocContainer;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.RoleType;
 import network.Protocol.Request;
@@ -16,7 +17,9 @@ public class AccommodationController implements MethodController {
 	public AccommodationController(AccommodationService accomService) {
 		this.accomService = accomService;
 	}
-
+	public AccommodationController(IocContainer iocContainer){
+		this.accomService = iocContainer.accommodationService();
+	}
 	/*
 	public void accomMenu() {
         int order = accomView.displayAccomMenu();

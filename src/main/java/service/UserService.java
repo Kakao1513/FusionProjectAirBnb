@@ -1,5 +1,6 @@
 package service;
 
+import Container.IocContainer;
 import lombok.Builder;
 import persistence.dao.AccommodationDAO;
 import persistence.dao.ReservationDAO;
@@ -33,6 +34,12 @@ public class UserService {
 		acDAO = accommodationDAO;
 		this.rDAO = rDAO;
 		this.reviewDAO = reviewDAO;
+	}
+	public UserService(IocContainer iocContainer){
+		this.userDAO = iocContainer.userDAO();
+		this.acDAO = iocContainer.accommodationDAO();
+		this.rDAO = iocContainer.reservationDAO();
+		this.reviewDAO = iocContainer.reviewDAO();
 	}
 
 	private boolean login(String id, String pw) {

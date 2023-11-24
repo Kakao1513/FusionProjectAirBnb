@@ -1,5 +1,6 @@
 package Controller;
 
+import Container.IocContainer;
 import lombok.AllArgsConstructor;
 import network.Protocol.Enums.RoleType;
 import network.Protocol.Enums.Method;
@@ -12,6 +13,11 @@ import service.UserService;
 public class ReservationController implements MethodController {
 	private UserService userService;
 	private AccommodationService accommodationService;
+
+	public ReservationController(IocContainer iocContainer){
+		this.userService = iocContainer.userService();
+		this.accommodationService = iocContainer.accommodationService();
+	}
 
 	@Override
 	public Response handle(Request req) {

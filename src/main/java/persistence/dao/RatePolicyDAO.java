@@ -6,8 +6,8 @@ import persistence.dto.RatePolicyDTO;
 import persistence.mapper.RatePolicyMapper;
 
 
-public class RatePolicyDAO {
-    SqlSessionFactory sqlSessionFactory;
+public class RatePolicyDAO{
+    private final SqlSessionFactory sqlSessionFactory;
 
     public RatePolicyDAO(SqlSessionFactory sessionFactory) {
         this.sqlSessionFactory = sessionFactory;
