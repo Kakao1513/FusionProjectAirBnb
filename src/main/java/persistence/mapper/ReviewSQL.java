@@ -10,7 +10,7 @@ public class ReviewSQL {
                 .FROM("Review")
                 .WHERE("AccommodationID = #{accomID}");
 
-        return sql.toString()
+        return sql.toString();
     }
     public static String insertReview(ReviewDTO reservation){
         SQL sql = new SQL()
