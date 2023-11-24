@@ -69,14 +69,15 @@ public class AccommodationView extends View<AccommodationDTO> {
 		if (filters.get("accomName") != null) {
 			System.out.println("숙소 이름 : " + filters.get("accomName"));
 		}
-		if (filters.get("startDate") != null) {
-			System.out.println("검색 날짜 (0000-00-00) : " + filters.get("startDate") + " ~ " + filters.get("endDate"));
+		if (filters.get("period") != null) {
+			String[] period = (String[])filters.get("period");
+			System.out.println("검색 날짜 : " + period[0] + " ~ " + period[1]);
 		}
 		if (filters.get("capacity") != null) {
 			System.out.println("최소 수용 인원 : " + filters.get("capacity"));
 		}
 		if (filters.get("accomType") != null) {
-			System.out.println("숙소 타입 (개인실/공간 전체): " + filters.get("accomType"));
+			System.out.println("숙소 타입 : " + filters.get("accomType"));
 		}
 	}
 
@@ -98,7 +99,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 
 	public String getAccomTypeFromUser() {
 		String accomType;
-		System.out.print("숙소 타입 : ");
+		System.out.print("숙소 타입 (개인실/공간 전체) : ");
 		accomType = SCANNER.next();
 
 		return accomType;
@@ -107,9 +108,9 @@ public class AccommodationView extends View<AccommodationDTO> {
 
 	public String[] getPeriodFromUser() {
 		String startDate, endDate;
-		System.out.print("시작 날짜 : ");
+		System.out.print("시작 날짜 (ex. 1999-01-01) : ");
 		startDate = SCANNER.next();
-		System.out.print("끝 날짜 : ");
+		System.out.print("끝 날짜 (ex. 2000-01-01) : ");
 		endDate = SCANNER.next();
 
 		return new String[]{startDate, endDate};
@@ -155,8 +156,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 		System.out.print("월 : ");
 		int month = SCANNER.nextInt();
 
-		LocalDate date = LocalDate.of(year, month, 1);
-		return date;
+		return LocalDate.of(year, month, 1);
 	}
 
 	public void displayReservationCalendar(LocalDate date, int capacity, List<ReservationDTO> reservationDTOS) {

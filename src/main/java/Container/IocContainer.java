@@ -6,7 +6,7 @@ import persistence.dao.*;
 import service.AccommodationService;
 import service.UserService;
 
-public class IocContainer {
+public class IocContainer { //추후 스레드 동시성 문제 발생시 일반 객체 리턴 방식으로 수정
 	private static final IocContainer instance = new IocContainer();
 	private static final UserDAO userDAO = new UserDAO(sessionFactory());
 	private static final AccommodationDAO acDAO = new AccommodationDAO(sessionFactory());
@@ -26,7 +26,8 @@ public class IocContainer {
 
 	private static final AccommodationService acService = new AccommodationService(instance);
 
-	private IocContainer(){}
+	private IocContainer() {
+	}
 
 	private static SqlSessionFactory sessionFactory() {
 		return MyBatisConnectionFactory.getSqlSessionFactory();

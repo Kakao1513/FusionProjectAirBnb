@@ -36,7 +36,8 @@ public class AccommodationSQL {
 			@Param("userID") Integer userID,
 			@Param("status") String status,
 			@Param("accomName") String accomName,
-			@Param("startDate") String startDate, @Param("endDate") String endDate,
+			@Param("period") String[] period,
+			//	@Param("startDate") String startDate, @Param("endDate") String endDate,
 			@Param("capacity") String capacity,
 			@Param("type") String accomType
 	) {
@@ -52,6 +53,21 @@ public class AccommodationSQL {
 		if (accomName != null) {
 			mainQuery.WHERE("houseName like CONCAT('%', #{accomName}, '%')");
 		}
+		if (period != null) { //고친거 맞는지 확인점
+			SQL subSubQuery = new SQL()
+					.SELECT("r.RoomID, r.AccommodationID")
+					.FROM("reservation r")
+					.WHERE("CheckOut >= date(#{period[0]})")
+					.WHERE("CheckIn <= date(#{period[1]})");
+			SQL subQuery = new SQL()
+					.SELECT("accommodationID")
+					.FROM("room")
+					.WHERE("(RoomID, AccommodationID) NOT IN(" + subSubQuery.toString() + ")");
+
+			mainQuery.WHERE("AccommodationID IN (" + subQuery.toString() + ")");
+
+		}
+/*
 		if (startDate != null && endDate != null) {
 			SQL subSubQuery = new SQL()
 					.SELECT("r.RoomID, r.AccommodationID")
@@ -65,6 +81,7 @@ public class AccommodationSQL {
 
 			mainQuery.WHERE("AccommodationID IN (" + subQuery.toString() + ")");
 		}
+*/
 		if (capacity != null) {
 			mainQuery.WHERE("capacity >= #{capacity}");
 		}
@@ -74,9 +91,10 @@ public class AccommodationSQL {
 		return mainQuery.toString();
 	}
 
-	public static String updateStatusById(){
+	public static String updateStatusById() {
 		return null;
 	}
+
 	public static String setAccomPolicy(@Param("rate") RatePolicyDTO rate) {
 		SQL sql = new SQL()
 				.INSERT_INTO("rate policy")
