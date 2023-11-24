@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import persistence.MyBatisConnectionFactory;
 import persistence.dao.*;
 import service.AccommodationService;
+import service.ReservationService;
 import service.UserService;
 
 public class IocContainer { //추후 스레드 동시성 문제 발생시 일반 객체 리턴 방식으로 수정
@@ -25,6 +26,8 @@ public class IocContainer { //추후 스레드 동시성 문제 발생시 일반
 	private static final UserService userService = new UserService(instance);
 
 	private static final AccommodationService acService = new AccommodationService(instance);
+
+	private static final ReservationService reservationService = new ReservationService(instance);
 
 	private IocContainer() {
 	}
@@ -75,5 +78,9 @@ public class IocContainer { //추후 스레드 동시성 문제 발생시 일반
 
 	public AccommodationService accommodationService() {
 		return acService;
+	}
+
+	public ReservationService reservationService(){
+		return reservationService;
 	}
 }

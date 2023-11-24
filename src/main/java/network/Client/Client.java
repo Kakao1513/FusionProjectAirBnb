@@ -3,6 +3,7 @@ package network.Client;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
 import network.Protocol.Enums.RoleType;
+import network.Protocol.Packet.AccomMoreInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.AccommodationDTO;
@@ -15,6 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +27,14 @@ public class Client {
 	private final String ip;
 	private final int port;
 	private UserView userView;
-	private AccommodationView accommodationView;
+	private AccommodationView accomView;
 	private Socket socket;
 
 	private UserDTO currentUser;
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 
-	public Client(String ip, int port, UserView view, AccommodationView accommodationView) {
+	public Client(String ip, int port, UserView view, AccommodationView accomView) {
 		this.ip = ip;
 		this.port = port;
 		try {
@@ -43,7 +45,7 @@ public class Client {
 			e.printStackTrace();
 		}
 		userView = view;
-		this.accommodationView = accommodationView;
+		this.accomView = accomView;
 	}
 
 	private boolean login() {
@@ -147,9 +149,28 @@ public class Client {
 			case 4 -> { //숙소 예약 신청
 
 			}
+			case 5 -> { //숙소 상세 정보 보기
+				viewAccomMoreInfo();
+			}
 		}
 	}
 
+	public void viewAccomMoreInfo() {
+		Integer accomID = accomView.getAccomNumberFromUser();
+		LocalDate date = accomView.getReservationDate();
+		Object[] payload = {accomID, date};
+		Response response = communicationToServer(new Request(Method.GET, PayloadType.ACCOMMODATION, RoleType.COMMON, payload));
+
+		if(response.getIsSuccess()){
+			AccomMoreInfo moreInfo = (AccomMoreInfo) response.getPayload();
+			AccommodationDTO curAccom =moreInfo.getCurAccom();
+			accomView.displayAccomInfo(curAccom, moreInfo.getAccomRate());
+			accomView.displayAmenity(moreInfo.getAmenityList());
+			accomView.displayReviews(moreInfo.getReviewList());
+			accomView.displayReservationCalendar(date, curAccom.getCapacity(), moreInfo.getReservationList());
+		}
+
+	}
 
 	public void selectHostJob(int select) {
 		switch (select) {
@@ -183,18 +204,11 @@ public class Client {
 		req.setMethod(Method.GET);
 		req.setRoleType(RoleType.GUEST);
 		req.setPayloadType(PayloadType.ACCOMMODATION);
-		Response response;
-		try {
-			oos.writeObject(req);
-			oos.flush();
-			response = (Response) ois.readObject();
-			if (response.getIsSuccess()) {
-				acList = (List<AccommodationDTO>) response.getPayload();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		Response response = communicationToServer(req);
+		if (response.getIsSuccess()) {
+			acList = (List<AccommodationDTO>) response.getPayload();
 		}
-		accommodationView.displayAccomList(acList);
+		accomView.displayAccomList(acList);
 	}
 
 
@@ -235,18 +249,11 @@ public class Client {
 		UserDTO userDTO = new UserDTO(currentUser);
 		Object[] body = {userDTO, newName, newBirth, newPhone};
 		req.setPayload(body);
-		Response response;
-		try {
-			oos.writeObject(req);
-			oos.flush();
+		Response response = communicationToServer(req);
 
-			response = (Response) ois.readObject();
-			if (response.getIsSuccess()) {
-				System.out.println("개인정보 수정 성공.");
-				currentUser = (UserDTO) response.getPayload();
-			}
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+		if (response.getIsSuccess()) {
+			System.out.println("개인정보 수정 성공.");
+			currentUser = (UserDTO) response.getPayload();
 		}
 	}
 
@@ -255,33 +262,25 @@ public class Client {
 		Map<String, Object> filters = new HashMap<>(); //Request의 Payload에 담겨서 온다.
 		int order = 0;
 		while (order != 5) {
-			order = accommodationView.displayFilterList(); // Client로 가야됨.
+			order = accomView.displayFilterList(); // Client로 가야됨.
 			switch (order) {
-				case 1 -> filters.put("accomName", accommodationView.getAccomNameFromUser());
-				case 2 -> filters.put("period", accommodationView.getPeriodFromUser());
-				case 3 -> filters.put("capacity", accommodationView.getCapacityFromUser());
-				case 4 -> filters.put("accomType", accommodationView.getAccomTypeFromUser());
+				case 1 -> filters.put("accomName", accomView.getAccomNameFromUser());
+				case 2 -> filters.put("period", accomView.getPeriodFromUser());
+				case 3 -> filters.put("capacity", accomView.getCapacityFromUser());
+				case 4 -> filters.put("accomType", accomView.getAccomTypeFromUser());
 			}
 		}
-		accommodationView.displayAppliedFilters(filters);
+		accomView.displayAppliedFilters(filters);
 		Request request = new Request();
 		request.setMethod(Method.PUT);
 		request.setPayloadType(PayloadType.ACCOMMODATION);
 		request.setRoleType(RoleType.GUEST);
 		request.setPayload(filters);
 
-		Response response = null;
-		try{
-			oos.writeObject(request);
-			oos.flush();
-
-			response = (Response) ois.readObject();
-			if(response.getIsSuccess()){
-				List<AccommodationDTO> accommodationDTOS = (List<AccommodationDTO>) response.getPayload();
-				accommodationView.displayAccomList(accommodationDTOS);
-			}
-		}catch (Exception e){
-			e.printStackTrace();
+		Response response = communicationToServer(request);
+		if (response.getIsSuccess()) {
+			List<AccommodationDTO> accommodationDTOS = (List<AccommodationDTO>) response.getPayload();
+			accomView.displayAccomList(accommodationDTOS);
 		}
 	}
 
@@ -300,5 +299,17 @@ public class Client {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private Response communicationToServer(Request request) {
+		Response res = null;
+		try {
+			oos.writeObject(request);
+			oos.flush();
+			res = (Response) ois.readObject();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 }

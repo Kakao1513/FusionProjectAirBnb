@@ -20,6 +20,8 @@ public class AmenityDAO extends DAO<AmenityDTO> {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             AmenityMapper amenityMapper = session.getMapper(AmenityMapper.class);
             DTOS = amenityMapper.selectAll();
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return DTOS;
     }
@@ -30,6 +32,8 @@ public class AmenityDAO extends DAO<AmenityDTO> {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             AmenityMapper amenityMapper = session.getMapper(AmenityMapper.class);
             DTOS = amenityMapper.selectAmenityByAccomID(accomID);
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return DTOS;
     }
@@ -40,6 +44,8 @@ public class AmenityDAO extends DAO<AmenityDTO> {
             AmenityMapper amenityMapper = session.getMapper(AmenityMapper.class);
             num = amenityMapper.insertAccomAmenity(accomID, amenityID);
             session.commit();
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return num;
     }

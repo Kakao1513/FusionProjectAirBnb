@@ -26,7 +26,9 @@ public class MyBatisConnectionFactory { //싱글톤 패턴으로 만들어진 Co
 						AmenityMapper.class,
 						ReservationMapper.class,
 						RatePolicyMapper.class,
-						ReviewMapper.class
+						ReviewMapper.class,
+						DailyRateMapper.class,
+						DiscountPolicyMapper.class
 				};
 				for (Class mapper : Mappers) {
 					sqlSessionFactory.getConfiguration().addMapper(mapper);

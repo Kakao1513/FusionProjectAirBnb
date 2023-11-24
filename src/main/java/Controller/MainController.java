@@ -19,18 +19,6 @@ public class MainController implements Controller {
 	private ReservationController reservationController;
 	private Map<PayloadType, Controller> controllerMap;
 
-	public MainController(UserDAO userDAO, AccommodationDAO accomDAO, AmenityDAO amenityDAO,
-	                      ReservationDAO reservationDAO, RatePolicyDAO ratePolicyDAO, ReviewDAO reviewDAO) {
-		AccommodationService acService = new AccommodationService(accomDAO, amenityDAO, reservationDAO, ratePolicyDAO, reviewDAO);
-		UserService userService = new UserService(userDAO);
-		userController = new UserController(userService);
-		accommodationController = new AccommodationController(acService);
-		reservationController = new ReservationController(userService, acService);
-
-		controllerMap = new HashMap<>();
-		controllerMap.put(PayloadType.USER, userController);
-		controllerMap.put(PayloadType.ACCOMMODATION, accommodationController);
-	}
 
 	public MainController(IocContainer iocContainer) {
 		userController = new UserController(iocContainer);

@@ -18,6 +18,8 @@ public class ReviewDAO {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             ReviewMapper reservationMapper = session.getMapper(ReviewMapper.class);
             DTOS = reservationMapper.selectReviews(accomID);
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return DTOS;
     }
@@ -26,6 +28,8 @@ public class ReviewDAO {
             ReviewMapper reviewMapper = session.getMapper(ReviewMapper.class);
             reviewMapper.insertReview(dto);
             session.commit();
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

@@ -24,6 +24,8 @@ public class ReservationDAO {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			ReservationMapper reservationMapper = session.getMapper(ReservationMapper.class);
 			DTOS = reservationMapper.selectReservations(filters);
+		}catch (Exception e){
+			e.printStackTrace();
 		}
 		return DTOS;
 	}
@@ -32,6 +34,8 @@ public class ReservationDAO {
 		try (SqlSession session = sqlSessionFactory.openSession()){
             ReservationMapper reservationMapper = session.getMapper(ReservationMapper.class);
 			reservationMapper.insertReservation(rDTO);
+		}catch (Exception e){
+			e.printStackTrace();
 		}
 	}
 
@@ -41,6 +45,8 @@ public class ReservationDAO {
 			ReservationMapper reservationMapper = session.getMapper(ReservationMapper.class);
 			num = reservationMapper.updateReservation(rDTO);
 			session.commit();
+		}catch (Exception e){
+			e.printStackTrace();
 		}
 		return num;
 	}

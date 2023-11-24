@@ -152,7 +152,6 @@ public class UserController implements MethodController {
 			case GUEST -> {
 			}
 		}
-
 		return res;
 	}
 }

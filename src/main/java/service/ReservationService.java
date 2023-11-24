@@ -1,5 +1,6 @@
 package service;
 
+import Container.IocContainer;
 import persistence.dao.ReservationDAO;
 import persistence.dto.AccommodationDTO;
 import persistence.dto.ReservationDTO;
@@ -14,6 +15,10 @@ public class ReservationService {
 
     public ReservationService(ReservationDAO reservationDAO) {
         this.reservationDAO = reservationDAO;
+    }
+
+    public ReservationService(IocContainer iocContainer){
+        this.reservationDAO = iocContainer.reservationDAO();
     }
 
     public List<ReservationDTO> getReservationList(AccommodationDTO accomDTO, LocalDate date){

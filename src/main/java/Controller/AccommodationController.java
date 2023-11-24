@@ -3,22 +3,24 @@ package Controller;
 import Container.IocContainer;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.RoleType;
+import network.Protocol.Packet.AccomMoreInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
-import persistence.dto.AccommodationDTO;
+import persistence.dto.*;
 import service.AccommodationService;
+import service.ReservationService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 public class AccommodationController implements MethodController {
 	private final AccommodationService accomService;
+	private final ReservationService reservationService;
 
-	public AccommodationController(AccommodationService accomService) {
-		this.accomService = accomService;
-	}
-	public AccommodationController(IocContainer iocContainer){
+	public AccommodationController(IocContainer iocContainer) {
 		this.accomService = iocContainer.accommodationService();
+		this.reservationService = iocContainer.reservationService();
 	}
 	/*
 	public void accomMenu() {
@@ -129,13 +131,35 @@ public class AccommodationController implements MethodController {
 		return res;
 	}
 
+	private Response selectAccomMoreInfo(Request request) { //숙소 상세 정보 보기
+		Object[] payload = (Object[]) request.getPayload();
+		Integer accomID = (Integer) payload[0];
+		LocalDate date = (LocalDate) payload[1];
+
+		AccommodationDTO curAccom = accomService.getAccom(accomID);
+		RatePolicyDTO accomRate = accomService.getRate(curAccom);
+		List<AmenityDTO> amenityList = accomService.getAmenityList(curAccom);
+		List<ReviewDTO> reviewList = accomService.getReviews(curAccom); //TODO:리뷰가 없으면 오류남
+		List<ReservationDTO> reservationList = reservationService.getReservationList(curAccom, date);
+		AccomMoreInfo accomMoreInfo = AccomMoreInfo.builder()
+										.curAccom(curAccom)
+										.accomRate(accomRate)
+										.reservationList(reservationList)
+										.reviewList(reviewList)
+										.amenityList(amenityList).build();
+		Response response = new Response();
+		response.setIsSuccess(true);
+		response.setPayload(accomMoreInfo);
+		return response;
+	}
+
 	@Override
 	public Response getHandle(Request req) {
 		RoleType roleType = req.getRoleType();
 		Response res = null;
 		switch (roleType) {
 			case COMMON -> {
-
+				res = selectAccomMoreInfo(req);
 			}
 			case ADMIN -> {
 			}

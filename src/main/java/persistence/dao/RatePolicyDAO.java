@@ -18,6 +18,8 @@ public class RatePolicyDAO{
         try (SqlSession session = sqlSessionFactory.openSession()) {
             RatePolicyMapper ratepolicyMapper = session.getMapper(RatePolicyMapper.class);
             DTO = ratepolicyMapper.getRate(accomID);
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return DTO;
     }
@@ -27,6 +29,8 @@ public class RatePolicyDAO{
             RatePolicyMapper ratepolicyMapper = session.getMapper(RatePolicyMapper.class);
             ratepolicyMapper.setAccomPolicy(rateDTO);
             session.commit();
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

@@ -18,6 +18,8 @@ public class DiscountPolicyDAO {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             DiscountPolicyMapper discountpolicyMapper = session.getMapper(DiscountPolicyMapper.class);
             DTO = discountpolicyMapper.getDiscount(accomID);
+        } catch (Exception e){
+            e.printStackTrace();
         }
         return DTO;
     }

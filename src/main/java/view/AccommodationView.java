@@ -150,7 +150,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 	}
 
 	public LocalDate getReservationDate() {
-		System.out.println("예약할 날짜를 입력하세요");
+		System.out.println("예약할 날짜를 입력하세요 : ");
 		System.out.print("년 : ");
 		int year = SCANNER.nextInt();
 		System.out.print("월 : ");

@@ -19,6 +19,8 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
 			DTOs = accomMapper.selectAccom(filters);
+		}catch (Exception e){
+			e.printStackTrace();
 		}
 		return DTOs;
 	}
@@ -28,6 +30,8 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
 			accomMapper.insertAccom(dto);
 			session.commit();
+		}catch (Exception e){
+			e.printStackTrace();
 		}
 	}
 
@@ -36,6 +40,8 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
 			DTO = accomMapper.getAccom(accomID);
+		}catch (Exception e){
+			e.printStackTrace();
 		}
 		return DTO;
 	}
@@ -47,6 +53,8 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
 			accomMapper.updateAccomStatus(id, status);
 			session.commit();
+		}catch (Exception e){
+			e.printStackTrace();
 		}
 	}
 
