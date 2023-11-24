@@ -1,6 +1,5 @@
 package persistence.mapper;
 
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 import persistence.dto.ReservationDTO;
@@ -41,6 +40,14 @@ public class ReservationSQL {
                 .INTO_VALUES("#{userID}, #{accommodationID} #{accommodationID}, #{roomID}, #{reserveDate}, #{checkIn}, #{checkOut}, #{charge}, #{reservationInfo}");
 
         return  sql.toString();
+    }
+
+    public static String updateReservation(ReservationDTO reservation){
+        SQL sql = new SQL()
+                .UPDATE("Reservation")
+                .SET("reservationInform = #{reservationInfo}")
+                .WHERE("reservationID = #{reservationID}");
+        return sql.toString();
     }
 
 }

@@ -25,8 +25,10 @@ public interface ReservationMapper {
     )
     List<ReservationDTO> selectReservations(Map<String, Object> filters);
 
-    @Insert("INSERT INTO reservation (UserID, AccommodationID, RoomID, ReserveDate, CheckIn, CheckOut, Charge, ReservationInform) " +
-            "VALUES (#{userID}, #{accommodationID} #{accommodationID}, #{roomID}, #{reserveDate}, #{checkIn}, #{checkOut}, #{charge}, #{reservationInfo} )") //TODO:추가작성
+    @InsertProvider(type = ReservationSQL.class, method = "insertReservation")
     void insertReservation(ReservationDTO rDTO);
+
+    @UpdateProvider(type = ReservationSQL.class, method = "updateReservation")
+    int updateReservation(ReservationDTO rDTO);
 
 }

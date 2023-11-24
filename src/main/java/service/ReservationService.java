@@ -36,5 +36,9 @@ public class ReservationService {
         return reservationDAO.getReservations(filters);
     }
 
+    public int updateReservation(ReservationDTO rDTO){
+        return reservationDAO.updateReservation(rDTO);
+    }
+
 
 }
