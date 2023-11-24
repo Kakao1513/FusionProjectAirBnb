@@ -1,10 +1,11 @@
 package persistence.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 import persistence.dto.ReviewDTO;
 public class ReviewSQL {
 
-    private static String selectReviews(int accomID){
+    public static String selectReviews(@Param("accomID") int accomID){
         SQL sql = new SQL()
                 .SELECT("*")
                 .FROM("Review")

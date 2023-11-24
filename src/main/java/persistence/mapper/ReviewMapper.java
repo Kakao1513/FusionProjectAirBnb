@@ -6,9 +6,9 @@ import persistence.dto.ReviewDTO;
 import java.util.List;
 
 public interface ReviewMapper {
-    @SelectProvider(type = ReservationSQL.class, method = "selectReviews")
+    @SelectProvider(type = ReviewSQL.class, method = "selectReviews")
     @Results(
-            id = "AmenityResultSet",
+            id = "ReviewResultSet",
             value = {
                     @Result(property = "commentID", column = "commentID"),
                     @Result(property = "accomID", column = "accommodationID"),
@@ -23,7 +23,7 @@ public interface ReviewMapper {
     )
     List<ReviewDTO> selectReviews(@Param("accomID") int accomID);
 
-    @SelectProvider(type = ReservationSQL.class, method = "insertReview")
+    @InsertProvider(type = ReviewSQL.class, method = "insertReview")
     int insertReview(ReviewDTO review);
 
 }
