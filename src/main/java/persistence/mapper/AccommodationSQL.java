@@ -1,5 +1,6 @@
 package persistence.mapper;
 
+import Enums.AccommodationStatus;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 import persistence.dto.AccommodationDTO;
@@ -91,8 +92,12 @@ public class AccommodationSQL {
 		return mainQuery.toString();
 	}
 
-	public static String updateStatusById() {
-		return null;
+	public static String updateStatusById(@Param("accomID") int accomID, @Param("status") String status) {
+		SQL sql = new SQL()
+				.UPDATE("Accommodation")
+				.SET("status = #{status}")
+				.WHERE("accommodationID = #{accomID}");
+		return sql.toString();
 	}
 
 	public static String setAccomPolicy(@Param("rate") RatePolicyDTO rate) {

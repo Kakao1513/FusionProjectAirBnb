@@ -73,7 +73,7 @@ public class AccommodationService {
 		return reviewDAO.selectReviews(accomDTO.getAccomId());
 	}
 
-	public void updateAccomStatus(int id, AccommodationStatus status) {
+	public void updateAccomStatus(int id, String status) {
 		accomDAO.updateAccomStatus(id, status);
 	}
 

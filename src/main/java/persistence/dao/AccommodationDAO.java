@@ -46,7 +46,7 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 		return DTO;
 	}
 	
-	public void updateAccomStatus(int id, AccommodationStatus status)
+	public void updateAccomStatus(int id, String status)
 	{
 		try (SqlSession session = sqlSessionFactory.openSession())
 		{
