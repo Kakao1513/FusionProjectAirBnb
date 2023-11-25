@@ -1,7 +1,6 @@
 package service;
 
 import Container.IocContainer;
-import Enums.AccommodationStatus;
 import persistence.dao.*;
 import persistence.dto.*;
 
@@ -39,7 +38,7 @@ public class AccommodationService {
 	}
 	// 1.2 편의시설 리스트 삽입
 	public void insertAccomAmenity(AccommodationDTO accomDTO, AmenityDTO amenityDTO){
-		amenityDAO.insertAccomAmenity(accomDTO.getAccomId(), amenityDTO.getAmenityID());
+		amenityDAO.insertAccomAmenity(accomDTO.getAccomID(), amenityDTO.getAmenityID());
 	}
 
 	// 2. 요금 정책 설정(주말요금/평일요금 일괄 설정)
@@ -85,19 +84,19 @@ public class AccommodationService {
 	}
 	// 13.2 편의시설
 	public List<AmenityDTO> getAmenityList(AccommodationDTO accomDTO) {
-		return amenityDAO.selectAmenityByAccomID(accomDTO.getAccomId());
+		return amenityDAO.selectAmenityByAccomID(accomDTO.getAccomID());
 	}
 	// 13.3 숙박 요금
 	public RatePolicyDTO getRate(AccommodationDTO accomDTO) {
-		return ratePolicyDAO.getRate(accomDTO.getAccomId());
+		return ratePolicyDAO.getRate(accomDTO.getAccomID());
 	}
 	public DailyRateDTO getDaily(AccommodationDTO accomDTO) {
-		return dailyRateDAO.getDaily(accomDTO.getAccomId());
+		return dailyRateDAO.getDaily(accomDTO.getAccomID());
 	}
 	// 13.4 예약 가능 일자 -> ReservationService.getReservationList
 	// 13.5 후기
 	public List<ReviewDTO> getReviews(AccommodationDTO accomDTO) {
-		return reviewDAO.selectReviews(accomDTO.getAccomId());
+		return reviewDAO.selectReviews(accomDTO.getAccomID());
 	}
 	/////////////////////////////////////////////
 

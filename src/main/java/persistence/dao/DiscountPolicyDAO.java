@@ -5,6 +5,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import persistence.dto.DiscountPolicyDTO;
 import persistence.mapper.DiscountPolicyMapper;
 
+import java.util.List;
+
 
 public class DiscountPolicyDAO {
     SqlSessionFactory sqlSessionFactory;
@@ -12,16 +14,16 @@ public class DiscountPolicyDAO {
     public DiscountPolicyDAO(SqlSessionFactory sessionFactory) {
         this.sqlSessionFactory = sessionFactory;
     }
-    public DiscountPolicyDTO getDiscount(int accomID) {
-        DiscountPolicyDTO DTO = null;
+    public List<DiscountPolicyDTO> getDiscount(int accomID) {
+        List<DiscountPolicyDTO> DTOS = null;
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             DiscountPolicyMapper discountpolicyMapper = session.getMapper(DiscountPolicyMapper.class);
-            DTO = discountpolicyMapper.getDiscount(accomID);
+            DTOS = discountpolicyMapper.getDiscount(accomID);
         } catch (Exception e){
             e.printStackTrace();
         }
-        return DTO;
+        return DTOS;
     }
 
     public int insertDiscount(DiscountPolicyDTO discountDTO) {

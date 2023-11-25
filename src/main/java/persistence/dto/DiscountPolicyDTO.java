@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 @Getter
 @Setter
@@ -13,9 +14,9 @@ import java.time.LocalDateTime;
 @Builder
 public class DiscountPolicyDTO extends DTO
 {
-    private int AccomId;
-    private String DiscountType;
-    private int Value;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private int accomID;
+    private String discountType;
+    private int value;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }

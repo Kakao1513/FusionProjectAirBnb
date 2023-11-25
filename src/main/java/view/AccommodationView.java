@@ -17,7 +17,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 		System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |");
 		System.out.println("------------------------------------------------------------------------------------------");
 		for (AccommodationDTO dto : accommodationDTOS) {
-			System.out.printf("|%-3d|%-14s|%-20s|%-7s|%-5s|%-25s|\n", dto.getAccomId(), dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment());
+			System.out.printf("|%-3d|%-14s|%-20s|%-7s|%-5s|%-25s|\n", dto.getAccomID(), dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment());
 		}
 		System.out.println("===========================================================================================");
 	}
@@ -101,7 +101,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 
 	public void displayAccomInfo(AccommodationDTO accomDTO, RatePolicyDTO rateDTO) {
 
-		System.out.printf("==========[%3d] %s==========\n", accomDTO.getAccomId(), accomDTO.getAccomName());
+		System.out.printf("==========[%3d] %s==========\n", accomDTO.getAccomID(), accomDTO.getAccomName());
 		System.out.println("위치 : " + accomDTO.getAddress());
 		System.out.println("설명 : " + accomDTO.getComment());
 		System.out.printf("숙박요금 : [평일] %d, [주말] %d\n", rateDTO.getWeekday(), rateDTO.getWeekend());

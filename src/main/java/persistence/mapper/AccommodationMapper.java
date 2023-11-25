@@ -12,7 +12,7 @@ public interface AccommodationMapper {
 	@Results(
 			id = "AccommodationResultSet",
 			value = {
-					@Result(property = "accomId", column = "accommodationId"),
+					@Result(property = "accomID", column = "accommodationId"),
 					@Result(property = "userID", column = "UserID"),
 					@Result(property = "accomName", column = "HouseName"),
 					@Result(property = "address", column = "Address"),
