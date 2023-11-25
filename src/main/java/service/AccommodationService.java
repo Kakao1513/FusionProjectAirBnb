@@ -31,6 +31,7 @@ public class AccommodationService {
 	// 1. 숙박 등록 신청(이름, 숙소 소개, 객실 타입(공간 전체/개인실), 수용 정보, 편의시설)
 	public void insertAccom(AccommodationDTO accomDTO) {
 		accomDAO.insertAccom(accomDTO);
+		accomDAO.insertRooms(accomDTO);
 	}
 	// 1.1 모든 편의시설 리스트를 반환
 	public List<AmenityDTO> selectAmenityByCategory(String category){

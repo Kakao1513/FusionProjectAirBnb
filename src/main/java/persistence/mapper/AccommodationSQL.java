@@ -102,7 +102,7 @@ public class AccommodationSQL {
 
 	public static String setAccomPolicy(@Param("rate") RatePolicyDTO rate) {
 		SQL sql = new SQL()
-				.INSERT_INTO("rate policy")
+				.INSERT_INTO("rate_policy")
 				.INTO_COLUMNS("AccommodationID", "weekday", "weekend")
 				.INTO_VALUES("#{rate.accomID}, #{rate.weekday}, #{rate.weekend})");
 		return sql.toString();
@@ -110,9 +110,19 @@ public class AccommodationSQL {
 
 	public static String setAccomDaily(@Param("daily") DailyRateDTO daily) {
 		SQL sql = new SQL()
-				.INSERT_INTO("daily rate")
+				.INSERT_INTO("daily_rate")
 				.INTO_COLUMNS("AccommodationID", "startdate", "enddate", "charge")
 				.INTO_VALUES("#{daily.accomID}, #{daily.startdate}, #{daily.enddate}, #{daily.charge})");
+		return sql.toString();
+	}
+
+	public static String insertRooms(@Param("accomID") int accomID, int roomNum){
+		SQL sql = new SQL().INSERT_INTO("room");
+		for (int i = 1; i <= roomNum; i++) {
+			sql.INTO_VALUES(i+", #{accomID}, 1");
+			sql.ADD_ROW();
+		}
+
 		return sql.toString();
 	}
 
