@@ -11,7 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
-public abstract class ClientHandler {
+public abstract class ActorHandler {
 
 	protected UserView userView;
 	protected AccommodationView accomView;
@@ -21,7 +21,7 @@ public abstract class ClientHandler {
 
 	protected static final Scanner sc = new Scanner(System.in);
 
-	public ClientHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois, UserDTO currentUser) {
+	public ActorHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois, UserDTO currentUser) {
 		userView = iocContainer.userView();
 		accomView = iocContainer.accommodationView();
 		this.oos = oos;

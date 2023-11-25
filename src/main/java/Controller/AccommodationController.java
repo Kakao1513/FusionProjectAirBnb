@@ -34,12 +34,20 @@ public class AccommodationController implements MethodController {
         }
 	}
 */
+	public Response selectReadyAccomList(){ //승인 대기중인 숙소 목록
 
-	public Response selectAccomList() {
 		Response response = new Response();
 		response.setIsSuccess(true);
 
-		List<AccommodationDTO> curAccomList = accomService.selectAccom("승인됨");
+		List<AccommodationDTO> curAccomList = accomService.selectAccom("Waiting");
+		response.setPayload(curAccomList);
+		return response;
+	}
+	public Response selectAccomList() { //관리자가 승인한 숙소 목록
+		Response response = new Response();
+		response.setIsSuccess(true);
+
+		List<AccommodationDTO> curAccomList = accomService.selectAccom("Confirmed");
 		response.setPayload(curAccomList);
 		return response;
 	}
@@ -162,6 +170,7 @@ public class AccommodationController implements MethodController {
 				res = selectAccomMoreInfo(req);
 			}
 			case ADMIN -> {
+				res = selectReadyAccomList();
 			}
 			case HOST -> {
 			}

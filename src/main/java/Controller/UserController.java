@@ -4,10 +4,12 @@ import Container.IocContainer;
 import lombok.AllArgsConstructor;
 import network.Protocol.Enums.RoleType;
 import network.Protocol.Enums.Method;
+import network.Protocol.Packet.AccomRecognizeInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.UserDTO;
 import service.AccommodationService;
+import service.ReservationService;
 import service.UserService;
 
 import java.sql.Date;
@@ -26,14 +28,14 @@ public class UserController implements MethodController {
 		this.acService = iocContainer.accommodationService();
 	}
 
-	public UserDTO login(UserDTO loginInfo) {
+	private UserDTO login(UserDTO loginInfo) {
 		String id = loginInfo.getAccountId();
 		String pw = loginInfo.getPassword();
 		Optional<UserDTO> userDTO = userService.loginUser(id, pw); //추후에 service 객체를 네트워크를 통해서 전달하여 serverDB에서 정보를 가져옴.
 		return userDTO.orElse(null);
 	}
 
-	public Response loginProcess(Request req) {
+	private Response loginProcess(Request req) {
 		UserDTO userDTO = (UserDTO) req.getPayload();
 		Response response = new Response();
 
@@ -49,7 +51,7 @@ public class UserController implements MethodController {
 		return response;
 	}
 
-	public Response changeInfo(Request req) {
+	private Response changeInfo(Request req) {
 		Object[] body = (Object[]) req.getPayload();
 		UserDTO chUser = userService.changePrivacy((UserDTO) body[0], (String) body[1], (Date) body[2], (String) body[3]);
 		Response res = new Response();
@@ -107,6 +109,7 @@ public class UserController implements MethodController {
 			case COMMON -> {
 			}
 			case ADMIN -> {
+				res = changeAccomStatus(req);
 			}
 			case HOST -> {
 			}
@@ -116,6 +119,14 @@ public class UserController implements MethodController {
 		}
 
 		return res;
+	}
+
+	private Response changeAccomStatus(Request req) {
+		AccomRecognizeInfo recognizeInfo = (AccomRecognizeInfo) req.getPayload();
+		acService.updateAccomStatus(recognizeInfo.getAccomID(), recognizeInfo.getStatus().getName());
+		Response response = new Response();
+		response.setIsSuccess(true);
+		return response;
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class DailyRateDAO {
     }
 
 
-    public static DailyRateDTO getDaily(int accomID) {
+    public DailyRateDTO getDaily(int accomID) {
         DailyRateDTO DTO = null;
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
@@ -26,7 +26,7 @@ public class DailyRateDAO {
         return DTO;
     }
 
-    public static void setAccomDaily(DailyRateDTO dailyDTO) {
+    public void setAccomDaily(DailyRateDTO dailyDTO) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             DailyRateMapper dailyrateMapper = session.getMapper(DailyRateMapper.class);
             dailyrateMapper.setAccomDaily(dailyDTO);

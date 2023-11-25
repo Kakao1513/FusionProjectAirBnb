@@ -66,7 +66,7 @@ public class AccommodationService {
 	}
 
 	public DailyRateDTO getDaily(AccommodationDTO accomDTO) {
-		return DailyRateDAO.getDaily(accomDTO.getAccomId());
+		return dailyRateDAO.getDaily(accomDTO.getAccomId());
 	}
 
 	public List<ReviewDTO> getReviews(AccommodationDTO accomDTO) {

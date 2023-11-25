@@ -97,18 +97,12 @@ public class AccommodationView extends View<AccommodationDTO> {
 
 	public String getAccomTypeFromUser() {
 		int accomType;
-		System.out.print("숙소 타입 1.개인실 2.공간전체 : ");
+		System.out.print("숙소 타입 1.개인실 2.공간 전체 : ");
 		accomType = readInt();
 		return switch (accomType){
-			case 1 -> {
-				yield "개인실";
-			}
-			case 2 ->{
-				yield "공간전체";
-			}
-			default -> {
-				yield "개인실";
-			}
+			case 1 -> "개인실";
+			case 2 -> "공간 전체";
+			default -> throw new IllegalStateException("Unexpected value: " + accomType);
 		};
 	}
 
@@ -157,19 +151,14 @@ public class AccommodationView extends View<AccommodationDTO> {
 	}
 
 	public LocalDate getReservationDate() {
-		System.out.println("예약할 날짜를 입력하세요 (ex. 2023-11) : ");
-		System.out.print("년 : ");
+		System.out.println("예약할 날짜를 입력하세요 ");
+		System.out.print("년(ex. 2023) : ");
 		int year = readInt();
-		System.out.print("월 : ");
+		System.out.print("월(ex. 11) : ");
 		int month = readInt();
 
 		return LocalDate.of(year, month, 1);
- /*
- System.out.print("년 : ");
- int year = SCANNER.nextInt();
- System.out.print("월 : ");
- int month = SCANNER.nextInt();
-*/
+
 	}
 
 	public void displayReservationCalendar(LocalDate date, int capacity, List<ReservationDTO> reservationDTOS) {
@@ -218,8 +207,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 		System.out.print("숙소 주소를 입력하세요: ");
 		String address = SCANNER.nextLine();
 
-		System.out.print("숙소 타입을 입력하세요(개인실/공간 전체): ");
-		String type = SCANNER.nextLine();
+		String type = getAccomTypeFromUser();
 
 		System.out.print("수용 인원을 입력하세요: ");
 		int capacity = readInt();
@@ -227,7 +215,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 		System.out.print("숙소 설명을 입력하세요: ");
 		String comment = SCANNER.nextLine();
 
-		return AccommodationDTO.builder().userID(1).accomName(accomName).address(address).type(type).capacity(capacity).comment(comment).status("대기중").build();
+		return AccommodationDTO.builder().userID(1).accomName(accomName).address(address).type(type).capacity(capacity).comment(comment).status("승인 대기중").build();
 	}
 
 	public RatePolicyDTO getRatePolicyFromUser(int accomID) {

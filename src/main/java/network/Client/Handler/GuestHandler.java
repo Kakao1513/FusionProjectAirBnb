@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GuestHandler extends ClientHandler{
+public class GuestHandler extends ActorHandler {
 	public GuestHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois, UserDTO currentUser) {
 		super(iocContainer, oos, ois, currentUser);
 	}
@@ -61,7 +61,8 @@ public class GuestHandler extends ClientHandler{
 	}
 
 	private void requestReservation() {
-
+		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.POST).payloadType(PayloadType.RESERVATION).build();
+		System.out.println("예약할 숙소 번호를 선택하세요.");
 
 	}
 

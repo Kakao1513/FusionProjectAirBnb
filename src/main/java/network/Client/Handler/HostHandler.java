@@ -6,7 +6,7 @@ import persistence.dto.UserDTO;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class HostHandler extends ClientHandler{
+public class HostHandler extends ActorHandler {
 	public HostHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois, UserDTO currentUser) {
 		super(iocContainer, oos, ois, currentUser);
 	}

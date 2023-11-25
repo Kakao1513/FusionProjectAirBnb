@@ -20,10 +20,9 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-	private final Scanner sc = new Scanner(System.in);
 	private final String ip;
 	private final int port;
-	private UserView userView;
+	private final UserView userView;
 	private Socket socket;
 	private UserDTO currentUser;
 	private ObjectOutputStream oos;

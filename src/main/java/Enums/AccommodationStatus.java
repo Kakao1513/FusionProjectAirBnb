@@ -2,6 +2,7 @@ package Enums;
 
 import lombok.Getter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
@@ -10,9 +11,13 @@ import java.util.stream.Stream;
 
 @Getter
 public enum AccommodationStatus implements Enum, Serializable {
+
 	Waiting("대기중"),
 	Refused("거절됨"),
 	Confirmed("승인됨");
+
+	@Serial
+	private static final long serialVersionUID = 362498821L;
 
 	private final String type;
 

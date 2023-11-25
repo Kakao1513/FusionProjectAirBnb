@@ -12,22 +12,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 class ClientHandler implements Runnable {
-	private Socket client;
-	private ObjectOutputStream oos;
-	private ObjectInputStream ois;
-	private MainController mainController;
+	private final Socket client;
+	private final ObjectOutputStream oos;
+	private final ObjectInputStream ois;
+	private final MainController mainController;
 
-
-	/*ClientHandler(Socket soc, AccommodationDAO accommodationDAO, UserDAO userDAO, ReviewDAO reviewDAO, ReservationDAO reservationDAO, RatePolicyDAO ratePolicyDAO, AmenityDAO amenityDAO) throws IOException {
-		client = soc;
-		oos = new ObjectOutputStream(client.getOutputStream());
-		System.out.println("Server OutputStream Is Open");
-		ois = new ObjectInputStream(client.getInputStream());
-		System.out.println("Server InputStream Is Open");
-		mainController = new MainController(userDAO, accommodationDAO, amenityDAO, reservationDAO, ratePolicyDAO, reviewDAO);
-	}*/
-
-	ClientHandler(Socket socket, IocContainer iocContainer) throws IOException{
+	public ClientHandler(Socket socket, IocContainer iocContainer) throws IOException{
 		client = socket;
 		oos = new ObjectOutputStream(client.getOutputStream());
 		System.out.println("Server OutputStream Is Open");
