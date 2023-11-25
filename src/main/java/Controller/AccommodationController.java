@@ -139,7 +139,7 @@ public class AccommodationController implements MethodController {
 		AccommodationDTO curAccom = accomService.getAccom(accomID);
 		RatePolicyDTO accomRate = accomService.getRate(curAccom);
 		List<AmenityDTO> amenityList = accomService.getAmenityList(curAccom);
-		List<ReviewDTO> reviewList = accomService.getReviews(curAccom); //TODO:리뷰가 없으면 오류남
+		List<ReviewDTO> reviewList = accomService.getReviews(curAccom);
 		List<ReservationDTO> reservationList = reservationService.getReservationList(curAccom, date);
 		AccomMoreInfo accomMoreInfo = AccomMoreInfo.builder()
 										.curAccom(curAccom)

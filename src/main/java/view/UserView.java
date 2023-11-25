@@ -7,9 +7,9 @@ public class UserView extends View<UserDTO> {
 	public UserDTO loginRequestView() {
 		System.out.println("================로그인===================");
 		System.out.print("ID : ");
-		String id = sc.nextLine();
+		String id = SCANNER.nextLine();
 		System.out.print("PW : ");
-		String pw = sc.nextLine();
+		String pw = SCANNER.nextLine();
 		return new UserDTO(id, pw);
 	}
 

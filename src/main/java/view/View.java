@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class View<E> {
-	protected static final Scanner sc = new Scanner(System.in);
+	protected static final Scanner SCANNER = new Scanner(System.in);
 
 	public void print(E DTO) {
 		System.out.println("DTO = " + DTO.toString());
@@ -20,7 +20,7 @@ public class View<E> {
 		int select = 1;
 		while (select != 0) {
 			System.out.print("Input : ");
-			select = Integer.parseInt(sc.nextLine());
+			select = Integer.parseInt(SCANNER.nextLine());
 			if (start <= select && select <= end) {
 				break;
 			} else {
@@ -28,5 +28,8 @@ public class View<E> {
 			}
 		}
 		return select;
+	}
+	protected static int readInt() {
+		return Integer.parseInt(SCANNER.nextLine());
 	}
 }

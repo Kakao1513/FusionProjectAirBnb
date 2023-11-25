@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class AccommodationView extends View<AccommodationDTO> {
 	private static final Scanner SCANNER = new Scanner(System.in);
 
-	public int displayAccomMenu() {
+/*	public int displayAccomMenu() {
 		System.out.println("=========숙소 메뉴=========");
 		System.out.println("(1) 숙소 예약");
 		System.out.println("(2) 숙소 등록");
@@ -20,17 +20,15 @@ public class AccommodationView extends View<AccommodationDTO> {
 		System.out.println("==========================");
 
 		System.out.print("선택할 번호를 입력하세요 : ");
-		return SCANNER.nextInt();
-	}
+		return readInt();
+	}*/
 
 	public void displayAccomList(List<AccommodationDTO> accommodationDTOS) {
 		System.out.println("=========================================숙소 리스트========================================");
 		System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |");
 		System.out.println("------------------------------------------------------------------------------------------");
 		for (AccommodationDTO dto : accommodationDTOS) {
-			System.out.printf("|%-3d|%-14s|%-20s|%-7s|%-5s|%-25s|\n",
-					dto.getAccomId(), dto.getAccomName(), dto.getAddress(),
-					dto.getType(), dto.getCapacity(), dto.getComment());
+			System.out.printf("|%-3d|%-14s|%-20s|%-7s|%-5s|%-25s|\n", dto.getAccomId(), dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment());
 		}
 		System.out.println("===========================================================================================");
 	}
@@ -45,12 +43,12 @@ public class AccommodationView extends View<AccommodationDTO> {
 	public int getDailyOrDiscount() {
 		System.out.println("1: 일별 요금 설정, 2: 할인 정책 설정");
 		System.out.println("선택할 번호를 입력하세요 : ");
-		return SCANNER.nextInt();
+		return readInt();
 	}
 
 	public int getAccomNumberFromUser() {
 		System.out.print("선택할 숙소 번호를 입력하세요 : ");
-		return SCANNER.nextInt();
+		return readInt();
 	}
 
 	public int displayFilterList() {
@@ -70,7 +68,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 			System.out.println("숙소 이름 : " + filters.get("accomName"));
 		}
 		if (filters.get("period") != null) {
-			String[] period = (String[])filters.get("period");
+			String[] period = (String[]) filters.get("period");
 			System.out.println("검색 날짜 : " + period[0] + " ~ " + period[1]);
 		}
 		if (filters.get("capacity") != null) {
@@ -98,11 +96,20 @@ public class AccommodationView extends View<AccommodationDTO> {
 	}
 
 	public String getAccomTypeFromUser() {
-		String accomType;
-		System.out.print("숙소 타입 (개인실/공간 전체) : ");
-		accomType = SCANNER.nextLine();
-
-		return accomType;
+		int accomType;
+		System.out.print("숙소 타입 1.개인실 2.공간전체 : ");
+		accomType = readInt();
+		return switch (accomType){
+			case 1 -> {
+				yield "개인실";
+			}
+			case 2 ->{
+				yield "공간전체";
+			}
+			default -> {
+				yield "개인실";
+			}
+		};
 	}
 
 
@@ -150,13 +157,19 @@ public class AccommodationView extends View<AccommodationDTO> {
 	}
 
 	public LocalDate getReservationDate() {
-		System.out.println("예약할 날짜를 입력하세요 : ");
+		System.out.println("예약할 날짜를 입력하세요 (ex. 2023-11) : ");
 		System.out.print("년 : ");
-		int year = SCANNER.nextInt();
+		int year = readInt();
 		System.out.print("월 : ");
-		int month = SCANNER.nextInt();
+		int month = readInt();
 
 		return LocalDate.of(year, month, 1);
+ /*
+ System.out.print("년 : ");
+ int year = SCANNER.nextInt();
+ System.out.print("월 : ");
+ int month = SCANNER.nextInt();
+*/
 	}
 
 	public void displayReservationCalendar(LocalDate date, int capacity, List<ReservationDTO> reservationDTOS) {
@@ -187,10 +200,8 @@ public class AccommodationView extends View<AccommodationDTO> {
 		// 날짜를 출력합니다.
 		for (int day = 1; day <= lastDayOfMonth; day++) {
 			char status = '^';
-			if (roomCount[day] == 0)
-				status = 'O';
-			else if (roomCount[day] >= capacity)
-				status = '*';
+			if (roomCount[day] == 0) status = 'O';
+			else if (roomCount[day] >= capacity) status = '*';
 
 			System.out.printf("%2d(%c) ", day, status);
 			if ((startDayOfWeek + day - 1) % 7 == 0) {
@@ -202,42 +213,30 @@ public class AccommodationView extends View<AccommodationDTO> {
 
 	public AccommodationDTO getAccomInfoFromUser() {
 		System.out.print("숙소 이름을 입력하세요: ");
-		String accomName = SCANNER.next();
+		String accomName = SCANNER.nextLine();
 
 		System.out.print("숙소 주소를 입력하세요: ");
-		String address = SCANNER.next();
+		String address = SCANNER.nextLine();
 
-		System.out.print("숙소 타입을 입력하세요: ");
-		String type = SCANNER.next();
+		System.out.print("숙소 타입을 입력하세요(개인실/공간 전체): ");
+		String type = SCANNER.nextLine();
 
 		System.out.print("수용 인원을 입력하세요: ");
-		int capacity = SCANNER.nextInt();
+		int capacity = readInt();
 
 		System.out.print("숙소 설명을 입력하세요: ");
-		String comment = SCANNER.next();
+		String comment = SCANNER.nextLine();
 
-		return AccommodationDTO.builder()
-				.userID(1)
-				.accomName(accomName)
-				.address(address)
-				.type(type)
-				.capacity(capacity)
-				.comment(comment)
-				.status("대기중")
-				.build();
+		return AccommodationDTO.builder().userID(1).accomName(accomName).address(address).type(type).capacity(capacity).comment(comment).status("대기중").build();
 	}
 
 	public RatePolicyDTO getRatePolicyFromUser(int accomID) {
 		System.out.println("설정할 평일 요금을 입력하세요: ");
-		int weekday = SCANNER.nextInt();
+		int weekday = readInt();
 		System.out.println("설정할 주말 요금을 입력하세요: ");
-		int weekend = SCANNER.nextInt();
+		int weekend = readInt();
 
-		return RatePolicyDTO.builder()
-				.accomID(accomID)
-				.weekday(weekday)
-				.weekend(weekend)
-				.build();
+		return RatePolicyDTO.builder().accomID(accomID).weekday(weekday).weekend(weekend).build();
 	}
 
 	public void Return() {
