@@ -30,6 +30,7 @@ public interface AccommodationMapper {
 	AccommodationDTO getAccom(@Param("accomID") int accomID);
 
 	@InsertProvider(type = AccommodationSQL.class, method = "insertAccom")
+	@Options(useGeneratedKeys=true, keyProperty="accomID", keyColumn="accommodationId")
 	int insertAccom(@Param("accom") AccommodationDTO accom);
 
 	@SelectProvider(type = AccommodationSQL.class, method = "selectAccom")
@@ -41,6 +42,5 @@ public interface AccommodationMapper {
 
 	@InsertProvider(type = AccommodationSQL.class, method = "insertRooms")
 	int insertRooms(@Param("accomID") int accomID, int roomNum);
-
 
 }
