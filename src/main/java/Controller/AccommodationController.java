@@ -22,18 +22,7 @@ public class AccommodationController implements MethodController {
 		this.accomService = iocContainer.accommodationService();
 		this.reservationService = iocContainer.reservationService();
 	}
-	/*
-	public void accomMenu() {
-        int order = accomView.displayAccomMenu();
-        switch (order) {
-            case 1 -> accomListMenu();
-            case 2 -> insertAccom();
-            case 3 -> setAccomPolicy();
-            case 4 -> setAccomDiscount();
-            default -> System.out.println("잘못 입력 하셨습니다.");
-        }
-	}
-*/
+
 	public Response selectReadyAccomList(){ //승인 대기중인 숙소 목록
 
 		Response response = new Response();

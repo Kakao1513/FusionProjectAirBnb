@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GuestHandler extends ActorHandler {
-	public GuestHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois, UserDTO currentUser) {
+	public GuestHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois) {
 		super(iocContainer, oos, ois);
 	}
 

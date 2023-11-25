@@ -7,16 +7,19 @@ import network.Protocol.Enums.Method;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import service.AccommodationService;
+import service.ReservationService;
 import service.UserService;
 
 @AllArgsConstructor
 public class ReservationController implements MethodController {
-	private UserService userService;
-	private AccommodationService accommodationService;
+	private final UserService userService;
+	private final AccommodationService accommodationService;
+	private final ReservationService reservationService;
 
 	public ReservationController(IocContainer iocContainer){
 		this.userService = iocContainer.userService();
 		this.accommodationService = iocContainer.accommodationService();
+		this.reservationService = iocContainer.reservationService();
 	}
 
 	@Override

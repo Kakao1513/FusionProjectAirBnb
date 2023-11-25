@@ -45,9 +45,9 @@ public class Client {
 			e.printStackTrace();
 		}
 		userView = iocContainer.userView();
-		adminHandler = new AdminHandler(iocContainer, oos, ois, currentUser);
-		guestHandler = new GuestHandler(iocContainer, oos, ois, currentUser);
-		hostHandler = new HostHandler(iocContainer, oos, ois, currentUser);
+		adminHandler = new AdminHandler(iocContainer, oos, ois);
+		guestHandler = new GuestHandler(iocContainer, oos, ois);
+		hostHandler = new HostHandler(iocContainer, oos, ois);
 	}
 
 	private boolean login() {

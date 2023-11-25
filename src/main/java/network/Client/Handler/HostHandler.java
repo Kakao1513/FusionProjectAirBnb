@@ -13,7 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class HostHandler extends ActorHandler {
-	public HostHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois, UserDTO currentUser) {
+	public HostHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois) {
 		super(iocContainer, oos, ois);
 	}
 

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AdminHandler extends ActorHandler {
 
-	public AdminHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois, UserDTO currentUser) {
+	public AdminHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois) {
 		super(iocContainer, oos, ois);
 	}
 
