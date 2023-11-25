@@ -12,7 +12,8 @@ public class ReservationSQL {
             @Param("accomID") Integer accomID,
             @Param("roomID") Integer roomID,
             @Param("checkIn") LocalDate checkIn,
-            @Param("checkOut") LocalDate checkOut
+            @Param("checkOut") LocalDate checkOut,
+            @Param("status") String status
     ) {
         SQL sql = new SQL()
                 .SELECT("*")
@@ -32,6 +33,9 @@ public class ReservationSQL {
         }
         if (checkOut != null){
             sql.WHERE("CheckIn <= #{checkOut}");
+        }
+        if (status != null){
+            sql.WHERE("ReservationInform = #{status}");
         }
 
         return sql.toString();

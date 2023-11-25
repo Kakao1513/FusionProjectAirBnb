@@ -31,15 +31,21 @@ public class AccommodationService {
 	public void insertAccom(AccommodationDTO accomDTO) {
 		accomDAO.insertAccom(accomDTO);
 	}
-
-	// 2. 요금 정책 설정(주말요금/평일요금 일괄 설정)
-	public void setAccomPolicy(RatePolicyDTO rateDTO) {
-		ratePolicyDAO.setAccomPolicy(rateDTO);
+	// 1.1 모든 편의시설 리스트를 반환
+	public List<AmenityDTO> selectAllAmenityList(){
+		return amenityDAO.selectAll();
+	}
+	// 1.2 편의시설 리스트 삽입
+	public void insertAccomAmenity(AccommodationDTO accomDTO, AmenityDTO amenityDTO){
+		amenityDAO.insertAccomAmenity(accomDTO.getAccomId(), amenityDTO.getAmenityID());
 	}
 
-	// 3. 할인 정책 설정(연박 할인 적용 기간 설정, 정량/정률 설정, 이전 예약 건에 대해서도 할인 요금 적용 여부 보이기)
-	public void setAccomDaily(DailyRateDTO dailyDTO) {
-		dailyRateDAO.setAccomDaily(dailyDTO);
+	// 2. 요금 정책 설정(주말요금/평일요금 일괄 설정)
+
+
+	// 3 할인 정책 설정(연박 할인 적용 기간 설정, 정량/정률 설정, 이전 예약 건에 대해서도 할인 요금 적용 여부 보이기)
+	public void setAccomPolicy(RatePolicyDTO rateDTO) {
+		ratePolicyDAO.setAccomPolicy(rateDTO);
 	}
 
 	// 4.1 숙박 예약 현황 보기(달력 화면 구성으로)
@@ -68,28 +74,30 @@ public class AccommodationService {
 		return accomDAO.selectAccom(filters);
 	}
 
-
 	// 13. 특정 숙소 선택 시 해당 숙소 상세 정보 보기
+	// 13.1 숙소명, 소개
 	public AccommodationDTO getAccom(int accomID) {
 		return accomDAO.getAccom(accomID);
 	}
-
+	// 13.2 편의시설
 	public List<AmenityDTO> getAmenityList(AccommodationDTO accomDTO) {
 		return amenityDAO.selectAmenityByAccomID(accomDTO.getAccomId());
 	}
-
+	// 13.3 숙박 요금
 	public RatePolicyDTO getRate(AccommodationDTO accomDTO) {
 		return ratePolicyDAO.getRate(accomDTO.getAccomId());
 	}
-
 	public DailyRateDTO getDaily(AccommodationDTO accomDTO) {
 		return dailyRateDAO.getDaily(accomDTO.getAccomId());
 	}
-
+	// 13.4 예약 가능 일자 -> ReservationService.getReservationList
+	// 13.5 후기
 	public List<ReviewDTO> getReviews(AccommodationDTO accomDTO) {
 		return reviewDAO.selectReviews(accomDTO.getAccomId());
 	}
 	/////////////////////////////////////////////
+
+
 
 
 }
