@@ -22,7 +22,7 @@ public interface DiscountPolicyMapper {
                     @Result(property = "endDate", column = "DateEnd")
             }
     )
-    List<DiscountPolicyDTO> getDiscount(int accomID);
+    List<DiscountPolicyDTO> getDiscount(@Param("accomID") int accomID);
 
     @Insert(insertDiscount)
     int insertDiscount(DiscountPolicyDTO discountDTO);

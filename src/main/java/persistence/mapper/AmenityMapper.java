@@ -18,8 +18,9 @@ public interface AmenityMapper {
 
     String selectByCategory = "SELECT * FROM Amenity WHERE category=#{category}";
 
-    String insertAccomAmenity = "INSERT INTO Accommodation_amenity (accommodationID, amenityID)" +
-            "VALUES (#{accomID}, #{amenityID})";
+    String insertAccomAmenity = "INSERT INTO Accommodation_amenity (accommodationID, amenityID) " +
+                                "VALUES (#{accomID}, #{amenityID})";
+
 
     @Select(getAmenityByAccomID)
     @Results(
@@ -30,13 +31,13 @@ public interface AmenityMapper {
                     @Result(property = "category", column = "Category")
             }
     )
-    List<AmenityDTO> selectAmenityByAccomID(int accomID);
+    List<AmenityDTO> selectAmenityByAccomID(@Param("accomID") int accomID);
 
     @Select(selectByCategory)
     List<AmenityDTO> selectByCategory(String category);
 
     @Insert(insertAccomAmenity)
-    int insertAccomAmenity(int accomID, int amenityID);
+    int insertAccomAmenity(@Param("accomID") int accomID, @Param("amenityID") int amenityID);
 
 
 }
