@@ -26,7 +26,9 @@ public class AccommodationService {
 		this.dailyRateDAO = iocContainer.dailyRateDAO();
 
 	}
-
+	public List<AccommodationDTO> selectAccom(Map<String, Object> filters) {
+		return accomDAO.selectAccom(filters);
+	}
 
 	public List<AccommodationDTO> selectAccom(String status) {
 		Map<String, Object> filters = new HashMap<>();
@@ -34,9 +36,12 @@ public class AccommodationService {
 		return accomDAO.selectAccom(filters);
 	}
 
-	public List<AccommodationDTO> selectAccom(Map<String, Object> filters) {
+	public List<AccommodationDTO> selectAccomByUserID(int userID) {
+		Map<String, Object> filters = new HashMap<>();
+		filters.put("userID", userID);
 		return accomDAO.selectAccom(filters);
 	}
+
 
 	public AccommodationDTO getAccom(int accomID) {
 		return accomDAO.getAccom(accomID);
