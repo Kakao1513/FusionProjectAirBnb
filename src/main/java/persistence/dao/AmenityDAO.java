@@ -14,12 +14,12 @@ public class AmenityDAO extends DAO<AmenityDTO> {
         super(sqlSessionFactory);
     }
 
-    public List<AmenityDTO> selectAll() {
+    public List<AmenityDTO> selectAmenityByCategory(String category) {
         List<AmenityDTO> DTOS = null;
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             AmenityMapper amenityMapper = session.getMapper(AmenityMapper.class);
-            DTOS = amenityMapper.selectAll();
+            DTOS = amenityMapper.selectByCategory(category);
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -32,8 +32,8 @@ public class AccommodationService {
 		accomDAO.insertAccom(accomDTO);
 	}
 	// 1.1 모든 편의시설 리스트를 반환
-	public List<AmenityDTO> selectAllAmenityList(){
-		return amenityDAO.selectAll();
+	public List<AmenityDTO> selectAmenityByCategory(String category){
+		return amenityDAO.selectAmenityByCategory(category);
 	}
 	// 1.2 편의시설 리스트 삽입
 	public void insertAccomAmenity(AccommodationDTO accomDTO, AmenityDTO amenityDTO){

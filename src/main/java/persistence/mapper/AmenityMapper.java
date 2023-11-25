@@ -16,6 +16,8 @@ public interface AmenityMapper {
 
     String selectAll = "SELECT * FROM Amenity";
 
+    String selectByCategory = "SELECT * FROM Amenity WHERE category=#{category}";
+
     String insertAccomAmenity = "INSERT INTO Accommodation_amenity (accommodationID, amenityID)" +
             "VALUES (#{accomID}, #{amenityID})";
 
@@ -30,8 +32,8 @@ public interface AmenityMapper {
     )
     List<AmenityDTO> selectAmenityByAccomID(int accomID);
 
-    @Select(selectAll)
-    List<AmenityDTO> selectAll();
+    @Select(selectByCategory)
+    List<AmenityDTO> selectByCategory(String category);
 
     @Insert(insertAccomAmenity)
     int insertAccomAmenity(int accomID, int amenityID);
