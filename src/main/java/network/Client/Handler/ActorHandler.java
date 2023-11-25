@@ -1,6 +1,8 @@
 package network.Client.Handler;
 
 import Container.IocContainer;
+import lombok.Getter;
+import lombok.Setter;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.UserDTO;
@@ -11,6 +13,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
+@Setter
+@Getter
 public abstract class ActorHandler {
 
 	protected UserView userView;
@@ -21,12 +25,11 @@ public abstract class ActorHandler {
 
 	protected static final Scanner sc = new Scanner(System.in);
 
-	public ActorHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois, UserDTO currentUser) {
+	public ActorHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois) {
 		userView = iocContainer.userView();
 		accomView = iocContainer.accommodationView();
 		this.oos = oos;
 		this.ois = ois;
-		this.currentUser = currentUser;
 	}
 
 	abstract public void run();

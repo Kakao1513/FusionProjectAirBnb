@@ -7,6 +7,7 @@ import network.Protocol.Enums.Method;
 import network.Protocol.Packet.AccomRecognizeInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
+import persistence.dto.AccommodationDTO;
 import persistence.dto.UserDTO;
 import service.AccommodationService;
 import service.ReservationService;
@@ -140,6 +141,7 @@ public class UserController implements MethodController {
 			case ADMIN -> {
 			}
 			case HOST -> {
+				res = registAccom(req);
 			}
 			case GUEST -> {
 			}
@@ -147,6 +149,14 @@ public class UserController implements MethodController {
 		}
 
 		return res;
+	}
+
+	private Response registAccom(Request req) {
+		AccommodationDTO accommodationDTO = (AccommodationDTO) req.getPayload();
+		acService.insertAccom(accommodationDTO);
+		Response response = new Response();
+		response.setIsSuccess(true);
+		return response;
 	}
 
 	@Override

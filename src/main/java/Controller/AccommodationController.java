@@ -243,7 +243,7 @@ public class AccommodationController implements MethodController {
 
 	public Response accomFiltering(Request req) {
 		Map<String, Object> filters = (Map<String, Object>) req.getPayload();
-		filters.put("status", "승인됨");
+		filters.put("status", "Confirmed");
 		List<AccommodationDTO> acList = accomService.selectAccom(filters);
 		Response rs = new Response();
 		rs.setIsSuccess(true);

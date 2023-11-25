@@ -79,6 +79,9 @@ public class Client {
 	public void run() {
 		try {
 			while (!login()) ;
+			hostHandler.setCurrentUser(currentUser);
+			adminHandler.setCurrentUser(currentUser);
+			guestHandler.setCurrentUser(currentUser);
 			int select = 1;
 			while (select != 0) {
 				int jobOption = -1;

@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class GuestHandler extends ActorHandler {
 	public GuestHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois, UserDTO currentUser) {
-		super(iocContainer, oos, ois, currentUser);
+		super(iocContainer, oos, ois);
 	}
 
 	@Override
