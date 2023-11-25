@@ -27,6 +27,7 @@ public class AccommodationService {
 
 	}
 
+
 	public List<AccommodationDTO> selectAccom(String status) {
 		Map<String, Object> filters = new HashMap<>();
 		filters.put("status", status);
@@ -59,13 +60,13 @@ public class AccommodationService {
 		return amenityDAO.selectAmenityByAccomID(accomDTO.getAccomId());
 	}
 
-
+	// 숙소 객체를 입력받아 숙소의 기본 요금을 담은 객체를 반환하는 함수
 	public RatePolicyDTO getRate(AccommodationDTO accomDTO) {
 		return ratePolicyDAO.getRate(accomDTO.getAccomId());
 	}
 
-	public DailyRateDTO getDaily(int accomID) {
-		return DailyRateDAO.getDaily(accomID);
+	public DailyRateDTO getDaily(AccommodationDTO accomDTO) {
+		return DailyRateDAO.getDaily(accomDTO.getAccomId());
 	}
 
 	public List<ReviewDTO> getReviews(AccommodationDTO accomDTO) {
