@@ -23,4 +23,15 @@ public class DiscountPolicyDAO {
         }
         return DTO;
     }
+
+    public int insertDiscount(DiscountPolicyDTO discountDTO) {
+        int num = 0;
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            DiscountPolicyMapper discountpolicyMapper = session.getMapper(DiscountPolicyMapper.class);
+            num = discountpolicyMapper.insertDiscount(discountDTO);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return num;
+    }
 }

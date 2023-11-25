@@ -16,6 +16,7 @@ public class AccommodationService {
 	private final RatePolicyDAO ratePolicyDAO;
 	private final DailyRateDAO dailyRateDAO;
 	private final ReviewDAO reviewDAO;
+	private final DiscountPolicyDAO discountDAO;
 
 	public AccommodationService(IocContainer iocContainer) {
 		this.accomDAO = iocContainer.accommodationDAO();
@@ -24,6 +25,7 @@ public class AccommodationService {
 		this.ratePolicyDAO = iocContainer.ratePolicyDAO();
 		this.reviewDAO = iocContainer.reviewDAO();
 		this.dailyRateDAO = iocContainer.dailyRateDAO();
+		this.discountDAO = iocContainer.discountPolicyDAO();
 
 	}
 
@@ -41,11 +43,13 @@ public class AccommodationService {
 	}
 
 	// 2. 요금 정책 설정(주말요금/평일요금 일괄 설정)
-
-
-	// 3 할인 정책 설정(연박 할인 적용 기간 설정, 정량/정률 설정, 이전 예약 건에 대해서도 할인 요금 적용 여부 보이기)
 	public void setAccomPolicy(RatePolicyDTO rateDTO) {
 		ratePolicyDAO.setAccomPolicy(rateDTO);
+	}
+
+	// 3 할인 정책 설정(연박 할인 적용 기간 설정, 정량/정률 설정, 이전 예약 건에 대해서도 할인 요금 적용 여부 보이기)
+	public int insertDiscount(DiscountPolicyDTO discountDTO){
+		return discountDAO.insertDiscount(discountDTO);
 	}
 
 	// 4.1 숙박 예약 현황 보기(달력 화면 구성으로)

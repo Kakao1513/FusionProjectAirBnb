@@ -7,11 +7,13 @@ import persistence.dto.RatePolicyDTO;
 
 public interface DiscountPolicyMapper {
     String getDiscount = "SELECT * FROM discountPolicy WHERE AccommodationID = #{accomID};";
+    String insertDiscount = "INSERT INTO DiscountPolicy " +
+                            "VALUES (#{accomID}, #{DiscountType}, #{Value}, #{DateStart}, #{DateEnd})";
     @Select(getDiscount)
     @Results(
             id = "RateResultSet",
             value = {
-                    @Result(property = "accomID", column = "accomID"),
+                    @Result(property = "accomID", column = "accommodationID"),
                     @Result(property = "DiscountType", column = "DiscountType"),
                     @Result(property = "Value", column = "Value"),
                     @Result(property = "DateStart", column = "DateStart"),
@@ -19,4 +21,8 @@ public interface DiscountPolicyMapper {
             }
     )
     DiscountPolicyDTO getDiscount(@Param("accomID") int accomID);
+
+    @Insert(insertDiscount)
+    int insertDiscount(DiscountPolicyDTO discountDTO);
+
 }
