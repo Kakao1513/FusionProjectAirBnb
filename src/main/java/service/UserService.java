@@ -42,6 +42,7 @@ public class UserService {
 		this.reviewDAO = iocContainer.reviewDAO();
 	}
 
+	// 18. 로그인 기능: 호스트, 관리자, 게스트가 로그인 이후 동작하는 것을 보임
 	private boolean login(String id, String pw) {
 		return pw.equals(userDAO.selectPwById(id));
 	}
@@ -54,6 +55,7 @@ public class UserService {
 		}
 	}
 
+	// 10. (MyPage)개인정보(이름, 전화번호, 생년월일) 수정
 	public UserDTO changePrivacy(UserDTO userDTO, String name, Date birth, String phone) {
 		String newName, newPhone;
 		Date newBirth;
@@ -79,6 +81,8 @@ public class UserService {
 		return userDTO;
 	}
 
+	// 14. 숙소 예약 신청(to 호스트). 단, 일정이 중복된 예약을 시도할 때,
+	// 적절한 메시지와 함께 예약 이 불가함을 보임. 예약 신청 시 게스트는 총 요금을 확인할 수 있다
 	synchronized public boolean reserveRequest(ReservationDTO userInputReserve) {
 		Map<String, Object> filters = new HashMap<>();
 		filters.put("accomID", userInputReserve.getReservationID());
@@ -95,8 +99,9 @@ public class UserService {
 		}
 	}
 
+	// 17. (MyPage)리뷰와 별점 등록
 	public void insertReview(ReviewDTO reviewDTO) {
-
+		reviewDAO.insertReview(reviewDTO);
 	}
 
 }

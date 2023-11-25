@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 public class ReservationSQL {
     public static String selectReservations(
+            @Param("userID") Integer userID,
             @Param("accomID") Integer accomID,
             @Param("roomID") Integer roomID,
             @Param("checkIn") LocalDate checkIn,
@@ -16,6 +17,9 @@ public class ReservationSQL {
         SQL sql = new SQL()
                 .SELECT("*")
                 .FROM("Reservation");
+        if (userID != null){
+            sql.WHERE("userID = #{userID}");
+        }
         if (accomID != null){
             sql.WHERE("accommodationID = #{accomID}");
         }
