@@ -13,7 +13,8 @@ public class ReservationSQL {
             @Param("roomID") Integer roomID,
             @Param("checkIn") LocalDate checkIn,
             @Param("checkOut") LocalDate checkOut,
-            @Param("status") String status
+            @Param("status") String status,
+            @Param("now") LocalDate now
     ) {
         SQL sql = new SQL()
                 .SELECT("*")
@@ -30,6 +31,10 @@ public class ReservationSQL {
         }
         if (checkIn != null){
             sql.WHERE("CheckOut >= #{checkIn}");
+        }
+        if (now != null){
+            // 숙박이 완료된 예약에 대해서만 조회
+            sql.WHERE("CheckOut <= #{now}");
         }
         if (checkOut != null){
             sql.WHERE("CheckIn <= #{checkOut}");

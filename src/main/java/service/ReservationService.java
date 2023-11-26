@@ -40,6 +40,15 @@ public class ReservationService {
         return calculateReservationCharge(reservationDAO.getReservations(filters));
     }
 
+    // 숙박이 완료된 예약 조회, 리뷰 등록을 위해 사용됨
+    public List<ReservationDTO> completedReservationList(AccommodationDTO accomDTO) {
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("now", LocalDate.now());
+        filters.put("status", "예약중");
+
+        return calculateReservationCharge(reservationDAO.getReservations(filters));
+    }
+
 
         // 5. 게스트의 숙박 예약 승인/거절
     public int updateGuestReservation(ReservationDTO reservDTO){
