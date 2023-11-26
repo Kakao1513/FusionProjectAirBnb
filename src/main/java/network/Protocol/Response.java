@@ -23,7 +23,7 @@ public class Response implements Serializable {
 	private RoleType roleType; //header
 
 	private Boolean isSuccess;
-	private String errorMessage;
+	private String message;
 
 	private Object payload;
 

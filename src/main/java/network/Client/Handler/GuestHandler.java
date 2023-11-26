@@ -127,7 +127,7 @@ public class GuestHandler extends ActorHandler {
 
 	public void viewAccomMoreInfo() {
 		Integer accomID = accomView.getAccomNumberFromUser();
-		LocalDate date = accomView.getReservationDate();
+		LocalDate date = reservationView.getReservationDate();
 		Object[] payload = {accomID, date};
 		Response response = requestToServer(new Request(Method.GET, PayloadType.ACCOMMODATION, RoleType.COMMON, payload));
 
@@ -137,7 +137,7 @@ public class GuestHandler extends ActorHandler {
 			accomView.displayAccomInfo(curAccom, moreInfo.getAccomRate());
 			accomView.displayAmenity(moreInfo.getAmenityList());
 			accomView.displayReviews(moreInfo.getReviewList());
-			accomView.displayReservationCalendar(date, curAccom.getCapacity(), moreInfo.getReservationList());
+			reservationView.displayReservationCalendar(date, curAccom.getCapacity(), moreInfo.getReservationList());
 		}
 
 	}

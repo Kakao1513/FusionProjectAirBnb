@@ -53,7 +53,7 @@ public class HostHandler extends ActorHandler {
 				showReservationByAccom();
 			}
 			case 5 -> {
-
+				reservationConfirmorRefuse();
 			}
 			case 6 -> {
 
@@ -64,21 +64,62 @@ public class HostHandler extends ActorHandler {
 		}
 	}
 
+	private void reservationConfirmorRefuse() {
+		List<AccommodationDTO> myAccomList = selectConfirmedAccomByUser();
+		if (!myAccomList.isEmpty()) {
+			int select = accomView.readAccomIndex(myAccomList);
+			AccommodationDTO selectedAccom = myAccomList.get(select);
+			List<ReservationDTO> reservationDTOS = getReservationListByAccomodation(selectedAccom, null);
+			if (!reservationDTOS.isEmpty()) {
+				reservationView.displayReservations(reservationDTOS);
+				int reserveSelect = reservationView.readReservationIndex(reservationDTOS);
+				ReservationDTO selectReserve = reservationDTOS.get(reserveSelect);
+				System.out.print("1.예약 승인 2.예약 거절 : ");
+				int isConfirm = Integer.parseInt(sc.nextLine());
+				String status = switch (isConfirm) {
+					case 1 -> "예약중";
+					case 2 -> "예약반려됨";
+					default -> throw new IllegalArgumentException();
+				};
+				selectReserve.setReservationInfo(status);
+				Request request = Request.builder().payloadType(PayloadType.RESERVATION).roleType(RoleType.HOST).method(Method.PUT).payload(selectReserve).build();
+				Response response = requestToServer(request);
+				if (response != null && response.getIsSuccess()) {
+					System.out.println(response.getMessage());
+				}
+			} else {
+				System.out.println("예약 정보가 없습니다.");
+			}
+		} else {
+			System.out.println("숙소 정보가 없습니다.");
+		}
+
+	}
+
+	private List<ReservationDTO> getReservationListByAccomodation(AccommodationDTO accommodationDTO, LocalDate nowMonth) {
+		Object[] payload = {accommodationDTO, nowMonth};
+		Request request = Request.builder().method(Method.GET).roleType(RoleType.HOST).payloadType(PayloadType.RESERVATION).payload(payload).build();
+		List<ReservationDTO> reservationDTOs = null;
+		Response response = requestToServer(request);
+		if (response != null && response.getIsSuccess()) {
+			reservationDTOs = (List<ReservationDTO>) response.getPayload();
+		}
+		return reservationDTOs;
+	}
+
 	private void showReservationByAccom() {
 		List<AccommodationDTO> myAccomList = selectConfirmedAccomByUser();
-		int select = accomView.readAccomIndex(myAccomList);
-		AccommodationDTO selectAccom = myAccomList.get(select);
-		YearMonth yearMonth = accomView.readYearMonth();
+		if (!myAccomList.isEmpty()) {
+			int select = accomView.readAccomIndex(myAccomList);
+			AccommodationDTO selectAccom = myAccomList.get(select);
+			YearMonth yearMonth = accomView.readYearMonth();
+			LocalDate nowMonth = yearMonth.atDay(1);
 
-		LocalDate nowMonth = yearMonth.atDay(1);
-		Object[] payload =  {selectAccom, nowMonth};
-		Request request = Request.builder().method(Method.GET).roleType(RoleType.HOST).payloadType(PayloadType.RESERVATION).payload(payload).build();
-
-		Response response = requestToServer(request);
-		if(response!=null&&response.getIsSuccess()){
-			List<ReservationDTO> reservationDTOs = (List<ReservationDTO>) response.getPayload();
-			System.out.println("==================="+selectAccom.getAccomName()+"숙소의 예약 현황"+"========================");
-			accomView.displayReservationCalendar(nowMonth, selectAccom.getCapacity(), reservationDTOs);
+			List<ReservationDTO> reservationDTOs = getReservationListByAccomodation(selectAccom, nowMonth);
+			System.out.println("===================" + selectAccom.getAccomName() + "숙소의 예약 현황" + "========================");
+			reservationView.displayReservationCalendar(nowMonth, selectAccom.getCapacity(), reservationDTOs);
+		} else {
+			System.out.println("숙소 정보가 없습니다.");
 		}
 	}
 
@@ -94,6 +135,7 @@ public class HostHandler extends ActorHandler {
 		}
 		return myAccomList;
 	}
+
 	private List<AccommodationDTO> selectAccomByUser() { //승인되지 않은 목록까지 보여줌
 		Request request = Request.builder().payloadType(PayloadType.ACCOMMODATION).roleType(RoleType.HOST).method(Method.GET).payload(currentUser).build();
 		Response response = requestToServer(request);
@@ -106,34 +148,43 @@ public class HostHandler extends ActorHandler {
 		}
 		return myAccomList;
 	}
+
 	private void registDiscountPolicy() {
 		Request request = Request.builder().method(Method.PUT).roleType(RoleType.HOST).payloadType(PayloadType.ACCOMMODATION).build();
 		List<AccommodationDTO> myAccomList = selectConfirmedAccomByUser();
-		int select = accomView.readAccomIndex(myAccomList);
-		DiscountPolicyDTO discountPolicyDTO = accomView.getDiscountFromUser(myAccomList.get(select));
-		request.setPayload(discountPolicyDTO);
-		Response response = requestToServer(request);
-		if (response != null && response.getIsSuccess()) {
-			AccommodationDTO accom = (AccommodationDTO) response.getPayload();
-			System.out.println(accom.getAccomName() + " 숙소의 할인 정책을 정상적으로 등록하였습니다.");
+		if (myAccomList.isEmpty()) {
+			int select = accomView.readAccomIndex(myAccomList);
+			DiscountPolicyDTO discountPolicyDTO = accomView.getDiscountFromUser(myAccomList.get(select));
+			request.setPayload(discountPolicyDTO);
+			Response response = requestToServer(request);
+			if (response != null && response.getIsSuccess()) {
+				AccommodationDTO accom = (AccommodationDTO) response.getPayload();
+				System.out.println(accom.getAccomName() + " 숙소의 할인 정책을 정상적으로 등록하였습니다.");
+			} else {
+				System.out.println("요청이 잘못되었습니다.");
+			}
 		} else {
-			System.out.println("요청이 잘못되었습니다.");
+			System.out.println("숙소 정보가 없습니다.");
 		}
 
 	}
 
 	private void registAccomRatePolicy() {
 		List<AccommodationDTO> myAccomList = selectConfirmedAccomByUser();
-		int select = accomView.readAccomIndex(myAccomList);
-		AccommodationDTO selectedAccom = myAccomList.get(select);
-		RatePolicyDTO ratePolicyDTO = accomView.getRatePolicyFromUser(selectedAccom.getAccomID());
-		Request request = Request.builder().method(Method.POST).payloadType(PayloadType.ACCOMMODATION).roleType(RoleType.HOST).payload(ratePolicyDTO).build();
-		Response response = requestToServer(request);
-		if (response != null && response.getIsSuccess()) {
-			AccommodationDTO accom = (AccommodationDTO) response.getPayload();
-			System.out.println(accom.getAccomName() + " 숙소의 요금을 정상적으로 등록되었습니다.");
+		if (!myAccomList.isEmpty()) {
+			int select = accomView.readAccomIndex(myAccomList);
+			AccommodationDTO selectedAccom = myAccomList.get(select);
+			RatePolicyDTO ratePolicyDTO = accomView.getRatePolicyFromUser(selectedAccom.getAccomID());
+			Request request = Request.builder().method(Method.POST).payloadType(PayloadType.ACCOMMODATION).roleType(RoleType.HOST).payload(ratePolicyDTO).build();
+			Response response = requestToServer(request);
+			if (response != null && response.getIsSuccess()) {
+				AccommodationDTO accom = (AccommodationDTO) response.getPayload();
+				System.out.println(accom.getAccomName() + " 숙소의 요금을 정상적으로 등록되었습니다.");
+			} else {
+				System.out.println("요청이 잘못되었습니다.");
+			}
 		} else {
-			System.out.println("요청이 잘못되었습니다.");
+			System.out.println("숙소 정보가 없습니다.");
 		}
 
 	}

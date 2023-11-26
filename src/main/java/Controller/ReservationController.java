@@ -69,7 +69,12 @@ public class ReservationController implements MethodController {
 		Object[] payload = (Object[]) request.getPayload();
 		AccommodationDTO selectedAccom = (AccommodationDTO) payload[0];
 		LocalDate nowMonth = (LocalDate) payload[1];
-		List<ReservationDTO> reservationDTOS = reservationService.getReservationList(selectedAccom, nowMonth);
+		List<ReservationDTO> reservationDTOS = null;
+		if (nowMonth != null) {
+			reservationDTOS = reservationService.getConfirmReservationList(selectedAccom, nowMonth);
+		}else{
+			reservationDTOS = reservationService.getReadyReservationList(selectedAccom); //승인대기중인 목록만 가져옴
+		}
 		return Response.builder().isSuccess(true).payload(reservationDTOS).build();
 	}
 
@@ -82,12 +87,19 @@ public class ReservationController implements MethodController {
 			case ADMIN -> {
 			}
 			case HOST -> {
+				res = putGuestReservation(req);
 			}
 			case GUEST -> {
 			}
 		}
 
 		return res;
+	}
+
+	private Response putGuestReservation(Request req) {
+		ReservationDTO reservationDTO = (ReservationDTO) req.getPayload();
+		int column = reservationService.updateReservation(reservationDTO);
+		return Response.builder().isSuccess(true).message("예약이 성공적으로 변경되었습니다.").build();
 	}
 
 	public Response postHandle(Request req) {

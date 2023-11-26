@@ -61,21 +61,25 @@ public class AdminHandler extends ActorHandler {
 
 	private void accomRecognizeChange() {
 		List<AccommodationDTO> accomList = viewReadyAccomList();
-		int select = accomView.readAccomIndex(accomList);
-		AccommodationDTO selectAccom = accomList.get(select);
-		System.out.println("1.승인 2.거절 : ");
-		int statusNum = Integer.parseInt(sc.nextLine());
-		AccommodationStatus status = switch (statusNum) {
-			case 1 -> AccommodationStatus.Confirmed;
-			case 2 -> AccommodationStatus.Refused;
-			default -> throw new IllegalArgumentException();
-		};
-		Request request = Request.builder().roleType(RoleType.ADMIN).method(Method.PUT).payloadType(PayloadType.USER).build();
-		AccomRecognizeInfo recognizeInfo = new AccomRecognizeInfo(selectAccom.getAccomID(), status);
-		request.setPayload(recognizeInfo);
-		Response response = requestToServer(request);
-		if(response.getIsSuccess()){
-			System.out.println("갱신이 완료되었습니다.");
+		if (!accomList.isEmpty()) {
+			int select = accomView.readAccomIndex(accomList);
+			AccommodationDTO selectAccom = accomList.get(select);
+			System.out.println("1.승인 2.거절 : ");
+			int statusNum = Integer.parseInt(sc.nextLine());
+			AccommodationStatus status = switch (statusNum) {
+				case 1 -> AccommodationStatus.Confirmed;
+				case 2 -> AccommodationStatus.Refused;
+				default -> throw new IllegalArgumentException();
+			};
+			Request request = Request.builder().roleType(RoleType.ADMIN).method(Method.PUT).payloadType(PayloadType.USER).build();
+			AccomRecognizeInfo recognizeInfo = new AccomRecognizeInfo(selectAccom.getAccomID(), status);
+			request.setPayload(recognizeInfo);
+			Response response = requestToServer(request);
+			if (response.getIsSuccess()) {
+				System.out.println("갱신이 완료되었습니다.");
+			}
+		}else{
+			System.out.println("숙소 정보가 없습니다.");
 		}
 	}
 

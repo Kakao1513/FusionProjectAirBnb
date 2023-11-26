@@ -23,17 +23,25 @@ public class ReservationService {
 
     // 4.2 숙박 예약 현황 보기(달력 화면 구성으로)
     // 13.4 숙소의 예약 가능 일자 확인
-    public List<ReservationDTO> getReservationList(AccommodationDTO accomDTO, LocalDate date){
+    public List<ReservationDTO> getConfirmReservationList(AccommodationDTO accomDTO, LocalDate date){
         Map<String, Object> filters = new HashMap<>();
         filters.put("accomID", accomDTO.getAccomID());
         filters.put("checkIn", date);
         filters.put("checkOut", date.plusMonths(1));
+        filters.put("status", "예약중");
+
+        return reservationDAO.getReservations(filters);
+    }
+    public List<ReservationDTO> getReadyReservationList(AccommodationDTO accomDTO) {
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("accomID", accomDTO.getAccomID());
+        filters.put("status", "승인대기중");
 
         return calculateReservationCharge(reservationDAO.getReservations(filters));
     }
 
 
-    // 5. 게스트의 숙박 예약 승인/거절
+        // 5. 게스트의 숙박 예약 승인/거절
     public int updateGuestReservation(ReservationDTO reservDTO){
         return reservationDAO.updateGuestReservation(reservDTO);
     }

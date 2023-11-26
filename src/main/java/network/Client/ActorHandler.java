@@ -9,6 +9,7 @@ import network.Protocol.Response;
 import persistence.dto.UserDTO;
 import view.AccommodationView;
 import view.AmenityView;
+import view.ReservationView;
 import view.UserView;
 
 import java.io.ObjectInputStream;
@@ -21,6 +22,7 @@ public abstract class ActorHandler {
 
 	protected UserView userView;
 	protected AccommodationView accomView;
+	protected ReservationView reservationView;
 	protected AmenityView amenityView;
 	protected ObjectOutputStream oos;
 	protected ObjectInputStream ois;
@@ -32,6 +34,7 @@ public abstract class ActorHandler {
 		userView = viewContainer.userView();
 		accomView = viewContainer.accommodationView();
 		amenityView = viewContainer.amenityView();
+		reservationView = viewContainer.reservationView();
 		this.oos = oos;
 		this.ois = ois;
 	}
