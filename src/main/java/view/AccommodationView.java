@@ -4,8 +4,10 @@ import Enums.AccommodationStatus;
 import persistence.dto.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class AccommodationView extends View<AccommodationDTO> {
@@ -206,6 +208,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 		System.out.println();
 	}
 
+	// 1. 숙박 등록 신청(이름, 숙소 소개, 객실 타입(공간 전체/개인실), 수용 정보, 편의시설)
 	public AccommodationDTO getAccomInfoFromUser(UserDTO currentUser) {
 		System.out.print("숙소 이름을 입력하세요: ");
 		String accomName = SCANNER.nextLine();
@@ -232,6 +235,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 				.build();
 	}
 
+	// 2. 요금 정책 설정(주말요금/평일요금 일괄 설정)
 	public RatePolicyDTO getRatePolicyFromUser(int accomID) {
 		System.out.print("설정할 평일 요금을 입력하세요: ");
 		int weekday = readInt();
@@ -243,6 +247,31 @@ public class AccommodationView extends View<AccommodationDTO> {
 
 	public void Return() {
 		System.out.println("(0 입력시 이전 메뉴로 돌아갑니다.)");
+	}
+
+	// 3. 할인 정책 설정(연박 할인 적용 기간 설정, 정량/정률 설정, 이전 예약 건에 대해서도 할인 요금 적용 여부 보이기)
+	public DiscountPolicyDTO getDiscountFromUser(AccommodationDTO accomDTO){
+		System.out.print("할인 타입을 입력하세요 [정량/정률] : ");
+		String type = SCANNER.nextLine();
+		System.out.print("할인 시작 날짜  (yyyy-mm-dd) : " );
+		LocalDate startDate = LocalDate.parse(SCANNER.nextLine(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		System.out.print("할인 종료 날짜  (yyyy-mm-dd) : " );
+		LocalDate endDate = LocalDate.parse(SCANNER.nextLine(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		if(Objects.equals(type, "정량")){
+			System.out.print("할인 금액을 입력하세요 (n원): ");
+		}
+		else {
+			System.out.println("할인 비율을 입력하세요 (n%) : ");
+		}
+		int value = readInt();
+
+		return DiscountPolicyDTO.builder()
+				.accomID(accomDTO.getAccomID())
+				.startDate(startDate)
+				.endDate(endDate)
+				.discountType(type)
+				.value(value)
+				.build();
 	}
 
 
