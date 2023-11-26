@@ -25,14 +25,16 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 		return DTOs;
 	}
 
-	public void insertAccom(AccommodationDTO dto){
+	public int insertAccom(AccommodationDTO dto){
+		int num = 0;
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
-			accomMapper.insertAccom(dto);
+			num = accomMapper.insertAccom(dto);
 			session.commit();
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+		return num;
 	}
 
 	public AccommodationDTO getAccom(int accomID){

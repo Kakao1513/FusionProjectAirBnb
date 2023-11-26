@@ -104,7 +104,7 @@ public class AccommodationSQL {
 		SQL sql = new SQL()
 				.INSERT_INTO("rate_policy")
 				.INTO_COLUMNS("AccommodationID", "weekday", "weekend")
-				.INTO_VALUES("#{rate.accomID}, #{rate.weekday}, #{rate.weekend})");
+				.INTO_VALUES("#{rate.accomID}, #{rate.weekday}, #{rate.weekend}");
 		return sql.toString();
 	}
 
@@ -112,7 +112,7 @@ public class AccommodationSQL {
 		SQL sql = new SQL()
 				.INSERT_INTO("daily_rate")
 				.INTO_COLUMNS("AccommodationID", "startdate", "enddate", "charge")
-				.INTO_VALUES("#{daily.accomID}, #{daily.startdate}, #{daily.enddate}, #{daily.charge})");
+				.INTO_VALUES("#{daily.accomID}, #{daily.startDate}, #{daily.endDate}, #{daily.charge}");
 		return sql.toString();
 	}
 
