@@ -173,8 +173,8 @@ public class AccommodationView extends View<AccommodationDTO> {
 			}
 		}
 
-		System.out.println("<< " + date.getYear() + "년 " + date.getMonth() + "월 >>");
-		System.out.println("Su    Mo    Tu    We    Th    Fr    Sa");
+		System.out.println("\t\t\t << " + date.getYear() + "년 " + date.getMonthValue() + "월 >>");
+		System.out.println("  Su    Mo    Tu    We    Th    Fr    Sa");
 
 		// 첫 주 전까지 공백을 출력합니다.
 		for (int i = 1; i < startDayOfWeek; i++) {
