@@ -1,6 +1,8 @@
 package network.Client;
 
 import Container.IocContainer;
+import Container.ViewContainer;
+import network.Client.Handler.ActorHandler;
 import network.Client.Handler.AdminHandler;
 import network.Client.Handler.GuestHandler;
 import network.Client.Handler.HostHandler;
@@ -24,7 +26,7 @@ public class Client {
 	private final int port;
 	private final UserView userView;
 	private Socket socket;
-	private UserDTO currentUser;
+	private static UserDTO currentUser;
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 
@@ -34,7 +36,7 @@ public class Client {
 
 	private final HostHandler hostHandler;
 
-	public Client(String ip, int port, IocContainer iocContainer) {
+	public Client(String ip, int port, ViewContainer viewContainer) {
 		this.ip = ip;
 		this.port = port;
 		try {
@@ -44,10 +46,10 @@ public class Client {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		userView = iocContainer.userView();
-		adminHandler = new AdminHandler(iocContainer, oos, ois);
-		guestHandler = new GuestHandler(iocContainer, oos, ois);
-		hostHandler = new HostHandler(iocContainer, oos, ois);
+		userView = viewContainer.userView();
+		adminHandler = new AdminHandler(viewContainer, oos, ois);
+		guestHandler = new GuestHandler(viewContainer, oos, ois);
+		hostHandler = new HostHandler(viewContainer, oos, ois);
 	}
 
 	private boolean login() {
@@ -79,9 +81,7 @@ public class Client {
 	public void run() {
 		try {
 			while (!login()) ;
-			hostHandler.setCurrentUser(currentUser);
-			adminHandler.setCurrentUser(currentUser);
-			guestHandler.setCurrentUser(currentUser);
+			ActorHandler.setCurrentUser(currentUser);
 			int select = 1;
 			while (select != 0) {
 				int jobOption = -1;
@@ -101,7 +101,9 @@ public class Client {
 					}
 				}
 			}
-		} finally {
+		} catch (Exception e){
+			e.printStackTrace();
+		}finally {
 			closeResource();
 		}
 	}

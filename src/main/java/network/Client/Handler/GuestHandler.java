@@ -1,6 +1,7 @@
 package network.Client.Handler;
 
 import Container.IocContainer;
+import Container.ViewContainer;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
 import network.Protocol.Enums.RoleType;
@@ -19,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 public class GuestHandler extends ActorHandler {
-	public GuestHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois) {
-		super(iocContainer, oos, ois);
+	public GuestHandler(ViewContainer viewContainer, ObjectOutputStream oos, ObjectInputStream ois) {
+		super(viewContainer, oos, ois);
 	}
 
 	@Override
@@ -161,7 +162,14 @@ public class GuestHandler extends ActorHandler {
 
 		if (response.getIsSuccess()) {
 			System.out.println("개인정보 수정 성공.");
-			currentUser = (UserDTO) response.getPayload();
+			UserDTO chUser = (UserDTO) response.getPayload();
+			currentUser.setAccountId(chUser.getAccountId());
+			currentUser.setName(chUser.getName());
+			currentUser.setPhone(chUser.getPhone());
+			currentUser.setBirth(chUser.getBirth());
+			currentUser.setType(chUser.getType());
+			currentUser.setPassword(chUser.getPassword());
+			currentUser.setUserId(chUser.getUserId());
 		}
 	}
 

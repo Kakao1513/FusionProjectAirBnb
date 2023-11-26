@@ -37,8 +37,8 @@ class ClientHandler implements Runnable {
 				oos.writeObject(response);
 				oos.flush();
 			}
-		} catch (IOException | ClassNotFoundException e) {
-			throw new RuntimeException(e);
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			resourceCloser();
 		}

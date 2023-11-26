@@ -1,5 +1,6 @@
 package Enums;
 
+import Container.SerialVersionContainer;
 import lombok.Getter;
 
 import java.io.Serial;
@@ -17,7 +18,7 @@ public enum AccommodationStatus implements Enum, Serializable {
 	Confirmed("승인됨");
 
 	@Serial
-	private static final long serialVersionUID = 362498821L;
+	private static final long serialVersionUID = SerialVersionContainer.getSerialVersionUID();
 
 	private final String type;
 

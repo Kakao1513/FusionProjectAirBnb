@@ -1,5 +1,6 @@
 package network.Protocol.Packet;
 
+import Container.SerialVersionContainer;
 import lombok.*;
 import persistence.dto.*;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class AccomMoreInfo implements Serializable {
 
 	@Serial
-	private static final long serialVersionUID = 362498821L;
+	private static final long serialVersionUID = SerialVersionContainer.getSerialVersionUID();
 
 	private AccommodationDTO curAccom;
 	private RatePolicyDTO accomRate;

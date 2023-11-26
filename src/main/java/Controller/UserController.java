@@ -2,18 +2,20 @@ package Controller;
 
 import Container.IocContainer;
 import lombok.AllArgsConstructor;
-import network.Protocol.Enums.RoleType;
 import network.Protocol.Enums.Method;
+import network.Protocol.Enums.RoleType;
 import network.Protocol.Packet.AccomRecognizeInfo;
+import network.Protocol.Packet.AccommodationRegister;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.AccommodationDTO;
+import persistence.dto.AmenityDTO;
 import persistence.dto.UserDTO;
 import service.AccommodationService;
-import service.ReservationService;
 import service.UserService;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -24,7 +26,8 @@ public class UserController implements MethodController {
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
-	public UserController(IocContainer iocContainer){
+
+	public UserController(IocContainer iocContainer) {
 		this.userService = iocContainer.userService();
 		this.acService = iocContainer.accommodationService();
 	}
@@ -102,6 +105,7 @@ public class UserController implements MethodController {
 		}
 		return res;
 	}
+
 	@Override
 	public Response putHandle(Request req) {
 		RoleType roleType = req.getRoleType();
@@ -151,9 +155,49 @@ public class UserController implements MethodController {
 		return res;
 	}
 
+	//1.숙소등록
 	private Response registAccom(Request req) {
-		AccommodationDTO accommodationDTO = (AccommodationDTO) req.getPayload();
+		AccommodationRegister accommodationRegister = (AccommodationRegister) req.getPayload();
+		AccommodationDTO accommodationDTO = accommodationRegister.getAccommodationDTO();
+		List<Boolean[]> amenityList = accommodationRegister.getAmenityList();
+
+		Boolean[] basicAmenities = amenityList.get(0);
+		Boolean[] accessibilityAmenities = amenityList.get(1);
+		Boolean[] safetyAmenites = amenityList.get(2);
+		Boolean[] favoriteAmenites = amenityList.get(3);
+
+		List<AmenityDTO> basicAmenitieList = acService.selectAmenityByCategory("기본"); //1~6
+		List<AmenityDTO> safetyAmeniteList = acService.selectAmenityByCategory("안전"); //7~11
+		List<AmenityDTO> accessAmenitieList = acService.selectAmenityByCategory("접근성"); //12~15
+		List<AmenityDTO> favAmenitieList = acService.selectAmenityByCategory("선호"); //
+
 		acService.insertAccom(accommodationDTO);
+
+		for (int i = 0; i < basicAmenitieList.size(); i++) {
+			AmenityDTO amenityDTO = basicAmenitieList.get(i);
+			if (basicAmenities[i + 1]) {
+				acService.insertAccomAmenity(accommodationDTO, amenityDTO);
+			}
+		}
+		for (int i = 0; i < safetyAmeniteList.size(); i++) {
+			AmenityDTO amenityDTO = safetyAmeniteList.get(i);
+			if (safetyAmenites[i + 1]) {
+				acService.insertAccomAmenity(accommodationDTO, amenityDTO);
+			}
+		}
+		for (int i = 0; i < accessAmenitieList.size(); i++) {
+			AmenityDTO amenityDTO = accessAmenitieList.get(i);
+			if (accessibilityAmenities[i + 1]) {
+				acService.insertAccomAmenity(accommodationDTO, amenityDTO);
+			}
+		}
+		for (int i = 0; i < favAmenitieList.size(); i++) {
+			AmenityDTO amenityDTO = favAmenitieList.get(i);
+			if (favoriteAmenites[i + 1]) {
+				acService.insertAccomAmenity(accommodationDTO, amenityDTO);
+			}
+		}
+
 		Response response = new Response();
 		response.setIsSuccess(true);
 		return response;

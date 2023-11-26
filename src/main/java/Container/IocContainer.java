@@ -7,6 +7,7 @@ import service.AccommodationService;
 import service.ReservationService;
 import service.UserService;
 import view.AccommodationView;
+import view.AmenityView;
 import view.UserView;
 
 public class IocContainer { //추후 스레드 동시성 문제 발생시 일반 객체 리턴 방식으로 수정
@@ -30,9 +31,6 @@ public class IocContainer { //추후 스레드 동시성 문제 발생시 일반
 	private static final AccommodationService acService = new AccommodationService(instance);
 
 	private static final ReservationService reservationService = new ReservationService(instance);
-
-	private static final UserView userView = new UserView();
-	private static final AccommodationView acView = new AccommodationView();
 
 	private IocContainer() {
 	}
@@ -89,10 +87,4 @@ public class IocContainer { //추후 스레드 동시성 문제 발생시 일반
 		return reservationService;
 	}
 
-	public AccommodationView accommodationView() {
-		return acView;
-	}
-	public UserView userView(){
-		return userView;
-	}
 }

@@ -1,6 +1,7 @@
 package network.Client.Handler;
 
 import Container.IocContainer;
+import Container.ViewContainer;
 import Enums.AccommodationStatus;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
@@ -17,8 +18,8 @@ import java.util.List;
 
 public class AdminHandler extends ActorHandler {
 
-	public AdminHandler(IocContainer iocContainer, ObjectOutputStream oos, ObjectInputStream ois) {
-		super(iocContainer, oos, ois);
+	public AdminHandler(ViewContainer viewContainer, ObjectOutputStream oos, ObjectInputStream ois) {
+		super(viewContainer, oos, ois);
 	}
 
 	@Override

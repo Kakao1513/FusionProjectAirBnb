@@ -108,12 +108,21 @@ public class AccommodationView extends View<AccommodationDTO> {
 		System.out.println("================================");
 	}
 
-	public void displayAmenity(List<AmenityDTO> amenityDTOS) {
-		System.out.println("=========편의시설 리스트=========");
+
+	public void displayAmenityByType(List<AmenityDTO> amenityDTOS, String type) {
+		System.out.printf("=========%s 편의시설 리스트=========\n", type);
 		for (AmenityDTO dto : amenityDTOS) {
 			System.out.println(dto.getName());
 		}
 		System.out.println("================================");
+	}
+
+	public void displayAmenity(List<AmenityDTO> amenityDTOS) {
+		System.out.println("==========편의시설 리스트==========");
+		for (AmenityDTO dto : amenityDTOS) {
+			System.out.println(dto.getName());
+		}
+		System.out.println("=================================");
 	}
 
 	public void displayReservations(List<ReservationDTO> reservationDTOS) {
