@@ -29,7 +29,7 @@ public class ReservationService {
         filters.put("checkIn", date);
         filters.put("checkOut", date.plusMonths(1));
 
-        return reservationDAO.getReservations(filters);
+        return calculateReservationCharge(reservationDAO.getReservations(filters));
     }
 
 
@@ -49,7 +49,16 @@ public class ReservationService {
         filters.put("userID", user.getUserId());
         filters.put("status", status);
 
-        return reservationDAO.getReservations(filters);
+        return calculateReservationCharge(reservationDAO.getReservations(filters));
+    }
+
+    private List<ReservationDTO> calculateReservationCharge(List<ReservationDTO> reservationDTOS){
+        if (reservationDTOS != null){
+            for(ReservationDTO reservationDAO : reservationDTOS){
+                reservationDAO.setCharge(calculateReservationCharge(reservationDAO));
+            }
+        }
+        return reservationDTOS;
     }
 
     public int calculateReservationCharge(ReservationDTO rDTO){
