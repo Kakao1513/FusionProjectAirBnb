@@ -29,4 +29,15 @@ public class ReviewSQL {
         return  sql.toString();
     }
 
+    public static String insertReviewReply(ReviewDTO reply){
+        SQL sql = new SQL()
+                .INSERT_INTO("Review")
+                .INTO_COLUMNS("userID, roomID, parentCommentID, text, dateCreated")
+                .INTO_VALUES("#{userID}, #{roomID}, #{CommentID}, #{text}, #{dateCreated}");
+        if(reply.getModifiedDate() != null){
+            sql.INTO_COLUMNS("modificationTime").INTO_VALUES("#{modificationTime}");
+        }
+
+        return sql.toString();
+    }
 }

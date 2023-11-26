@@ -58,4 +58,13 @@ public class ReservationSQL {
         return sql.toString();
     }
 
+    public static String updateGusetReservation(ReservationDTO reservation) {
+        SQL sql = new SQL()
+                .UPDATE("Reservation")
+                .SET("ReservationInform = #{reservationInform}")
+                .WHERE("AccommodationID IN(SELSCT AccommodationID FROM airbnb.accommodation")
+                .AND()
+                .WHERE("AccommodationID = #{accommodationID}");
+        return sql.toString();
+    }
 }

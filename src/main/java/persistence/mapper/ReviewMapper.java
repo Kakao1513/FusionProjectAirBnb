@@ -26,4 +26,6 @@ public interface ReviewMapper {
     @InsertProvider(type = ReviewSQL.class, method = "insertReview")
     int insertReview(ReviewDTO review);
 
+    @InsertProvider(type = ReviewSQL.class, method = "insertReviewReply")
+    int insertReviewReply(ReviewDTO reply);
 }

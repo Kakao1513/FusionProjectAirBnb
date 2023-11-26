@@ -32,4 +32,13 @@ public class ReviewDAO {
             e.printStackTrace();
         }
     }
+    public void insertReviewReply(ReviewDTO dto){
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            ReviewMapper reviewMapper =session.getMapper(ReviewMapper.class);
+            reviewMapper.insertReviewReply(dto);
+            session.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

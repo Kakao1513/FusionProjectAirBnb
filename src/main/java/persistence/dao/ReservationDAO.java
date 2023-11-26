@@ -51,5 +51,14 @@ public class ReservationDAO {
 		return num;
 	}
 
+	public int updateGuestReservation(ReservationDTO reservDTO) {
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			ReservationMapper reservationMapper = session.getMapper(ReservationMapper.class);
+			reservationMapper.updateGuestReservation(reservDTO);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
 }

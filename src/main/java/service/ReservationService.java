@@ -34,6 +34,10 @@ public class ReservationService {
 
 
     // 5. 게스트의 숙박 예약 승인/거절
+    public int updateGuestReservation(ReservationDTO reservDTO){
+        return reservationDAO.updateGuestReservation(reservDTO);
+    }
+
     // 15. (MyPage)예약 취소
     public int updateReservation(ReservationDTO rDTO){
         return reservationDAO.updateReservation(rDTO);

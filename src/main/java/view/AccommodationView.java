@@ -46,6 +46,11 @@ public class AccommodationView extends View<AccommodationDTO> {
 		return readInt();
 	}
 
+	public int getReviewNumberFromUser() {
+		System.out.println("답글을 작성할 리뷰 번호를 입력하세요 : ");
+		return readInt();
+	}
+
 	public int displayFilterList() {
 		System.out.println("==========검색 필터==========");
 		System.out.println("1. 숙소 이름으로 검색");
@@ -242,7 +247,11 @@ public class AccommodationView extends View<AccommodationDTO> {
 		System.out.print("설정할 주말 요금을 입력하세요: ");
 		int weekend = readInt();
 
-		return RatePolicyDTO.builder().accomID(accomID).weekday(weekday).weekend(weekend).build();
+		return RatePolicyDTO.builder()
+				.accomID(accomID)
+				.weekday(weekday)
+				.weekend(weekend)
+				.build();
 	}
 
 	public void Return() {
@@ -273,6 +282,5 @@ public class AccommodationView extends View<AccommodationDTO> {
 				.value(value)
 				.build();
 	}
-
 
 }

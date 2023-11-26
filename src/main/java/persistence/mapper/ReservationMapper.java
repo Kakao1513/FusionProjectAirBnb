@@ -31,4 +31,7 @@ public interface ReservationMapper {
     @UpdateProvider(type = ReservationSQL.class, method = "updateReservation")
     int updateReservation(ReservationDTO rDTO);
 
+    @UpdateProvider(type = ReservationSQL.class, method = "updateGuestReservation")
+    int updateGuestReservation(ReservationDTO reservDTO);
+
 }
