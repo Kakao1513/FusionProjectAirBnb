@@ -1,6 +1,5 @@
 package network.Client.Handler;
 
-import Container.IocContainer;
 import Container.ViewContainer;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
@@ -9,6 +8,8 @@ import network.Protocol.Packet.AccommodationRegister;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.AccommodationDTO;
+import persistence.dto.RatePolicyDTO;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class HostHandler extends ActorHandler {
 				registerAccomodation();
 			}
 			case 2 -> {
-//				setAccomPolicy();
+				setAccomRatePolicy();
 			}
 			case 3 -> {
 
@@ -52,7 +53,32 @@ public class HostHandler extends ActorHandler {
 			case 6 -> {
 
 			}
+			case 7 ->{
+				getConfirmedAccomByUser();
+			}
 		}
+	}
+
+	private List<AccommodationDTO> getConfirmedAccomByUser() {
+		Request request = Request.builder().payloadType(PayloadType.USER).roleType(RoleType.HOST).method(Method.GET).payload(currentUser).build();
+		Response response = requestToServer(request);
+		List<AccommodationDTO> myAccomList = null;
+		if (response != null && response.getIsSuccess()) {
+			myAccomList = (List<AccommodationDTO>) response.getPayload();
+			System.out.println("=========================나의 숙소 목록============================");
+			accomView.displayAccomListCountOrder(myAccomList);
+		} else {
+			System.out.println("요청이 실패하였습니다.");
+		}
+		return myAccomList;
+	}
+
+	private void setAccomRatePolicy() {
+		List<AccommodationDTO> myAccomList = getConfirmedAccomByUser();
+		System.out.print("숙소 번호를 입력하세요:");
+		int accomID = Integer.parseInt(sc.nextLine());
+		RatePolicyDTO ratePolicyDTO = accomView.getRatePolicyFromUser(currentUser.getUserId());
+
 	}
 
 	private void registerAccomodation() {

@@ -22,6 +22,17 @@ public class AccommodationView extends View<AccommodationDTO> {
 		System.out.println("===========================================================================================");
 	}
 
+	public void displayAccomListCountOrder(List<AccommodationDTO> accommodationDTOS) {
+		System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |");
+		System.out.println("------------------------------------------------------------------------------------------");
+		int i = 1;
+		for (AccommodationDTO dto : accommodationDTOS) {
+			System.out.printf("|%-3d|%-14s|%-20s|%-7s|%-5s|%-25s|\n", i, dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment());
+			i++;
+		}
+		System.out.println("===========================================================================================");
+	}
+
 	public int getDailyOrDiscount() {
 		System.out.println("1: 일별 요금 설정, 2: 할인 정책 설정");
 		System.out.println("선택할 번호를 입력하세요 : ");
@@ -222,9 +233,9 @@ public class AccommodationView extends View<AccommodationDTO> {
 	}
 
 	public RatePolicyDTO getRatePolicyFromUser(int accomID) {
-		System.out.println("설정할 평일 요금을 입력하세요: ");
+		System.out.print("설정할 평일 요금을 입력하세요: ");
 		int weekday = readInt();
-		System.out.println("설정할 주말 요금을 입력하세요: ");
+		System.out.print("설정할 주말 요금을 입력하세요: ");
 		int weekend = readInt();
 
 		return RatePolicyDTO.builder().accomID(accomID).weekday(weekday).weekend(weekend).build();

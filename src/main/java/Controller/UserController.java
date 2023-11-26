@@ -99,11 +99,19 @@ public class UserController implements MethodController {
 			case ADMIN -> {
 			}
 			case HOST -> {
+				res = selectAccomByUser(req);
 			}
 			case GUEST -> {
 			}
 		}
 		return res;
+	}
+
+	private Response selectAccomByUser(Request req) {
+		UserDTO userDTO = (UserDTO) req.getPayload();
+		List<AccommodationDTO> myAccomList = acService.selectAccomByUser(userDTO);
+		Response response = Response.builder().isSuccess(true).payload(myAccomList).build();
+		return response;
 	}
 
 	@Override
