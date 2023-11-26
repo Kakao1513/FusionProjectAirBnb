@@ -25,11 +25,11 @@ public class AccommodationView extends View<AccommodationDTO> {
 	}
 
 	public void displayAccomListCountOrder(List<AccommodationDTO> accommodationDTOS) {
-		System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |");
+		System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |             승인상태             |");
 		System.out.println("------------------------------------------------------------------------------------------");
 		int i = 1;
 		for (AccommodationDTO dto : accommodationDTOS) {
-			System.out.printf("|%-3d|%-14s|%-20s|%-7s|%-5s|%-25s|\n", i, dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment());
+			System.out.printf("|%-3d|%-14s|%-20s|%-7s|%-5s|%-25s|%-25s|\n", i, dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment(), dto.getStatus());
 			i++;
 		}
 		System.out.println("===========================================================================================");

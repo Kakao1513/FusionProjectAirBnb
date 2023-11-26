@@ -58,7 +58,7 @@ public class ReservationSQL {
         return sql.toString();
     }
 
-    public static String updateGusetReservation(ReservationDTO reservation) {
+    public static String updateGuestReservation(ReservationDTO reservation) {
         SQL sql = new SQL()
                 .UPDATE("Reservation")
                 .SET("ReservationInform = #{reservationInform}")

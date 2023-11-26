@@ -109,7 +109,7 @@ public class UserController implements MethodController {
 
 	private Response selectAccomByUser(Request req) {
 		UserDTO userDTO = (UserDTO) req.getPayload();
-		List<AccommodationDTO> myAccomList = acService.selectAccomByUser(userDTO);
+		List<AccommodationDTO> myAccomList = acService.selectConfirmedAccomByUser(userDTO);
 		Response response = Response.builder().isSuccess(true).payload(myAccomList).build();
 		return response;
 	}

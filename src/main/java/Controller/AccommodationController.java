@@ -23,7 +23,7 @@ public class AccommodationController implements MethodController {
 		this.reservationService = iocContainer.reservationService();
 	}
 
-	public Response selectReadyAccomList(){ //승인 대기중인 숙소 목록
+	public Response selectReadyAccomList() { //승인 대기중인 숙소 목록
 
 		Response response = new Response();
 		response.setIsSuccess(true);
@@ -32,6 +32,7 @@ public class AccommodationController implements MethodController {
 		response.setPayload(curAccomList);
 		return response;
 	}
+
 	public Response selectAccomList() { //관리자가 승인한 숙소 목록
 		Response response = new Response();
 		response.setIsSuccess(true);
@@ -67,17 +68,17 @@ public class AccommodationController implements MethodController {
 		Integer accomID = (Integer) payload[0];
 		LocalDate date = (LocalDate) payload[1];
 
-		AccommodationDTO curAccom = accomService.getAccom(accomID);
+		AccommodationDTO curAccom = accomService.selectAccomByAccomID(accomID);
 		RatePolicyDTO accomRate = accomService.getRate(curAccom);
 		List<AmenityDTO> amenityList = accomService.getAmenityList(curAccom);
 		List<ReviewDTO> reviewList = accomService.getReviews(curAccom);
 		List<ReservationDTO> reservationList = reservationService.getReservationList(curAccom, date);
 		AccomMoreInfo accomMoreInfo = AccomMoreInfo.builder()
-										.curAccom(curAccom)
-										.accomRate(accomRate)
-										.reservationList(reservationList)
-										.reviewList(reviewList)
-										.amenityList(amenityList).build();
+				.curAccom(curAccom)
+				.accomRate(accomRate)
+				.reservationList(reservationList)
+				.reviewList(reviewList)
+				.amenityList(amenityList).build();
 		Response response = new Response();
 		response.setIsSuccess(true);
 		response.setPayload(accomMoreInfo);
@@ -137,6 +138,7 @@ public class AccommodationController implements MethodController {
 			case ADMIN -> {
 			}
 			case HOST -> {
+				res = setRatePolicy(req);
 			}
 			case GUEST -> {
 			}
@@ -144,6 +146,13 @@ public class AccommodationController implements MethodController {
 		}
 
 		return res;
+	}
+
+	private Response setRatePolicy(Request req) {
+		RatePolicyDTO ratePolicyDTO = (RatePolicyDTO) req.getPayload();
+		accomService.setAccomPolicy(ratePolicyDTO);
+		AccommodationDTO accommodationDTO = accomService.selectAccomByAccomID(ratePolicyDTO.getAccomID());
+		return Response.builder().isSuccess(true).payload(accommodationDTO).build();
 	}
 
 	@Override

@@ -108,7 +108,7 @@ public class AccommodationService {
 
 	// 13. 특정 숙소 선택 시 해당 숙소 상세 정보 보기
 	// 13.1 숙소명, 소개
-	public AccommodationDTO getAccom(int accomID) {
+	public AccommodationDTO selectAccomByAccomID(int accomID) {
 		return accomDAO.getAccom(accomID);
 	}
 	// 13.2 편의시설
