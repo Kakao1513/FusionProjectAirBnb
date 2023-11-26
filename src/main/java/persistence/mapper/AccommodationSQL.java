@@ -38,7 +38,7 @@ public class AccommodationSQL {
 			@Param("accomName") String accomName,
 			@Param("period") String[] period,
 			@Param("capacity") String capacity,
-			@Param("type") String accomType
+			@Param("type") String type
 	) {
 		SQL mainQuery = new SQL()
 				.SELECT("*")
@@ -69,8 +69,8 @@ public class AccommodationSQL {
 		if (capacity != null) {
 			mainQuery.WHERE("capacity >= #{capacity}");
 		}
-		if (accomType != null) {
-			mainQuery.WHERE("accommodationType like #{accomType}");
+		if (type != null) {
+			mainQuery.WHERE("accommodationType like #{type}");
 		}
 		return mainQuery.toString();
 	}
