@@ -66,7 +66,7 @@ public class Client {
 				System.out.println("로그인 성공");
 				isSuccess = true;
 			} else {
-				System.out.println(response.getErrorMessage());
+				System.out.println(response.getMessage());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

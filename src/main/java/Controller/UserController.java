@@ -45,7 +45,7 @@ public class UserController implements MethodController {
 
 		UserDTO sendDTO = login(userDTO);
 		if (sendDTO == null) {
-			response.setErrorMessage("ID or PW fail");
+			response.setMessage("ID or PW fail");
 			response.setIsSuccess(false);
 			response.setPayload(null);
 		} else {

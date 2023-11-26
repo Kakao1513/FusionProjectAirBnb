@@ -26,7 +26,7 @@ public class ReservationSQL {
         }
         if (roomID != null){
             sql.WHERE("roomID = #{roomID}");
-            sql.WHERE("ReservationInform = '예약중' OR ReservationInform = '승인대기중'");
+            sql.WHERE("Reservationinfo = '예약중' OR Reservationinfo = '승인대기중'");
         }
         if (checkIn != null){
             sql.WHERE("CheckOut >= #{checkIn}");
@@ -35,7 +35,7 @@ public class ReservationSQL {
             sql.WHERE("CheckIn <= #{checkOut}");
         }
         if (status != null){
-            sql.WHERE("ReservationInform = #{status}");
+            sql.WHERE("Reservationinfo = #{status}");
         }
 
         return sql.toString();
@@ -44,7 +44,7 @@ public class ReservationSQL {
     public static String insertReservation(ReservationDTO reservation){
         SQL sql = new SQL()
                 .INSERT_INTO("Reservation")
-                .INTO_COLUMNS("UserID, AccommodationID, RoomID, ReserveDate, CheckIn, CheckOut, Charge, ReservationInform")
+                .INTO_COLUMNS("UserID, AccommodationID, RoomID, ReserveDate, CheckIn, CheckOut, Charge, ReservationInfo")
                 .INTO_VALUES("#{userID}, #{accommodationID} #{accommodationID}, #{roomID}, #{reserveDate}, #{checkIn}, #{checkOut}, #{charge}, #{reservationInfo}");
 
         return  sql.toString();
@@ -53,7 +53,7 @@ public class ReservationSQL {
     public static String updateReservation(ReservationDTO reservation){
         SQL sql = new SQL()
                 .UPDATE("Reservation")
-                .SET("reservationInform = #{reservationInfo}")
+                .SET("reservationinfo = #{reservationInfo}")
                 .WHERE("reservationID = #{reservationID}");
         return sql.toString();
     }
@@ -61,7 +61,7 @@ public class ReservationSQL {
     public static String updateGuestReservation(ReservationDTO reservation) {
         SQL sql = new SQL()
                 .UPDATE("Reservation")
-                .SET("ReservationInform = #{reservationInform}")
+                .SET("Reservationinfo = #{reservationinfo}")
                 .WHERE("AccommodationID IN(SELSCT AccommodationID FROM airbnb.accommodation")
                 .AND()
                 .WHERE("AccommodationID = #{accommodationID}");

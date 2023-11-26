@@ -2,6 +2,7 @@ package Container;
 
 import view.AccommodationView;
 import view.AmenityView;
+import view.ReservationView;
 import view.UserView;
 
 public class ViewContainer {
@@ -10,6 +11,8 @@ public class ViewContainer {
 	private static final UserView userView = new UserView();
 	private static final AccommodationView acView = new AccommodationView();
 	private static final AmenityView amenityView = new AmenityView();
+
+	private static final ReservationView reservationView = new ReservationView();
 
 	private ViewContainer() {
 	}
@@ -28,5 +31,9 @@ public class ViewContainer {
 
 	public AmenityView amenityView() {
 		return amenityView;
+	}
+
+	public ReservationView reservationView() {
+		return reservationView;
 	}
 }
