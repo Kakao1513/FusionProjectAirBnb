@@ -56,6 +56,9 @@ public class AccommodationService {
 	public void setAccomPolicy(RatePolicyDTO rateDTO) {
 		ratePolicyDAO.setAccomPolicy(rateDTO);
 	}
+	public int updateRatePolicy(RatePolicyDTO rateDTO){
+		return ratePolicyDAO.updateRatePolicy(rateDTO);
+	}
 
 	// 3.1 할인 정책 설정(일별 요금 설정)
 	public int setAccomDaily(DailyRateDTO dailyRateDTO) {
