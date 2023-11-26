@@ -11,11 +11,10 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @Builder
-public class DailyRateDTO extends DTO
-{
-    private int AccomId;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private int Charge;
+public class DailyRateDTO extends DTO {
+	private int AccomId;
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private int Charge;
 
 }

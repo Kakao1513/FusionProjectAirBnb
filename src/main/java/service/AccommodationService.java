@@ -63,7 +63,7 @@ public class AccommodationService {
 	}
 
 	// 3.2 할인 정책 설정(연박 할인 적용 기간 설정, 정량/정률 설정, 이전 예약 건에 대해서도 할인 요금 적용 여부 보이기)
-	public int insertDiscount(DiscountPolicyDTO discountDTO){
+	public int setDicountPolicy(DiscountPolicyDTO discountDTO){
 		return discountDAO.insertDiscount(discountDTO);
 	}
 

@@ -4,28 +4,31 @@ import Enums.AccommodationStatus;
 import persistence.dto.*;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class AccommodationView extends View<AccommodationDTO> {
 	private static final Scanner SCANNER = new Scanner(System.in);
 
-
+	public int readAccomIndex(List<AccommodationDTO> myAccomList){
+		int select = 0;
+		while (true) {
+			System.out.print("숙소 번호를 입력하세요:");
+			select = Integer.parseInt(SCANNER.nextLine());
+			if (0 < select && select <= myAccomList.size()) {
+				break;
+			} else {
+				System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+			}
+		}
+		return select-1;
+	}
 	public void displayAccomList(List<AccommodationDTO> accommodationDTOS) {
 		System.out.println("=========================================숙소 리스트========================================");
 		System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |");
-		System.out.println("------------------------------------------------------------------------------------------");
-		for (AccommodationDTO dto : accommodationDTOS) {
-			System.out.printf("|%-3d|%-14s|%-20s|%-7s|%-5s|%-25s|\n", dto.getAccomID(), dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment());
-		}
-		System.out.println("===========================================================================================");
-	}
-
-	public void displayAccomListCountOrder(List<AccommodationDTO> accommodationDTOS) {
-		System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |             승인상태             |");
 		System.out.println("------------------------------------------------------------------------------------------");
 		int i = 1;
 		for (AccommodationDTO dto : accommodationDTOS) {
@@ -33,6 +36,18 @@ public class AccommodationView extends View<AccommodationDTO> {
 			i++;
 		}
 		System.out.println("===========================================================================================");
+	}
+
+	public void displayAccomListCountOrder(List<AccommodationDTO> accommodationDTOS) {
+		System.out.println("=================================================나의 숙소 목록================================================================");
+		System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |             승인상태             |");
+		System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+		int i = 1;
+		for (AccommodationDTO dto : accommodationDTOS) {
+			System.out.printf("|%-3d|%-14s|%-20s|%-7s|%-5s|%-25s|%-25s|\n", i, dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment(), dto.getStatus());
+			i++;
+		}
+		System.out.println("============================================================================================================================");
 	}
 
 	public int getDailyOrDiscount() {
@@ -99,7 +114,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 		int accomType;
 		System.out.print("숙소 타입 1.개인실 2.공간 전체 : ");
 		accomType = readInt();
-		return switch (accomType){
+		return switch (accomType) {
 			case 1 -> "개인실";
 			case 2 -> "공간 전체";
 			default -> throw new IllegalStateException("Unexpected value: " + accomType);
@@ -173,7 +188,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 
 	/**
 	 * 달력 찍어주는 메서드
-	 * */
+	 */
 	public void displayReservationCalendar(LocalDate date, int capacity, List<ReservationDTO> reservationDTOS) {
 		int startDayOfWeek = date.getDayOfWeek().getValue();
 
@@ -254,33 +269,34 @@ public class AccommodationView extends View<AccommodationDTO> {
 				.build();
 	}
 
-	public void Return() {
-		System.out.println("(0 입력시 이전 메뉴로 돌아갑니다.)");
-	}
-
 	// 3. 할인 정책 설정(연박 할인 적용 기간 설정, 정량/정률 설정, 이전 예약 건에 대해서도 할인 요금 적용 여부 보이기)
-	public DiscountPolicyDTO getDiscountFromUser(AccommodationDTO accomDTO){
-		System.out.print("할인 타입을 입력하세요 [정량/정률] : ");
-		String type = SCANNER.nextLine();
-		System.out.print("할인 시작 날짜  (yyyy-mm-dd) : " );
+	public DiscountPolicyDTO getDiscountFromUser(AccommodationDTO accomDTO) {
+		System.out.print("할인 타입을 입력하세요 [1.정량 2.정률] : ");
+		int type = readInt();
+		System.out.print("할인 시작 날짜  (yyyy-mm-dd) : ");
 		LocalDate startDate = LocalDate.parse(SCANNER.nextLine(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		System.out.print("할인 종료 날짜  (yyyy-mm-dd) : " );
+		System.out.print("할인 종료 날짜  (yyyy-mm-dd) : ");
 		LocalDate endDate = LocalDate.parse(SCANNER.nextLine(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		if(Objects.equals(type, "정량")){
+		if (type == 1) {
 			System.out.print("할인 금액을 입력하세요 (n원): ");
-		}
-		else {
+		} else {
 			System.out.println("할인 비율을 입력하세요 (n%) : ");
 		}
 		int value = readInt();
 
 		return DiscountPolicyDTO.builder()
 				.accomID(accomDTO.getAccomID())
-				.startDate(startDate)
-				.endDate(endDate)
-				.discountType(type)
+				.dateStart(startDate)
+				.dateEnd(endDate)
+				.discountType(type == 1 ? "정량" : "정률")
 				.value(value)
 				.build();
+	}
+
+	public YearMonth readYearMonth(){
+		System.out.print("연-월을 입력하세요 (ex. 2023-11)");
+		String ym = SCANNER.nextLine();
+		return YearMonth.parse(ym);
 	}
 
 

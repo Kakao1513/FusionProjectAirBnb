@@ -1,7 +1,7 @@
 package network.Client.Handler;
 
-import Container.IocContainer;
 import Container.ViewContainer;
+import network.Client.ActorHandler;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
 import network.Protocol.Enums.RoleType;

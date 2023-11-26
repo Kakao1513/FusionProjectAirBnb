@@ -56,7 +56,7 @@ public class UserView extends View<UserDTO> {
 		System.out.println("(4) 숙박 예약 현황 보기");
 		System.out.println("(5) 게스트의 숙박 예약 승인/거절");
 		System.out.println("(6) 게스트 리뷰에 대한 답글 등록");
-		System.out.println("(7) 승인된 내 숙소 목록 보기");
+		System.out.println("(7) 내 숙소 목록 보기");
 		System.out.println("=======================================");
 		return rangeSelect(0, 7);
 	}

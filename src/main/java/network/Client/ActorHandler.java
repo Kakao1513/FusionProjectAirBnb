@@ -1,4 +1,4 @@
-package network.Client.Handler;
+package network.Client;
 
 import Container.IocContainer;
 import Container.ViewContainer;
@@ -49,7 +49,7 @@ public abstract class ActorHandler {
 		}
 		return res;
 	}
-	public static void setCurrentUser(UserDTO userDTO){
+	protected static void setCurrentUser(UserDTO userDTO){
 		currentUser = userDTO;
 	}
 }

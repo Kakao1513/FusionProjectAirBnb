@@ -2,13 +2,18 @@ package Controller;
 
 import Container.IocContainer;
 import lombok.AllArgsConstructor;
-import network.Protocol.Enums.RoleType;
 import network.Protocol.Enums.Method;
+import network.Protocol.Enums.RoleType;
 import network.Protocol.Request;
 import network.Protocol.Response;
+import persistence.dto.AccommodationDTO;
+import persistence.dto.ReservationDTO;
 import service.AccommodationService;
 import service.ReservationService;
 import service.UserService;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 public class ReservationController implements MethodController {
@@ -16,7 +21,7 @@ public class ReservationController implements MethodController {
 	private final AccommodationService accommodationService;
 	private final ReservationService reservationService;
 
-	public ReservationController(IocContainer iocContainer){
+	public ReservationController(IocContainer iocContainer) {
 		this.userService = iocContainer.userService();
 		this.accommodationService = iocContainer.accommodationService();
 		this.reservationService = iocContainer.reservationService();
@@ -52,11 +57,20 @@ public class ReservationController implements MethodController {
 			case ADMIN -> {
 			}
 			case HOST -> {
+				res = getReservationList(req);
 			}
 			case GUEST -> {
 			}
 		}
 		return res;
+	}
+
+	private Response getReservationList(Request request) {
+		Object[] payload = (Object[]) request.getPayload();
+		AccommodationDTO selectedAccom = (AccommodationDTO) payload[0];
+		LocalDate nowMonth = (LocalDate) payload[1];
+		List<ReservationDTO> reservationDTOS = reservationService.getReservationList(selectedAccom, nowMonth);
+		return Response.builder().isSuccess(true).payload(reservationDTOS).build();
 	}
 
 	public Response putHandle(Request req) {

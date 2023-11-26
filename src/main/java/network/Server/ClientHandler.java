@@ -6,10 +6,12 @@ import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dao.*;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 class ClientHandler implements Runnable {
 	private final Socket client;
@@ -37,7 +39,9 @@ class ClientHandler implements Runnable {
 				oos.writeObject(response);
 				oos.flush();
 			}
-		} catch (Exception e) {
+		} catch (SocketException | EOFException e){
+			System.out.println("클라이언트와의 연결이 종료되었습니다.");
+		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			resourceCloser();

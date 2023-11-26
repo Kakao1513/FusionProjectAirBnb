@@ -31,6 +31,7 @@ public class DiscountPolicyDAO {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             DiscountPolicyMapper discountpolicyMapper = session.getMapper(DiscountPolicyMapper.class);
             num = discountpolicyMapper.insertDiscount(discountDTO);
+            session.commit();
         } catch (Exception e){
             e.printStackTrace();
         }

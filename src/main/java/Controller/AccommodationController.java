@@ -97,6 +97,7 @@ public class AccommodationController implements MethodController {
 				res = selectReadyAccomList();
 			}
 			case HOST -> {
+				res = selectAccomByUser(req);
 			}
 			case GUEST -> {
 				res = selectAccomList();
@@ -104,6 +105,12 @@ public class AccommodationController implements MethodController {
 		}
 		return res;
 
+	}
+	private Response selectAccomByUser(Request req) {
+		UserDTO userDTO = (UserDTO) req.getPayload();
+		List<AccommodationDTO> myAccomList = accomService.selectAccomByUser(userDTO);
+		Response response = Response.builder().isSuccess(true).payload(myAccomList).build();
+		return response;
 	}
 
 	@Override
@@ -118,13 +125,20 @@ public class AccommodationController implements MethodController {
 
 			}
 			case HOST -> {
-
+				res = registDiscountPolicy(req);
 			}
 			case GUEST -> { //숙소 필터링
 				res = accomFiltering(req);
 			}
 		}
 		return res;
+	}
+
+	private Response registDiscountPolicy(Request req) {
+		DiscountPolicyDTO discountPolicyDTO = (DiscountPolicyDTO) req.getPayload();
+		accomService.setDicountPolicy(discountPolicyDTO);
+		AccommodationDTO accommodationDTO = accomService.selectAccomByAccomID(discountPolicyDTO.getAccomID());
+		return Response.builder().payload(accommodationDTO).isSuccess(true).build();
 	}
 
 

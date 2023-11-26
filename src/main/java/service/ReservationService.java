@@ -72,7 +72,7 @@ public class ReservationService {
 
             if (discountDTOS != null){
                 for(DiscountPolicyDTO discountDTO : discountDTOS){
-                    if(date.isAfter(discountDTO.getStartDate()) && date.isBefore(discountDTO.getEndDate())){
+                    if(date.isAfter(discountDTO.getDateStart()) && date.isBefore(discountDTO.getDateEnd())){
                         if(Objects.equals(discountDTO.getDiscountType(), "정량")){
                             charge -= discountDTO.getValue();
                         }

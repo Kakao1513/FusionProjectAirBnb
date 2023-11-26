@@ -1,8 +1,6 @@
 package network.Client;
 
-import Container.IocContainer;
 import Container.ViewContainer;
-import network.Client.Handler.ActorHandler;
 import network.Client.Handler.AdminHandler;
 import network.Client.Handler.GuestHandler;
 import network.Client.Handler.HostHandler;
@@ -12,14 +10,12 @@ import network.Protocol.Enums.RoleType;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.UserDTO;
-import view.AccommodationView;
 import view.UserView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client {
 	private final String ip;
