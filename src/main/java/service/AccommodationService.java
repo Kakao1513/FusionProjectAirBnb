@@ -83,6 +83,12 @@ public class AccommodationService {
 		return accomDAO.selectAccom(filters);
 	}
 
+	public List<AccommodationDTO> selectAccomByUser(UserDTO userDTO){
+		Map<String, Object> filters = new HashMap<>();
+		filters.put("userID", userDTO.getUserId());
+		return accomDAO.selectAccom(filters);
+	}
+
 	// 12. 숙소 필터링(동적 쿼리로 동작해야 함, 동적쿼리를 보이기 위해 적절한 사전 데이터 준비)
 	public List<AccommodationDTO> selectAccom(Map<String, Object> filters) {
 		return accomDAO.selectAccom(filters);
