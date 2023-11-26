@@ -47,7 +47,7 @@ public class GuestHandler extends ActorHandler {
 				}
 			}
 			case 2 -> { //숙소 목록 보기
-				viewAccomList();
+				selectAccomList();
 			}
 			case 3 -> { //숙소 필터링
 				accomFiltering();
@@ -56,6 +56,7 @@ public class GuestHandler extends ActorHandler {
 				requestReservation();
 			}
 			case 5 -> { //숙소 상세 정보 보기
+				selectAccomList();
 				viewAccomMoreInfo();
 			}
 		}
@@ -96,7 +97,7 @@ public class GuestHandler extends ActorHandler {
 				case 1 -> filters.put("accomName", accomView.getAccomNameFromUser());
 				case 2 -> filters.put("period", accomView.getPeriodFromUser());
 				case 3 -> filters.put("capacity", accomView.getCapacityFromUser());
-				case 4 -> filters.put("accomType", accomView.getAccomTypeFromUser());
+				case 4 -> filters.put("type", accomView.getAccomTypeFromUser());
 			}
 		}
 		accomView.displayAppliedFilters(filters);
@@ -112,7 +113,8 @@ public class GuestHandler extends ActorHandler {
 			accomView.displayAccomList(accommodationDTOS);
 		}
 	}
-	public void viewAccomList() {
+
+	public List<AccommodationDTO> selectAccomList() {
 		List<AccommodationDTO> acList = null;
 		Request req = new Request();
 		req.setMethod(Method.GET);
@@ -123,10 +125,13 @@ public class GuestHandler extends ActorHandler {
 			acList = (List<AccommodationDTO>) response.getPayload();
 		}
 		accomView.displayAccomList(acList);
+		return acList;
 	}
 
 	public void viewAccomMoreInfo() {
-		Integer accomID = accomView.getAccomNumberFromUser();
+		List<AccommodationDTO> acList = selectAccomList();
+		Integer accomID = accomView.readAccomIndex(acList);
+		accomID = acList.get(accomID).getAccomID();
 		LocalDate date = reservationView.getReservationDate();
 		Object[] payload = {accomID, date};
 		Response response = requestToServer(new Request(Method.GET, PayloadType.ACCOMMODATION, RoleType.COMMON, payload));

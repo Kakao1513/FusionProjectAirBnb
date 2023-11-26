@@ -38,7 +38,7 @@ public class ReservationView extends View<ReservationDTO> {
 				roomCount[i] += 1;
 			}
 		}
-
+		System.out.println();
 		System.out.println("\t\t\t << " + date.getYear() + "년 " + date.getMonthValue() + "월 >>");
 		System.out.println("  Su    Mo    Tu    We    Th    Fr    Sa");
 
@@ -63,7 +63,7 @@ public class ReservationView extends View<ReservationDTO> {
 
 	public void displayReservations(List<ReservationDTO> reservationDTOS) {
 		System.out.println("===========================================예약 리스트=========================================");
-		System.out.println("|예약 번호|    유저ID    |    숙소ID   |     예약 신청 시간     | CheckIn | CheckOut |  총요금  |");
+		System.out.println("|예약 번호|    유저ID    |    숙소ID   |     예약 신청 시간     | CheckIn | CheckOut |");
 		int i = 1;
 		for (ReservationDTO dto : reservationDTOS) {
 			System.out.printf("|%-7d|%-12d|%-12d|%-15s|%-10s|%-10s|%-10s|\n", i, dto.getUserID(), dto.getAccommodationID(),dto.getReserveDate(), dto.getCheckIn(), dto.getCheckOut(), dto.getCharge());

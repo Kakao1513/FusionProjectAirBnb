@@ -78,7 +78,6 @@ public class UserView extends View<UserDTO> {
 		return rangeSelect(0, 4);
 	}
 
-
 	public int selectAdminJob() {
 		System.out.println("===============업무를 선택하세요=============");
 		System.out.println("(0) 이전 페이지로");
@@ -88,4 +87,6 @@ public class UserView extends View<UserDTO> {
 		System.out.println("==========================================");
 		return rangeSelect(0, 3);
 	}
+
+
 }

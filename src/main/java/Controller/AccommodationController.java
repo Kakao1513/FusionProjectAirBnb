@@ -164,7 +164,7 @@ public class AccommodationController implements MethodController {
 
 	private Response setRatePolicy(Request req) {
 		RatePolicyDTO ratePolicyDTO = (RatePolicyDTO) req.getPayload();
-		accomService.setAccomPolicy(ratePolicyDTO);
+		accomService.updateRatePolicy(ratePolicyDTO);
 		AccommodationDTO accommodationDTO = accomService.selectAccomByAccomID(ratePolicyDTO.getAccomID());
 		return Response.builder().isSuccess(true).payload(accommodationDTO).build();
 	}

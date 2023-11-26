@@ -5,7 +5,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import persistence.dto.RatePolicyDTO;
 import persistence.mapper.RatePolicyMapper;
 
-
 public class RatePolicyDAO{
     private final SqlSessionFactory sqlSessionFactory;
 

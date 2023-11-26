@@ -4,9 +4,8 @@ import Container.IocContainer;
 import persistence.dao.*;
 import persistence.dto.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 
 public class AccommodationService {
 	private final AccommodationDAO accomDAO;
@@ -30,7 +29,7 @@ public class AccommodationService {
 
 	// 1. 숙박 등록 신청(이름, 숙소 소개, 객실 타입(공간 전체/개인실), 수용 정보, 편의시설)
 	public void insertAccom(AccommodationDTO accomDTO) {
-		if (accomDAO.insertAccom(accomDTO) >= 1){
+		if (accomDAO.insertAccom(accomDTO) >= 1) {
 			accomDAO.insertRooms(accomDTO);
 			RatePolicyDTO free = RatePolicyDTO
 					.builder()
@@ -43,12 +42,14 @@ public class AccommodationService {
 		}
 
 	}
+
 	// 1.1 모든 편의시설 리스트를 반환
-	public List<AmenityDTO> selectAmenityByCategory(String category){
+	public List<AmenityDTO> selectAmenityByCategory(String category) {
 		return amenityDAO.selectAmenityByCategory(category);
 	}
+
 	// 1.2 편의시설 리스트 삽입
-	public void insertAccomAmenity(AccommodationDTO accomDTO, AmenityDTO amenityDTO){
+	public void insertAccomAmenity(AccommodationDTO accomDTO, AmenityDTO amenityDTO) {
 		amenityDAO.insertAccomAmenity(accomDTO.getAccomID(), amenityDTO.getAmenityID());
 	}
 
@@ -66,7 +67,7 @@ public class AccommodationService {
 	}
 
 	// 3.2 할인 정책 설정(연박 할인 적용 기간 설정, 정량/정률 설정, 이전 예약 건에 대해서도 할인 요금 적용 여부 보이기)
-	public int setDicountPolicy(DiscountPolicyDTO discountDTO){
+	public int setDicountPolicy(DiscountPolicyDTO discountDTO) {
 		return discountDAO.insertDiscount(discountDTO);
 	}
 
@@ -84,6 +85,56 @@ public class AccommodationService {
 		accomDAO.updateAccomStatus(id, status);
 	}
 
+	// 8 숙소별 월별 총매출 확인
+	public int checkTotalSales(int accomID, int month) {
+		Map<String, Object> filters = new HashMap<>();
+		LocalDate date = LocalDate.now().withMonth(month);
+		filters.put("Reservationinfo", "예약중");
+		filters.put("accomID", accomID);
+		filters.put("checkIn", date);
+		filters.put("checkOut", date.plusMonths(1));
+
+		List<ReservationDTO> reservationList = reservationDAO.getReservations(filters); // reservation list
+		List<Integer> rates = getRatesFromReservations(reservationList, accomID, date); // list's rate
+
+		return rates.stream().mapToInt(Integer::intValue).sum();
+	}
+
+	// 8.1 총매출 계산
+	private List<Integer> getRatesFromReservations(List<ReservationDTO> reservationList, int accomID, LocalDate date) {
+		List<Integer> rates = new ArrayList<>();
+		RatePolicyDTO ratePolicyDTO = ratePolicyDAO.getRate(accomID);
+		List<DiscountPolicyDTO> discountDTOS = discountDAO.getDiscount(accomID);
+
+		for (ReservationDTO reservation : reservationList) {
+			LocalDate startDate = date.withDayOfMonth(1);
+			LocalDate endDate = date.withDayOfMonth(date.lengthOfMonth());
+
+			while (!startDate.isAfter(endDate)) {
+				int charge = getRateForDay(ratePolicyDTO, startDate);
+				if (discountDTOS != null) {
+					for (DiscountPolicyDTO discountDTO : discountDTOS) {
+						if (startDate.isAfter(discountDTO.getDateStart()) && startDate.isBefore(discountDTO.getDateEnd())) {
+							if (Objects.equals(discountDTO.getDiscountType(), "정량")) {
+								charge -= discountDTO.getValue();
+							} else {
+								charge *= (int) ((100 - discountDTO.getValue()) * 0.01);
+							}
+						}
+					}
+				}
+				rates.add(charge);
+				startDate = startDate.plusDays(1);
+			}
+		}
+		return rates;
+	}
+
+	// 8.2 주일, 주말 계산
+	private int getRateForDay(RatePolicyDTO ratePolicyDTO, LocalDate date) {
+		return date.getDayOfWeek().getValue() < 6 ? ratePolicyDTO.getWeekday() : ratePolicyDTO.getWeekend();
+	}
+
 	// 11. 숙소 목록 보기(전체 목록 조회)
 	public List<AccommodationDTO> selectAccom(String status) {
 		Map<String, Object> filters = new HashMap<>();
@@ -91,13 +142,13 @@ public class AccommodationService {
 		return accomDAO.selectAccom(filters);
 	}
 
-	public List<AccommodationDTO> selectAccomByUser(UserDTO userDTO){
+	public List<AccommodationDTO> selectAccomByUser(UserDTO userDTO) {
 		Map<String, Object> filters = new HashMap<>();
 		filters.put("userID", userDTO.getUserId());
 		return accomDAO.selectAccom(filters);
 	}
 
-	public List<AccommodationDTO> selectConfirmedAccomByUser(UserDTO userDTO){
+	public List<AccommodationDTO> selectConfirmedAccomByUser(UserDTO userDTO) {
 		Map<String, Object> filters = new HashMap<>();
 		filters.put("userID", userDTO.getUserId());
 		filters.put("status", "Confirmed");
@@ -114,25 +165,27 @@ public class AccommodationService {
 	public AccommodationDTO selectAccomByAccomID(int accomID) {
 		return accomDAO.getAccom(accomID);
 	}
+
 	// 13.2 편의시설
 	public List<AmenityDTO> getAmenityList(AccommodationDTO accomDTO) {
 		return amenityDAO.selectAmenityByAccomID(accomDTO.getAccomID());
 	}
+
 	// 13.3 숙박 요금
 	public RatePolicyDTO getRate(AccommodationDTO accomDTO) {
 		return ratePolicyDAO.getRate(accomDTO.getAccomID());
 	}
+
 	public DailyRateDTO getDaily(AccommodationDTO accomDTO) {
 		return dailyRateDAO.getDaily(accomDTO.getAccomID());
 	}
+
 	// 13.4 예약 가능 일자 -> ReservationService.getReservationList
 	// 13.5 후기
 	public List<ReviewDTO> getReviews(AccommodationDTO accomDTO) {
 		return reviewDAO.selectReviews(accomDTO.getAccomID());
 	}
 	/////////////////////////////////////////////
-
-
 
 
 }
