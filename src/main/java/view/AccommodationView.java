@@ -283,4 +283,6 @@ public class AccommodationView extends View<AccommodationDTO> {
 				.build();
 	}
 
+
+
 }

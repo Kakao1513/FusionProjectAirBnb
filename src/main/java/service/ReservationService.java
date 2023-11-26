@@ -107,4 +107,30 @@ public class ReservationService {
         return dayOfWeek >= 1 && dayOfWeek <= 5;
     }
 
+    // 14. 숙소 예약 신청(to 호스트). 단, 일정이 중복된 예약을 시도할 때,
+    // 적절한 메시지와 함께 예약 이 불가함을 보임. 예약 신청 시 게스트는 총 요금을 확인할 수 있다
+
+    // 14.1 예약 가능한 방 목록을 조회
+    public List<RoomDTO> getAvailableRoomList(ReservationDTO reservationDTO){
+        return reservationDAO.getAvailableRoomList(reservationDTO);
+    }
+    //14.2 해당 예약 날짜에 같은 방에 대한 다른 예약이 없다면 예약 성공
+    synchronized public boolean reserveRequest(ReservationDTO userInputReserve) {
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("accomID", userInputReserve.getReservationID());
+        filters.put("roomID", userInputReserve.getRoomID());
+        filters.put("checkIn", userInputReserve.getCheckIn());
+        filters.put("checkOut", userInputReserve.getCheckOut());
+
+        List<ReservationDTO> reserves = reservationDAO.getReservations(filters);
+        if (reserves.isEmpty()) { //해당 날짜에 예약된 방이 없음을 의미.
+            reservationDAO.insertReservation(userInputReserve);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
 }

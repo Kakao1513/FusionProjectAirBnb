@@ -1,6 +1,5 @@
 package persistence.mapper;
 
-import Enums.AccommodationStatus;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 import persistence.dto.AccommodationDTO;
@@ -38,7 +37,6 @@ public class AccommodationSQL {
 			@Param("status") String status,
 			@Param("accomName") String accomName,
 			@Param("period") String[] period,
-			//	@Param("startDate") String startDate, @Param("endDate") String endDate,
 			@Param("capacity") String capacity,
 			@Param("type") String accomType
 	) {
@@ -54,7 +52,7 @@ public class AccommodationSQL {
 		if (accomName != null) {
 			mainQuery.WHERE("houseName like CONCAT('%', #{accomName}, '%')");
 		}
-		if (period != null) { //고친거 맞는지 확인점
+		if (period != null) {
 			SQL subSubQuery = new SQL()
 					.SELECT("r.RoomID, r.AccommodationID")
 					.FROM("reservation r")
@@ -68,21 +66,6 @@ public class AccommodationSQL {
 			mainQuery.WHERE("AccommodationID IN (" + subQuery.toString() + ")");
 
 		}
-/*
-		if (startDate != null && endDate != null) {
-			SQL subSubQuery = new SQL()
-					.SELECT("r.RoomID, r.AccommodationID")
-					.FROM("reservation r")
-					.WHERE("CheckOut >= date(#{startDate})")
-					.WHERE("CheckIn <= date(#{endDate})");
-			SQL subQuery = new SQL()
-					.SELECT("accommodationID")
-					.FROM("room")
-					.WHERE("(RoomID, AccommodationID) NOT IN(" + subSubQuery.toString() + ")");
-
-			mainQuery.WHERE("AccommodationID IN (" + subQuery.toString() + ")");
-		}
-*/
 		if (capacity != null) {
 			mainQuery.WHERE("capacity >= #{capacity}");
 		}
@@ -119,7 +102,7 @@ public class AccommodationSQL {
 	public static String insertRooms(@Param("accomID") int accomID, int roomNum){
 		SQL sql = new SQL().INSERT_INTO("room");
 		for (int i = 1; i <= roomNum; i++) {
-			sql.INTO_VALUES(i+", #{accomID}, 1");
+			sql.INTO_VALUES(i+", #{accomID}");
 			sql.ADD_ROW();
 		}
 

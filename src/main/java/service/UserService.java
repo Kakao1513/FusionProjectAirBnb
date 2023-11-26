@@ -82,24 +82,6 @@ public class UserService {
 		return userDTO;
 	}
 
-	// 14. 숙소 예약 신청(to 호스트). 단, 일정이 중복된 예약을 시도할 때,
-	// 적절한 메시지와 함께 예약 이 불가함을 보임. 예약 신청 시 게스트는 총 요금을 확인할 수 있다
-	synchronized public boolean reserveRequest(ReservationDTO userInputReserve) {
-		Map<String, Object> filters = new HashMap<>();
-		filters.put("accomID", userInputReserve.getReservationID());
-		filters.put("roomID", userInputReserve.getRoomID());
-		filters.put("checkIn", userInputReserve.getCheckIn());
-		filters.put("checkOut", userInputReserve.getCheckOut());
-
-		List<ReservationDTO> reserves = rDAO.getReservations(filters);
-		if (reserves.isEmpty()) { //해당 날짜에 예약된 방이 없음을 의미.
-			rDAO.insertReservation(userInputReserve);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	// 6. 게스트 리뷰에 대한 답글 등록 : 답글의 parentID를 댓글의 commentID로 설정한 뒤 INSERT
 	public void insertReviewReply(ReviewDTO reviewDTO) {
 		reviewDAO.insertReviewReply(reviewDTO);

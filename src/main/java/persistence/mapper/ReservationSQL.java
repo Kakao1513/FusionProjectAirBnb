@@ -67,4 +67,19 @@ public class ReservationSQL {
                 .WHERE("AccommodationID = #{accommodationID}");
         return sql.toString();
     }
+
+    public static String getAvailableRoomList(ReservationDTO reservationDTO){
+        SQL subQuery = new SQL()
+                .SELECT("r.RoomID, r.AccommodationID")
+                .FROM("reservation r")
+                .WHERE("CheckOut >= #{checkIn}")
+                .WHERE("CheckIn <= #{checkOut}");
+        SQL query = new SQL()
+                .SELECT("*")
+                .FROM("Room")
+                .WHERE("accommodationID = #{accommodationID}")
+                .WHERE("(RoomID, AccommodationID) NOT IN(" + subQuery.toString() + ")");
+
+        return query.toString();
+    }
 }

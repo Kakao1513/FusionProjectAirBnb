@@ -2,6 +2,7 @@ package persistence.mapper;
 
 import org.apache.ibatis.annotations.*;
 import persistence.dto.ReservationDTO;
+import persistence.dto.RoomDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,5 +34,15 @@ public interface ReservationMapper {
 
     @UpdateProvider(type = ReservationSQL.class, method = "updateGuestReservation")
     int updateGuestReservation(ReservationDTO reservDTO);
+
+    @SelectProvider(type = ReservationSQL.class, method = "getAvailableRoomList")
+    @Results(
+            id = "RoomResultSet",
+            value = {
+                    @Result(property = "roomID", column = "roomID"),
+                    @Result(property = "accomID", column = "accommodationID"),
+            }
+    )
+    List<RoomDTO> getAvailableRoomList(ReservationDTO reservationDTO);
 
 }

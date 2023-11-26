@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import persistence.dto.AccommodationDTO;
 import persistence.dto.ReservationDTO;
+import persistence.dto.RoomDTO;
 import persistence.mapper.AccommodationMapper;
 import persistence.mapper.ReservationMapper;
 
@@ -59,6 +60,18 @@ public class ReservationDAO {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	public List<RoomDTO> getAvailableRoomList(ReservationDTO reservationDTO){
+		List<RoomDTO> DTOS = null;
+
+		try (SqlSession session = sqlSessionFactory.openSession()) {
+			ReservationMapper reservationMapper = session.getMapper(ReservationMapper.class);
+			DTOS = reservationMapper.getAvailableRoomList(reservationDTO);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return DTOS;
 	}
 
 }
