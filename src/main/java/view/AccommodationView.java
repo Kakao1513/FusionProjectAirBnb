@@ -27,28 +27,29 @@ public class AccommodationView extends View<AccommodationDTO> {
 		return select-1;
 	}
 	public void displayAccomList(List<AccommodationDTO> accommodationDTOS) {
-		System.out.println("=========================================숙소 리스트========================================");
-		System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |");
-		System.out.println("------------------------------------------------------------------------------------------");
+		System.out.println("=========================================숙소 리스트=================================================================================");
+		System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |                  승인상태               |");
+		System.out.println("------------------------------------------------------------------------------------------=========================================");
 		int i = 1;
 		for (AccommodationDTO dto : accommodationDTOS) {
-			System.out.printf("|%-3d|%-14s|%-20s|%-7s|%-5s|%-25s|%-25s|\n", i, dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment(), dto.getStatus());
+			System.out.printf("|%-4d|%-16s|%-25s|%-8s|%-6s|%-30s|%-34s|\n", i, dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment(), dto.getStatus());
 			i++;
 		}
-		System.out.println("===========================================================================================");
+		System.out.println("====================================================================================================================================");
 	}
 
 	public void displayAccomListCountOrder(List<AccommodationDTO> accommodationDTOS) {
-		System.out.println("=================================================나의 숙소 목록================================================================");
-		System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |             승인상태             |");
-		System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("===================================================================================나의 숙소 목록================================================================");
+		System.out.println("| 번호 |       이름       |                  주소                  |     타입     |  인원  |                      설명                      |         승인상태      |");
+		System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------");
 		int i = 1;
 		for (AccommodationDTO dto : accommodationDTOS) {
-			System.out.printf("|%-3d|%-14s|%-20s|%-7s|%-5s|%-25s|%-25s|\n", i, dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment(), dto.getStatus());
+			System.out.printf("| %-4d | %-15s | %-40s | %-10s | %-6s | %-40s | %-20s |\n", i, dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment(), dto.getStatus());
 			i++;
 		}
-		System.out.println("============================================================================================================================");
+		System.out.println("================================================================================================================================================================");
 	}
+
 
 	public int getDailyOrDiscount() {
 		System.out.println("1: 일별 요금 설정, 2: 할인 정책 설정");
@@ -134,7 +135,7 @@ public class AccommodationView extends View<AccommodationDTO> {
 
 	public void displayAccomInfo(AccommodationDTO accomDTO, RatePolicyDTO rateDTO) {
 
-		System.out.printf("==========[%3d] %s==========\n", accomDTO.getAccomID(), accomDTO.getAccomName());
+		System.out.printf("=============[%3d] %s============\n", accomDTO.getAccomID(), accomDTO.getAccomName());
 		System.out.println("위치 : " + accomDTO.getAddress());
 		System.out.println("설명 : " + accomDTO.getComment());
 		System.out.printf("숙박요금 : [평일] %d, [주말] %d\n", rateDTO.getWeekday(), rateDTO.getWeekend());

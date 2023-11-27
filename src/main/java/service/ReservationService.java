@@ -54,19 +54,21 @@ public class ReservationService {
         return reservationDAO.updateReservation(rDTO);
     }
 
-    // 16. (MyPage)예약 현황 조회(완료된 숙박, 예약 대기 숙소, 예약된 숙소)
-    public List<ReservationDTO> getReservationListByUserID(UserDTO user, String status){
+    // 16. (MyPage)예약 현황 조회(완료된 숙박, 예약 대기 숙소, 예약된 숙소) -> 한번에 조회할 수 있게 만들
+    public List<ReservationDTO> getReservationListByUserID(UserDTO user){
         Map<String, Object> filters = new HashMap<>();
         filters.put("userID", user.getUserId());
-        filters.put("status", status);
+      //  filters.put("status", status);
 
         return calculateReservationCharge(reservationDAO.getReservations(filters));
     }
 
     private List<ReservationDTO> calculateReservationCharge(List<ReservationDTO> reservationDTOS){
         if (reservationDTOS != null){
-            for(ReservationDTO reservationDAO : reservationDTOS){
-                reservationDAO.setCharge(calculateReservationCharge(reservationDAO));
+            for(ReservationDTO reservationDTO : reservationDTOS){
+                reservationDTO.setCharge(calculateReservationCharge(reservationDTO));
+                if(reservationDTO.getCheckOut().isBefore(LocalDate.now()) && reservationDTO.getReservationInfo().equals("예약중"))
+                    reservationDTO.setReservationInfo("숙박 완료");
             }
         }
         return reservationDTOS;

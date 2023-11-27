@@ -9,6 +9,7 @@ import network.Protocol.Packet.AccomMoreInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.AccommodationDTO;
+import persistence.dto.ReservationDTO;
 import persistence.dto.UserDTO;
 
 import java.io.ObjectInputStream;
@@ -74,7 +75,7 @@ public class GuestHandler extends ActorHandler {
 				System.out.println("이전 페이지로 돌아갑니다.");
 			}
 			case 1 -> {
-
+				showReservationList();
 			}
 			case 2 -> {
 
@@ -85,6 +86,19 @@ public class GuestHandler extends ActorHandler {
 			case 4 -> {
 				changePrivacy();
 			}
+		}
+	}
+
+	private void showReservationList() {
+		Request request = new Request();
+		request.setMethod(Method.GET);
+		request.setPayloadType(PayloadType.RESERVATION);
+		request.setRoleType(RoleType.GUEST);
+		request.setPayload(currentUser);
+		Response response = requestToServer(request);
+		if (response.getIsSuccess()) {
+			List<ReservationDTO> reservationDTOS = (List<ReservationDTO>) response.getPayload();
+			reservationView.displayReservations(reservationDTOS);
 		}
 	}
 

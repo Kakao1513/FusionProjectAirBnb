@@ -8,6 +8,7 @@ import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.AccommodationDTO;
 import persistence.dto.ReservationDTO;
+import persistence.dto.UserDTO;
 import service.AccommodationService;
 import service.ReservationService;
 import service.UserService;
@@ -60,9 +61,16 @@ public class ReservationController implements MethodController {
 				res = getReservationList(req);
 			}
 			case GUEST -> {
+				res = getReservationListByUser(req);
 			}
 		}
 		return res;
+	}
+
+	private Response getReservationListByUser(Request req) {
+		UserDTO userDTO = (UserDTO) req.getPayload();
+		List<ReservationDTO> reservationDTOS = reservationService.getReservationListByUserID(userDTO);
+		return Response.builder().isSuccess(true).payload(reservationDTOS).build();
 	}
 
 	private Response getReservationList(Request request) {
