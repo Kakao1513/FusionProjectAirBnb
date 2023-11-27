@@ -126,14 +126,16 @@ public class GuestHandler extends ActorHandler {
 	private Object[] accomFiltering() {
 		Map<String, Object> filters = new HashMap<>(); //Request의 Payload에 담겨서 온다.
 		int order = 0;
-		while (order != 4) {
+		//선택 조건
+		while (order != 3) {
 			order = accomView.displayFilterList(); // Client로 가야됨.
 			switch (order) {
 				case 1 -> filters.put("accomName", accomView.getAccomNameFromUser());
-				case 2 -> filters.put("headcount", accomView.getHeadcount());
-				case 3 -> filters.put("accomType", accomView.getAccomTypeFromUser());
+				case 2 -> filters.put("accomType", accomView.getAccomTypeFromUser());
 			}
 		}
+		//필수 조건
+		filters.put("headcount", accomView.getHeadcount());
 		LocalDate checkIn = reservationView.getCheckIn();
 		LocalDate checkOut = reservationView.getCheckOut();
 		filters.put("checkIn", checkIn);

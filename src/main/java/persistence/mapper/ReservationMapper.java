@@ -16,7 +16,7 @@ public interface ReservationMapper {
                     @Result(property = "reservationID", column = "reservationID"),
                     @Result(property = "userID", column = "userID"),
                     @Result(property = "accommodationID", column = "accommodationID"),
-                    @Result(property = "headCount", column = "headCount"),
+                    @Result(property = "headcount", column = "headCount"),
                     @Result(property = "reserveDate", column = "reserveDate"),
                     @Result(property = "checkIn", column = "checkIn"),
                     @Result(property = "checkOut", column = "checkOut"),
