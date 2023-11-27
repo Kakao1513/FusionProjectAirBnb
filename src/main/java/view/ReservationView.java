@@ -119,7 +119,7 @@ public class ReservationView extends View<ReservationDTO> {
 	public void displayReservationInfo(ReservationDTO reservationDTO) {
 		System.out.println("====================================================예약 정보=================================================");
 		System.out.println("|예약 번호|   유저ID    |   숙소ID   |       예약 신청 시간      |  CheckIn  | CheckOut |   총요금  |   예약 상태   |");
-		System.out.printf("|%-8d|%-12d|%-12d|%-25s|%-10s|%-10s|%-10s|%-12s|\n", reservationDTO.getReservationID(), reservationDTO.getUserID(), reservationDTO.getAccommodationID(), reservationDTO.getReserveDate(), reservationDTO.getCheckIn(), reservationDTO.getCheckOut(), reservationDTO.getCharge(), reservationDTO.getReservationInfo());
+		System.out.printf("|%-8d|%-12d|%-12d|%-20s|%-10s|%-10s|%-10s|%-12s|\n", reservationDTO.getReservationID(), reservationDTO.getUserID(), reservationDTO.getAccommodationID(), reservationDTO.getReserveDate(), reservationDTO.getCheckIn(), reservationDTO.getCheckOut(), reservationDTO.getCharge(), reservationDTO.getReservationInfo());
 		System.out.println("===============================================================================================================");
 	}
 }

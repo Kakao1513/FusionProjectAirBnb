@@ -26,7 +26,7 @@ public interface ReservationMapper {
     List<ReservationDTO> selectReservations(Map<String, Object> filters);
 
     @InsertProvider(type = ReservationSQL.class, method = "insertReservation")
-    int insertReservation(ReservationDTO rDTO);
+    void insertReservation(ReservationDTO rDTO);
 
     @UpdateProvider(type = ReservationSQL.class, method = "updateReservation")
     int updateReservation(ReservationDTO rDTO);

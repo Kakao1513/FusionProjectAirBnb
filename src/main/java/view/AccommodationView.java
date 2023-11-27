@@ -70,11 +70,10 @@ public class AccommodationView extends View<AccommodationDTO> {
 	public int displayFilterList() {
 		System.out.println("==========검색 필터==========");
 		System.out.println("1. 숙소 이름으로 검색");
-		System.out.println("2. 인원 수로 검색");
-		System.out.println("3. 숙소 타입으로 검색");
-		System.out.println("4. 완료");
+		System.out.println("2. 숙소 타입으로 검색");
+		System.out.println("3. 완료");
 		System.out.println("============================");
-		return rangeSelect(1, 4);
+		return rangeSelect(1, 3);
 	}
 
 	public void displayAppliedFilters(Map<String, Object> filters) {
