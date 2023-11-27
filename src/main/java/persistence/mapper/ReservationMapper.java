@@ -16,11 +16,10 @@ public interface ReservationMapper {
                     @Result(property = "reservationID", column = "reservationID"),
                     @Result(property = "userID", column = "userID"),
                     @Result(property = "accommodationID", column = "accommodationID"),
-                    @Result(property = "roomID", column = "roomID"),
+                    @Result(property = "headCount", column = "headCount"),
                     @Result(property = "reserveDate", column = "reserveDate"),
                     @Result(property = "checkIn", column = "checkIn"),
                     @Result(property = "checkOut", column = "checkOut"),
-                    @Result(property = "charge", column = "charge"),
                     @Result(property = "reservationInfo", column = "ReservationInfo"),
             }
     )
@@ -34,7 +33,7 @@ public interface ReservationMapper {
 
     @UpdateProvider(type = ReservationSQL.class, method = "updateGuestReservation")
     int updateGuestReservation(ReservationDTO reservDTO);
-
+/*
     @SelectProvider(type = ReservationSQL.class, method = "getAvailableRoomList")
     @Results(
             id = "RoomResultSet",
@@ -43,6 +42,6 @@ public interface ReservationMapper {
                     @Result(property = "accomID", column = "accommodationID"),
             }
     )
-    List<RoomDTO> getAvailableRoomList(ReservationDTO reservationDTO);
+    List<RoomDTO> getAvailableRoomList(ReservationDTO reservationDTO);*/
 
 }

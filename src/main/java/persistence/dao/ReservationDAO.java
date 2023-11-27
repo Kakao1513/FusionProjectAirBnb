@@ -61,7 +61,7 @@ public class ReservationDAO {
 		}
 		return 0;
 	}
-
+/*
 	public List<RoomDTO> getAvailableRoomList(ReservationDTO reservationDTO){
 		List<RoomDTO> DTOS = null;
 
@@ -72,6 +72,6 @@ public class ReservationDAO {
 			e.printStackTrace();
 		}
 		return DTOS;
-	}
+	}*/
 
 }

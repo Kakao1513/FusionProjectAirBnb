@@ -10,7 +10,7 @@ public class ReservationSQL {
     public static String selectReservations(
             @Param("userID") Integer userID,
             @Param("accomID") Integer accomID,
-            @Param("roomID") Integer roomID,
+            @Param("headCount") Integer headCount,
             @Param("checkIn") LocalDate checkIn,
             @Param("checkOut") LocalDate checkOut,
             @Param("status") String status,
@@ -25,7 +25,7 @@ public class ReservationSQL {
         if (accomID != null){
             sql.WHERE("accommodationID = #{accomID}");
         }
-        if (roomID != null){
+        if (headCount != null){
             sql.WHERE("roomID = #{roomID}");
             sql.WHERE("(reservationInfo = '예약중' OR reservationInfo = '승인대기중')");
         }
@@ -49,8 +49,8 @@ public class ReservationSQL {
     public static String insertReservation(ReservationDTO reservation){
         SQL sql = new SQL()
                 .INSERT_INTO("Reservation")
-                .INTO_COLUMNS("UserID, AccommodationID, RoomID, ReserveDate, CheckIn, CheckOut, Charge, ReservationInfo")
-                .INTO_VALUES("#{userID}, #{accommodationID} #{accommodationID}, #{roomID}, #{reserveDate}, #{checkIn}, #{checkOut}, #{charge}, #{reservationInfo}");
+                .INTO_COLUMNS("UserID, AccommodationID, Headcount, ReserveDate, CheckIn, CheckOut, ReservationInfo")
+                .INTO_VALUES("#{userID}, #{accommodationID} #{accommodationID}, #{roomID}, #{reserveDate}, #{checkIn}, #{checkOut}, #{reservationInfo}");
 
         return  sql.toString();
     }
@@ -71,7 +71,7 @@ public class ReservationSQL {
                 .AND()
                 .WHERE("AccommodationID = #{accommodationID}");
         return sql.toString();
-    }
+    }/*
 
     public static String getAvailableRoomList(ReservationDTO reservationDTO){
         SQL subQuery = new SQL()
@@ -86,5 +86,5 @@ public class ReservationSQL {
                 .WHERE("(RoomID, AccommodationID) NOT IN(" + subQuery.toString() + ")");
 
         return query.toString();
-    }
+    }*/
 }

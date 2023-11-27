@@ -148,16 +148,30 @@ public class ReservationService {
 
     // 14. 숙소 예약 신청(to 호스트). 단, 일정이 중복된 예약을 시도할 때,
     // 적절한 메시지와 함께 예약 이 불가함을 보임. 예약 신청 시 게스트는 총 요금을 확인할 수 있다
-
+/*
     // 14.1 예약 가능한 방 목록을 조회
     public List<RoomDTO> getAvailableRoomList(ReservationDTO reservationDTO){
         return reservationDAO.getAvailableRoomList(reservationDTO);
-    }
+    }*/
     //14.2 해당 예약 날짜에 같은 방에 대한 다른 예약이 없다면 예약 성공
     synchronized public boolean reserveRequest(ReservationDTO userInputReserve) {
+
+        //게스트
+        //로그인 후 숙소을 예약할 수 있다(게스트 엔티티의 속성은 이름, 전화번호, 생년월일이다)
+        //예약 절차
+        //로그인
+        //체크인, 체크아웃 날짜 입력(모든 숙소는 체크인 15:00, 체크아웃 11:00로 통일한다)
+        //인원 입력(성인, 아동으로 구분하며 개인 숙소는 1인당 방 하나를 사용한다고 가정한다)
+        //숙소 타입(1. 전체 2. 개인)
+        //조건에 맞는 숙소 리스트 표시
+        //숙소 리스트는 가격을 기준으로 오름차순과 내림차순으로 정렬 가능하다
+        //리스트에서 숙소를 선택하면 숙소 상세 정보 + 후기 표시(1. 예약 2. 뒤로 가기)
+        //예약을 선택하면 예약 완료 화면으로 이동한다
+
+
         Map<String, Object> filters = new HashMap<>();
         filters.put("accomID", userInputReserve.getReservationID());
-        filters.put("roomID", userInputReserve.getRoomID());
+        filters.put("roomID", userInputReserve.getHeadCount());
         filters.put("checkIn", userInputReserve.getCheckIn());
         filters.put("checkOut", userInputReserve.getCheckOut());
 
@@ -169,7 +183,7 @@ public class ReservationService {
             return false;
         }
     }
-
+    //사용자로부터 인원수, 체크인, 체크아웃 날짜를 입력받아서 조건에맞는 숙소 리스트를 반환한다.
 
 
 }

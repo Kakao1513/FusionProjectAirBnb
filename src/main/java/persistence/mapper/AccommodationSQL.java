@@ -31,7 +31,7 @@ public class AccommodationSQL {
 						"#{accom.type}", "#{accom.capacity}", "#{accom.comment}", "#{accom.status}");
 		return sql.toString();
 	}
-
+	//동적쿼리부분 수정해야됨
 	public static String selectAccom(
 			@Param("userID") Integer userID,
 			@Param("status") String status,
