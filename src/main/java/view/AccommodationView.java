@@ -14,6 +14,10 @@ public class AccommodationView extends View<AccommodationDTO> {
 	private static final Scanner SCANNER = new Scanner(System.in);
 
 	public int readAccomIndex(List<AccommodationDTO> myAccomList){
+		if(myAccomList.isEmpty()){
+			System.out.println("등록된 숙소가 없습니다.");
+			return -1;
+		}
 		int select = 0;
 		while (true) {
 			System.out.print("숙소 번호를 입력하세요:");

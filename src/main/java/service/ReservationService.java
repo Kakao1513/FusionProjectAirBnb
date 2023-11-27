@@ -158,16 +158,16 @@ public class ReservationService {
 
         for (ReservationDTO dto : reservationDTOS) {
             LocalDate checkIn = dto.getCheckIn();
+            LocalDate checkOut = dto.getCheckOut();
 
             if (checkIn.isBefore(startDate))
                 checkIn = startDate;
+            if (checkOut.isAfter(endDate))
+                checkOut = endDate;
 
-            List<LocalDate> dateList = getDatesBetween(checkIn, dto.getCheckOut());
+            List<LocalDate> dateList = getDatesBetween(checkIn, checkOut);
 
             for (LocalDate date : dateList) {
-                if(date.isAfter(endDate)){
-                    date = endDate;
-                }
                 int idx = (int) ChronoUnit.DAYS.between(startDate, date);
                 roomCount[idx] += dto.getHeadcount();
             }
@@ -231,7 +231,6 @@ public class ReservationService {
         //숙소 리스트는 가격을 기준으로 오름차순과 내림차순으로 정렬 가능하다
         //리스트에서 숙소를 선택하면 숙소 상세 정보 + 후기 표시(1. 예약 2. 뒤로 가기)
         //예약을 선택하면 예약 완료 화면으로 이동한다
-
         if (isReservationAvailable(userInputReserve)) {
             return reservationDAO.insertReservation(userInputReserve) != 0;
         }

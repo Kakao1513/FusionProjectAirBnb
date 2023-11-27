@@ -61,35 +61,6 @@ public class GuestHandler extends ActorHandler {
 		}
 	}
 
-	private void requestReservation() {
-		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.POST).payloadType(PayloadType.RESERVATION).build();;
-
-		ReservationDTO reservationDTO = new ReservationDTO();
-		Object[] accomAndFilters = accomFiltering();
-
-		List<AccommodationDTO> accommodationDTOS = (List<AccommodationDTO>) accomAndFilters[0];
-		Map<String, Object> filters = (Map<String, Object>) accomAndFilters[1];
-
-		int accomIndex = accomView.readAccomIndex(accommodationDTOS); //번호로 숙소를 선택
-		AccommodationDTO selectedAccom = accommodationDTOS.get(accomIndex);
-		reservationDTO.setHeadcount((Integer) filters.get("headcount"));
-		reservationDTO.setReserveDate(LocalDateTime.now());
-		reservationDTO.setReservationInfo("승인대기중");
-		reservationDTO.setAccommodationID(selectedAccom.getAccomID());
-		reservationDTO.setUserID(currentUser.getUserId());
-		reservationDTO.setCheckIn((LocalDate) filters.get("checkIn"));
-		reservationDTO.setCheckOut((LocalDate) filters.get("checkOut"));
-		request.setPayload(reservationDTO);
-		Response response = requestToServer(request);
-		if (response.getIsSuccess()) {
-			System.out.println(response.getMessage());
-			ReservationDTO resRserveDTO = (ReservationDTO) response.getPayload();
-			reservationView.displayReservationInfo(resRserveDTO);
-		} else {
-			System.out.println("예약이 실패하였습니다. 사유:" + response.getMessage());
-		}
-	}
-
 	public void myPageHandle(int select) {
 		switch (select) {
 			case 0 -> {
@@ -107,6 +78,39 @@ public class GuestHandler extends ActorHandler {
 			case 4 -> {
 				changePrivacy();
 			}
+		}
+	}
+
+	private void requestReservation() {
+		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.POST).payloadType(PayloadType.RESERVATION).build();;
+
+		ReservationDTO reservationDTO = new ReservationDTO();
+		Object[] accomAndFilters = accomFiltering();
+
+		List<AccommodationDTO> accommodationDTOS = (List<AccommodationDTO>) accomAndFilters[0];
+		Map<String, Object> filters = (Map<String, Object>) accomAndFilters[1];
+
+		int accomIndex = accomView.readAccomIndex(accommodationDTOS); //번호로 숙소를 선택
+		if (accomIndex == -1) {
+			System.out.println("숙소 선택을 취소합니다.");
+			return;
+		}
+		AccommodationDTO selectedAccom = accommodationDTOS.get(accomIndex);
+		reservationDTO.setHeadcount((Integer) filters.get("headcount"));
+		reservationDTO.setReserveDate(LocalDateTime.now());
+		reservationDTO.setReservationInfo("승인대기중");
+		reservationDTO.setAccommodationID(selectedAccom.getAccomID());
+		reservationDTO.setUserID(currentUser.getUserId());
+		reservationDTO.setCheckIn((LocalDate) filters.get("checkIn"));
+		reservationDTO.setCheckOut((LocalDate) filters.get("checkOut"));
+		request.setPayload(reservationDTO);
+		Response response = requestToServer(request);
+		if (response.getIsSuccess()) {
+			System.out.println(response.getMessage());
+			ReservationDTO resRserveDTO = (ReservationDTO) response.getPayload();
+			reservationView.displayReservationInfo(resRserveDTO);
+		} else {
+			System.out.println("예약이 실패하였습니다. 사유:" + response.getMessage());
 		}
 	}
 
@@ -131,7 +135,7 @@ public class GuestHandler extends ActorHandler {
 			order = accomView.displayFilterList(); // Client로 가야됨.
 			switch (order) {
 				case 1 -> filters.put("accomName", accomView.getAccomNameFromUser());
-				case 2 -> filters.put("accomType", accomView.getAccomTypeFromUser());
+				case 2 -> filters.put("type", accomView.getAccomTypeFromUser());
 			}
 		}
 		//필수 조건
