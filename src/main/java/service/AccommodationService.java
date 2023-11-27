@@ -4,7 +4,9 @@ import Container.IocContainer;
 import persistence.dao.*;
 import persistence.dto.*;
 
+
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class AccommodationService {
@@ -84,57 +86,62 @@ public class AccommodationService {
 	public void updateAccomStatus(int id, String status) {
 		accomDAO.updateAccomStatus(id, status);
 	}
-
-	// 8 숙소별 월별 총매출 확인
+	
+	// 9 숙소별 월별 총매출 확인
 	public int checkTotalSales(int accomID, int month) {
 		Map<String, Object> filters = new HashMap<>();
-		LocalDate date = LocalDate.now().withMonth(month);
+		LocalDate date = LocalDate.now().withDayOfMonth(1).withMonth(month);
+		
 		filters.put("Reservationinfo", "예약중");
 		filters.put("accomID", accomID);
 		filters.put("checkIn", date);
 		filters.put("checkOut", date.plusMonths(1));
-
+		
 		List<ReservationDTO> reservationList = reservationDAO.getReservations(filters); // reservation list
-		List<Integer> rates = getRatesFromReservations(reservationList, accomID, date); // list's rate
-
+		List<Integer> rates = getRatesFromReservations(reservationList, accomID); // list's rate
+		
 		return rates.stream().mapToInt(Integer::intValue).sum();
 	}
-
-	// 8.1 총매출 계산
-	private List<Integer> getRatesFromReservations(List<ReservationDTO> reservationList, int accomID, LocalDate date) {
+	
+	// 9.1 총매출 계산
+	private List<Integer> getRatesFromReservations(List<ReservationDTO> reservationList, int accomID) {
 		List<Integer> rates = new ArrayList<>();
-		RatePolicyDTO ratePolicyDTO = ratePolicyDAO.getRate(accomID);
 		List<DiscountPolicyDTO> discountDTOS = discountDAO.getDiscount(accomID);
-
+		
 		for (ReservationDTO reservation : reservationList) {
-			LocalDate startDate = date.withDayOfMonth(1);
-			LocalDate endDate = date.withDayOfMonth(date.lengthOfMonth());
-
-			while (!startDate.isAfter(endDate)) {
-				int charge = getRateForDay(ratePolicyDTO, startDate);
-				if (discountDTOS != null) {
-					for (DiscountPolicyDTO discountDTO : discountDTOS) {
-						if (startDate.isAfter(discountDTO.getDateStart()) && startDate.isBefore(discountDTO.getDateEnd())) {
-							if (Objects.equals(discountDTO.getDiscountType(), "정량")) {
-								charge -= discountDTO.getValue();
-							} else {
-								charge *= (int) ((100 - discountDTO.getValue()) * 0.01);
-							}
-						}
-					}
-				}
+			LocalDate curDate = reservation.getCheckIn();
+			LocalDate endDate = reservation.getCheckOut();
+			
+			while (curDate.isBefore(endDate)) {
+				int charge = getCharge(reservation, discountDTOS, curDate);
 				rates.add(charge);
-				startDate = startDate.plusDays(1);
+				curDate = curDate.plusDays(1);
 			}
 		}
 		return rates;
 	}
-
-	// 8.2 주일, 주말 계산
-	private int getRateForDay(RatePolicyDTO ratePolicyDTO, LocalDate date) {
-		return date.getDayOfWeek().getValue() < 6 ? ratePolicyDTO.getWeekday() : ratePolicyDTO.getWeekend();
+	
+	// 9.2 할인 적용된 값 계산
+	private static int getCharge(ReservationDTO reservation, List<DiscountPolicyDTO> discountDTOS, LocalDate curDate)
+	{
+		int charge = reservation.getCharge();
+		
+		// 할인이 있다면
+		if (discountDTOS != null) {
+			for (DiscountPolicyDTO discountDTO : discountDTOS) {
+				if (curDate.isAfter(discountDTO.getDateStart().minusDays(1)) && curDate.isBefore(discountDTO.getDateEnd().plusDays(1))) {
+					if (Objects.equals(discountDTO.getDiscountType(), "정량")) {
+						charge -= discountDTO.getValue();
+					}
+					else {
+						charge *= (int) ((100 - discountDTO.getValue()) * 0.01);
+					}
+				}
+			}
+		}
+		return charge;
 	}
-
+	
 	// 11. 숙소 목록 보기(전체 목록 조회)
 	public List<AccommodationDTO> selectAccom(String status) {
 		Map<String, Object> filters = new HashMap<>();
@@ -186,6 +193,4 @@ public class AccommodationService {
 		return reviewDAO.selectReviews(accomDTO.getAccomID());
 	}
 	/////////////////////////////////////////////
-
-
 }
