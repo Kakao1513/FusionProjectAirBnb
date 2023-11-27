@@ -152,7 +152,7 @@ public class HostHandler extends ActorHandler {
 	private void registDiscountPolicy() {
 		Request request = Request.builder().method(Method.PUT).roleType(RoleType.HOST).payloadType(PayloadType.ACCOMMODATION).build();
 		List<AccommodationDTO> myAccomList = selectConfirmedAccomByUser();
-		if (myAccomList.isEmpty()) {
+		if (!myAccomList.isEmpty()) {
 			int select = accomView.readAccomIndex(myAccomList);
 			DiscountPolicyDTO discountPolicyDTO = accomView.getDiscountFromUser(myAccomList.get(select));
 			request.setPayload(discountPolicyDTO);
