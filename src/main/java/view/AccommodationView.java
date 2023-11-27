@@ -234,8 +234,8 @@ public class AccommodationView extends View<AccommodationDTO> {
 
 		return DiscountPolicyDTO.builder()
 				.accomID(accomDTO.getAccomID())
-				.dateStart(startDate)
-				.dateEnd(endDate)
+				.startDate(startDate)
+				.endDate(endDate)
 				.discountType(type == 1 ? "정량" : "정률")
 				.value(value)
 				.build();

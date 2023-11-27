@@ -6,7 +6,6 @@ import persistence.dto.*;
 
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class AccommodationService {
@@ -142,7 +141,7 @@ public class AccommodationService {
 		// 할인이 있다면
 		if (discountDTOS != null) {
 			for (DiscountPolicyDTO discountDTO : discountDTOS) {
-				if (curDate.isAfter(discountDTO.getDateStart().minusDays(1)) && curDate.isBefore(discountDTO.getDateEnd().plusDays(1))) {
+				if (curDate.isAfter(discountDTO.getStartDate().minusDays(1)) && curDate.isBefore(discountDTO.getEndDate().plusDays(1))) {
 					if (Objects.equals(discountDTO.getDiscountType(), "정량")) {
 						charge -= discountDTO.getValue();
 					}

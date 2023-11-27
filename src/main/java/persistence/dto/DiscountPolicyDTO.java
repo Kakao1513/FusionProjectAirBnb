@@ -16,6 +16,6 @@ public class DiscountPolicyDTO extends DTO {
 	private int accomID;
 	private String discountType;
 	private int value;
-	private LocalDate dateStart;
-	private LocalDate dateEnd;
+	private LocalDate startDate;
+	private LocalDate endDate;
 }
