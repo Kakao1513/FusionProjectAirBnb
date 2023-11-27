@@ -66,7 +66,23 @@ public class GuestHandler extends ActorHandler {
 	private void requestReservation() {
 		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.POST).payloadType(PayloadType.RESERVATION).build();
 		System.out.println("예약할 숙소 번호를 선택하세요.");
-
+		List<AccommodationDTO> accommodationDTOS = selectAccomList();
+		int accomIndex = accomView.readAccomIndex(accommodationDTOS); //번호로 숙소를 선택
+		AccommodationDTO selectedAccom = accommodationDTOS.get(accomIndex);
+		ReservationDTO reservationDTO = new ReservationDTO();
+		reservationDTO.setAccommodationID(selectedAccom.getAccomID());
+		reservationDTO.setUserID(currentUser.getUserId());
+		reservationDTO.setCheckIn(reservationView.getCheckIn());
+		reservationDTO.setCheckOut(reservationView.getCheckOut());
+		request.setPayload(reservationDTO);
+		Response response = requestToServer(request);
+		if (response.getIsSuccess()) {
+			System.out.println(response.getMessage());
+			ReservationDTO resRserveDTO = (ReservationDTO) response.getPayload();
+			reservationView.displayReservationInfo(resRserveDTO);
+		} else {
+			System.out.println("예약이 실패하였습니다. 사유:" + response.getMessage());
+		}
 	}
 
 	public void myPageHandle(int select) {

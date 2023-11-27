@@ -13,9 +13,27 @@ public class ReservationView extends View<ReservationDTO> {
 		int year = readInt();
 		System.out.print("월(ex. 11) : ");
 		int month = readInt();
-
 		return LocalDate.of(year, month, 1);
-
+	}
+	public LocalDate getCheckIn(){
+		System.out.println("체크인 날짜를 입력하세요 ");
+		System.out.print("년(ex. 2023) : ");
+		int year = readInt();
+		System.out.print("월(ex. 11) : ");
+		int month = readInt();
+		System.out.print("일(ex. 11) : ");
+		int day = readInt();
+		return LocalDate.of(year, month, day);
+	}
+	public LocalDate getCheckOut(){
+		System.out.println("체크아웃 날짜를 입력하세요 ");
+		System.out.print("년(ex. 2023) : ");
+		int year = readInt();
+		System.out.print("월(ex. 11) : ");
+		int month = readInt();
+		System.out.print("일(ex. 11) : ");
+		int day = readInt();
+		return LocalDate.of(year, month, day);
 	}
 
 
@@ -84,5 +102,12 @@ public class ReservationView extends View<ReservationDTO> {
 			}
 		}
 		return select - 1;
+	}
+
+	public void displayReservationInfo(ReservationDTO reservationDTO) {
+		System.out.println("====================================================예약 정보=================================================");
+		System.out.println("|예약 번호|   유저ID    |   숙소ID   |       예약 신청 시간      |  CheckIn  | CheckOut |   총요금  |   예약 상태   |");
+		System.out.printf("|%-8d|%-12d|%-12d|%-25s|%-10s|%-10s|%-10s|%-12s|\n", reservationDTO.getReservationID(), reservationDTO.getUserID(), reservationDTO.getAccommodationID(), reservationDTO.getReserveDate(), reservationDTO.getCheckIn(), reservationDTO.getCheckOut(), reservationDTO.getCharge(), reservationDTO.getReservationInfo());
+		System.out.println("===============================================================================================================");
 	}
 }

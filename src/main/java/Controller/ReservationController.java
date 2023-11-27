@@ -80,7 +80,7 @@ public class ReservationController implements MethodController {
 		List<ReservationDTO> reservationDTOS = null;
 		if (nowMonth != null) {
 			reservationDTOS = reservationService.getConfirmReservationList(selectedAccom, nowMonth);
-		}else{
+		} else {
 			reservationDTOS = reservationService.getReadyReservationList(selectedAccom); //승인대기중인 목록만 가져옴
 		}
 		return Response.builder().isSuccess(true).payload(reservationDTOS).build();
@@ -121,11 +121,23 @@ public class ReservationController implements MethodController {
 			case HOST -> {
 			}
 			case GUEST -> {
+				res = requestReservationFromUser(req);
 			}
 
 		}
 
 		return res;
+	}
+
+	private Response requestReservationFromUser(Request req) {
+		ReservationDTO reservationDTO = (ReservationDTO) req.getPayload();
+		if (reservationService.reserveRequest(reservationDTO)) {
+			int charge = reservationService.calculateReservationCharge(reservationDTO);
+			reservationDTO.setCharge(charge); //총요금 계산
+			return Response.builder().isSuccess(true).message("예약이 성공적으로 등록되었습니다.").payload(reservationDTO).build();
+		} else {
+			return Response.builder().isSuccess(false).message("이미 해당 숙소가 예약중입니다.").build();
+		}
 	}
 
 	public Response deleteHandle(Request req) {
