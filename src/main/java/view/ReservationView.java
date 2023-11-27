@@ -57,7 +57,7 @@ public class ReservationView extends View<ReservationDTO> {
 				int end = dto.getCheckOut().getDayOfMonth();
 
 				for (int i = start; i <= end; i++) {
-					roomCount[i] += 1;
+					roomCount[i] += dto.getHeadcount();
 				}
 			}
 			System.out.println();

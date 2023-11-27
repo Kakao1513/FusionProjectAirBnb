@@ -160,6 +160,9 @@ public class ReservationService {
             List<LocalDate> dateList = getDatesBetween(dto.getCheckIn(), dto.getCheckOut());
 
             for (LocalDate date : dateList) {
+                if(date.isAfter(endDate)){
+                    date = endDate;
+                }
                 int idx = (int) ChronoUnit.DAYS.between(startDate, date);
                 roomCount[idx] += dto.getHeadcount();
             }
@@ -172,7 +175,7 @@ public class ReservationService {
     public boolean isReservationAvailable(ReservationDTO reservationDTO){
         AccommodationDTO accomDTO = accomDAO.getAccom(reservationDTO.getAccommodationID());
         Map<String, Object> filters = new HashMap<>();
-        filters.put("headcount", accomDTO.getCapacity());
+        filters.put("headcount", reservationDTO.getHeadcount());
         filters.put("checkIn", reservationDTO.getCheckIn());
         filters.put("checkOut", reservationDTO.getCheckOut());
         filters.put("accomID", accomDTO.getAccomID());
