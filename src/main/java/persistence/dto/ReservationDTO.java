@@ -16,7 +16,7 @@ public class ReservationDTO extends DTO {
 	private int reservationID;
 	private int userID;
 	private int accommodationID;
-	private int headCount;
+	private int headcount;
 	private LocalDateTime reserveDate;
 	private LocalDate checkIn;
 	private LocalDate checkOut;

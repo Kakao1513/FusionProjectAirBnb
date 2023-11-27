@@ -51,13 +51,10 @@ public class GuestHandler extends ActorHandler {
 			case 2 -> { //숙소 목록 보기
 				selectAccomList();
 			}
-			case 3 -> { //숙소 필터링
-				accomFiltering();
-			}
-			case 4 -> { //숙소 예약 신청
+			case 3 -> { //숙소 예약 신청
 				requestReservation();
 			}
-			case 5 -> { //숙소 상세 정보 보기
+			case 4 -> { //숙소 상세 정보 보기
 				selectAccomList();
 				viewAccomMoreInfo();
 			}
@@ -65,18 +62,23 @@ public class GuestHandler extends ActorHandler {
 	}
 
 	private void requestReservation() {
-		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.POST).payloadType(PayloadType.RESERVATION).build();
-		System.out.println("예약할 숙소 번호를 선택하세요.");
-		List<AccommodationDTO> accommodationDTOS = selectAccomList();
+		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.POST).payloadType(PayloadType.RESERVATION).build();;
+
+		ReservationDTO reservationDTO = new ReservationDTO();
+		Object[] accomAndFilters = accomFiltering();
+
+		List<AccommodationDTO> accommodationDTOS = (List<AccommodationDTO>) accomAndFilters[0];
+		Map<String, Object> filters = (Map<String, Object>) accomAndFilters[1];
+
 		int accomIndex = accomView.readAccomIndex(accommodationDTOS); //번호로 숙소를 선택
 		AccommodationDTO selectedAccom = accommodationDTOS.get(accomIndex);
-		ReservationDTO reservationDTO = new ReservationDTO();
+
 		reservationDTO.setReserveDate(LocalDateTime.now());
 		reservationDTO.setReservationInfo("승인대기중");
 		reservationDTO.setAccommodationID(selectedAccom.getAccomID());
 		reservationDTO.setUserID(currentUser.getUserId());
-		reservationDTO.setCheckIn(reservationView.getCheckIn());
-		reservationDTO.setCheckOut(reservationView.getCheckOut());
+		reservationDTO.setCheckIn((LocalDate) filters.get("checkIn"));
+		reservationDTO.setCheckOut((LocalDate) filters.get("checkOut"));
 		request.setPayload(reservationDTO);
 		Response response = requestToServer(request);
 		if (response.getIsSuccess()) {
@@ -121,18 +123,22 @@ public class GuestHandler extends ActorHandler {
 		}
 	}
 
-	private void accomFiltering() {
+	private Object[] accomFiltering() {
 		Map<String, Object> filters = new HashMap<>(); //Request의 Payload에 담겨서 온다.
 		int order = 0;
-		while (order != 5) {
+		while (order != 4) {
 			order = accomView.displayFilterList(); // Client로 가야됨.
 			switch (order) {
 				case 1 -> filters.put("accomName", accomView.getAccomNameFromUser());
-				case 2 -> filters.put("period", accomView.getPeriodFromUser());
-				case 3 -> filters.put("capacity", accomView.getCapacityFromUser());
-				case 4 -> filters.put("type", accomView.getAccomTypeFromUser());
+				case 2 -> filters.put("headcount", accomView.getHeadcount());
+				case 3 -> filters.put("accomType", accomView.getAccomTypeFromUser());
 			}
 		}
+		LocalDate checkIn = reservationView.getCheckIn();
+		LocalDate checkOut = reservationView.getCheckOut();
+		filters.put("checkIn", checkIn);
+		filters.put("checkOut", checkOut);
+
 		accomView.displayAppliedFilters(filters);
 		Request request = new Request();
 		request.setMethod(Method.PUT);
@@ -141,10 +147,12 @@ public class GuestHandler extends ActorHandler {
 		request.setPayload(filters);
 
 		Response response = requestToServer(request);
+		List<AccommodationDTO> accommodationDTOS = null;
 		if (response.getIsSuccess()) {
-			List<AccommodationDTO> accommodationDTOS = (List<AccommodationDTO>) response.getPayload();
+			accommodationDTOS = (List<AccommodationDTO>) response.getPayload();
 			accomView.displayAccomList(accommodationDTOS);
 		}
+		return new Object[]{accommodationDTOS, filters};
 	}
 
 	public List<AccommodationDTO> selectAccomList() {

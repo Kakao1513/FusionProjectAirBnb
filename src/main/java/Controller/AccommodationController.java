@@ -190,7 +190,7 @@ public class AccommodationController implements MethodController {
 	public Response accomFiltering(Request req) {
 		Map<String, Object> filters = (Map<String, Object>) req.getPayload();
 		filters.put("status", "Confirmed");
-		List<AccommodationDTO> acList = accomService.selectAccom(filters);
+		List<AccommodationDTO> acList = reservationService.getFilteredAccomList(filters);
 		Response rs = new Response();
 		rs.setIsSuccess(true);
 		rs.setPayload(acList);

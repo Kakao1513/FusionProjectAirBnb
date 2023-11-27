@@ -70,12 +70,11 @@ public class AccommodationView extends View<AccommodationDTO> {
 	public int displayFilterList() {
 		System.out.println("==========검색 필터==========");
 		System.out.println("1. 숙소 이름으로 검색");
-		System.out.println("2. 날짜로 검색");
-		System.out.println("3. 인원 수로 검색");
-		System.out.println("4. 숙소 타입으로 검색");
-		System.out.println("5. 완료");
+		System.out.println("2. 인원 수로 검색");
+		System.out.println("3. 숙소 타입으로 검색");
+		System.out.println("4. 완료");
 		System.out.println("============================");
-		return rangeSelect(1, 5);
+		return rangeSelect(1, 4);
 	}
 
 	public void displayAppliedFilters(Map<String, Object> filters) {
@@ -83,12 +82,11 @@ public class AccommodationView extends View<AccommodationDTO> {
 		if (filters.get("accomName") != null) {
 			System.out.println("숙소 이름 : " + filters.get("accomName"));
 		}
-		if (filters.get("period") != null) {
-			String[] period = (String[]) filters.get("period");
-			System.out.println("검색 날짜 : " + period[0] + " ~ " + period[1]);
+		if (filters.get("checkIn") != null && filters.get("checkOut") != null) {
+			System.out.println("검색 날짜 : " + filters.get("checkIn") + " ~ " + filters.get("checkOut"));
 		}
 		if (filters.get("capacity") != null) {
-			System.out.println("최소 수용 인원 : " + filters.get("capacity"));
+			System.out.println("인원 수 : " + filters.get("capacity"));
 		}
 		if (filters.get("accomType") != null) {
 			System.out.println("숙소 타입 : " + filters.get("accomType"));
@@ -120,6 +118,11 @@ public class AccommodationView extends View<AccommodationDTO> {
 			case 2 -> "공간 전체";
 			default -> throw new IllegalStateException("Unexpected value: " + accomType);
 		};
+	}
+
+	public int getHeadcount() {
+		System.out.println("예약할 인원수를 입력하세요 ");
+		return readInt();
 	}
 
 

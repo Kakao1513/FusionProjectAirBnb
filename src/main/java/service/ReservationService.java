@@ -160,7 +160,7 @@ public class ReservationService {
 
             for (LocalDate date : dateList) {
                 int idx = (int) ChronoUnit.DAYS.between(startDate, date);
-                roomCount[idx] += dto.getHeadCount();
+                roomCount[idx] += dto.getHeadcount();
             }
         }
         int max = Arrays.stream(roomCount).max().getAsInt();
