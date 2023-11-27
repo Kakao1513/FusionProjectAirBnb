@@ -146,7 +146,8 @@ public class ReservationController implements MethodController {
 
 	private Response requestReservationFromUser(Request req) {
 		ReservationDTO reservationDTO = (ReservationDTO) req.getPayload();
-		if (reservationService.isReservationAvailable(reservationDTO)) {
+
+		if (reservationService.reserveRequest(reservationDTO)) {
 			int charge = reservationService.calculateReservationCharge(reservationDTO);
 			reservationDTO.setCharge(charge); //총요금 계산
 			return Response.builder().isSuccess(true).message("예약이 성공적으로 등록되었습니다.").payload(reservationDTO).build();

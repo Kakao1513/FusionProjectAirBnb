@@ -32,7 +32,7 @@ public class ReservationDAO {
 		return DTOS;
 	}
 
-	public int  insertReservation(ReservationDTO rDTO) {
+	public int insertReservation(ReservationDTO rDTO) {
 		int num = 0;
 		try (SqlSession session = sqlSessionFactory.openSession()){
             ReservationMapper reservationMapper = session.getMapper(ReservationMapper.class);
