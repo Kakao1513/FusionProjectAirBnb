@@ -49,14 +49,14 @@ public class ReservationService {
         filters.put("accomID", accomDTO.getAccomID());
         filters.put("checkIn", date);
         filters.put("checkOut", date.plusMonths(1));
-        filters.put("status", "예약중");
+        filters.put("reservationInfo", "예약중");
 
         return reservationDAO.getReservations(filters);
     }
     public List<ReservationDTO> getReadyReservationList(AccommodationDTO accomDTO) {
         Map<String, Object> filters = new HashMap<>();
         filters.put("accomID", accomDTO.getAccomID());
-        filters.put("status", "승인대기중");
+        filters.put("reservationInfo", "승인대기중");
 
         return calculateReservationCharge(reservationDAO.getReservations(filters));
     }
@@ -65,7 +65,7 @@ public class ReservationService {
     public List<ReservationDTO> completedReservationList(AccommodationDTO accomDTO) {
         Map<String, Object> filters = new HashMap<>();
         filters.put("now", LocalDate.now());
-        filters.put("status", "예약중");
+        filters.put("reservationInfo", "예약중");
 
         return calculateReservationCharge(reservationDAO.getReservations(filters));
     }
@@ -79,7 +79,7 @@ public class ReservationService {
     public List<ReservationDTO> getReservationListByUserID(UserDTO user){
         Map<String, Object> filters = new HashMap<>();
         filters.put("userID", user.getUserId());
-      //  filters.put("status", status);
+      //  filters.put("reservationInfo", status);
 
         return calculateReservationCharge(reservationDAO.getReservations(filters));
     }
@@ -186,7 +186,6 @@ public class ReservationService {
                 .filter(reservationDTO -> reservationDTO.getAccommodationID() == accomID)
                 .collect(Collectors.toList());
     }
-
 
 
     private static List<LocalDate> getDatesBetween(LocalDate startDate, LocalDate endDate) {

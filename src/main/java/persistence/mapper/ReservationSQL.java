@@ -10,10 +10,9 @@ public class ReservationSQL {
     public static String selectReservations(
             @Param("userID") Integer userID,
             @Param("accomID") Integer accomID,
-            @Param("headCount") Integer headCount,
             @Param("checkIn") LocalDate checkIn,
             @Param("checkOut") LocalDate checkOut,
-            @Param("status") String status,
+            @Param("reservationInfo") String reservationInfo,
             @Param("now") LocalDate now
     ) {
         SQL sql = new SQL()
@@ -25,10 +24,6 @@ public class ReservationSQL {
         if (accomID != null){
             sql.WHERE("accommodationID = #{accomID}");
         }
-        if (headCount != null){
-            sql.WHERE("roomID = #{roomID}");
-            sql.WHERE("(reservationInfo = '예약중' OR reservationInfo = '승인대기중')");
-        }
         if (checkIn != null){
             sql.WHERE("checkOut >= #{checkIn}");
         }
@@ -39,8 +34,8 @@ public class ReservationSQL {
             // 숙박이 완료된 예약에 대해서만 조회
             sql.WHERE("checkOut <= #{now}");
         }
-        if (status != null){
-            sql.WHERE("reservationInfo = #{status}");
+        if (reservationInfo != null){
+            sql.WHERE("reservationInfo = #{reservationInfo}");
         }
 
         return sql.toString();
