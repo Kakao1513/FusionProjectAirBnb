@@ -72,7 +72,7 @@ public class GuestHandler extends ActorHandler {
 
 		int accomIndex = accomView.readAccomIndex(accommodationDTOS); //번호로 숙소를 선택
 		AccommodationDTO selectedAccom = accommodationDTOS.get(accomIndex);
-
+		reservationDTO.setHeadcount((Integer) filters.get("headcount"));
 		reservationDTO.setReserveDate(LocalDateTime.now());
 		reservationDTO.setReservationInfo("승인대기중");
 		reservationDTO.setAccommodationID(selectedAccom.getAccomID());
