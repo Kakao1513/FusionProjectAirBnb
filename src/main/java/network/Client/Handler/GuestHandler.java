@@ -16,6 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +71,8 @@ public class GuestHandler extends ActorHandler {
 		int accomIndex = accomView.readAccomIndex(accommodationDTOS); //번호로 숙소를 선택
 		AccommodationDTO selectedAccom = accommodationDTOS.get(accomIndex);
 		ReservationDTO reservationDTO = new ReservationDTO();
+		reservationDTO.setReserveDate(LocalDateTime.now());
+		reservationDTO.setReservationInfo("승인대기중");
 		reservationDTO.setAccommodationID(selectedAccom.getAccomID());
 		reservationDTO.setUserID(currentUser.getUserId());
 		reservationDTO.setCheckIn(reservationView.getCheckIn());
