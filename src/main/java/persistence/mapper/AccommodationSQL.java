@@ -52,20 +52,6 @@ public class AccommodationSQL {
 		if (accomName != null) {
 			mainQuery.WHERE("houseName like CONCAT('%', #{accomName}, '%')");
 		}
-		if (period != null) {
-			SQL subSubQuery = new SQL()
-					.SELECT("r.RoomID, r.AccommodationID")
-					.FROM("reservation r")
-					.WHERE("CheckOut >= date(#{period[0]})")
-					.WHERE("CheckIn <= date(#{period[1]})");
-			SQL subQuery = new SQL()
-					.SELECT("accommodationID")
-					.FROM("room")
-					.WHERE("(RoomID, AccommodationID) NOT IN(" + subSubQuery.toString() + ")");
-
-			mainQuery.WHERE("AccommodationID IN (" + subQuery.toString() + ")");
-
-		}
 		if (capacity != null) {
 			mainQuery.WHERE("capacity >= #{capacity}");
 		}

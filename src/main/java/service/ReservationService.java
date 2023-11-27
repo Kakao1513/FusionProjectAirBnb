@@ -96,6 +96,7 @@ public class ReservationService {
     }
 
     public int calculateReservationCharge(ReservationDTO rDTO){
+        AccommodationDTO accomDTO = accomDAO.getAccom(rDTO.getAccommodationID());
         LocalDate startDate = rDTO.getCheckIn();
         LocalDate endDate = rDTO.getCheckOut();
         RatePolicyDTO rateDTO = ratePolicyDAO.getRate(rDTO.getAccommodationID());
@@ -129,6 +130,11 @@ public class ReservationService {
             sumCharge += charge;
 
         }
+
+        if (accomDTO.getType().equals("개인실")){
+            sumCharge *= rDTO.getHeadcount();
+        }
+
         return sumCharge;
     }
 
@@ -200,7 +206,7 @@ public class ReservationService {
         List<LocalDate> datesInRange = new ArrayList<>();
 
         LocalDate currentDate = startDate;
-        while (!currentDate.isAfter(endDate)) {
+        while (!currentDate.isAfter(endDate.minusDays(1))) {
             datesInRange.add(currentDate);
             currentDate = currentDate.plusDays(1);
         }
