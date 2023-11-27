@@ -43,42 +43,46 @@ public class ReservationView extends View<ReservationDTO> {
 	 * 달력 찍어주는 메서드
 	 */
 	public void displayReservationCalendar(LocalDate date, int capacity, List<ReservationDTO> reservationDTOS) {
-		int startDayOfWeek = date.getDayOfWeek().getValue();
+		if (reservationDTOS != null) {
+			int startDayOfWeek = date.getDayOfWeek().getValue();
 
-		// 해당 월의 마지막 날짜를 구합니다.
-		int lastDayOfMonth = date.lengthOfMonth();
+			// 해당 월의 마지막 날짜를 구합니다.
+			int lastDayOfMonth = date.lengthOfMonth();
 
-		int[] roomCount = new int[lastDayOfMonth + 1];
+			int[] roomCount = new int[lastDayOfMonth + 1];
 
-		for (ReservationDTO dto : reservationDTOS) {
-			int start = dto.getCheckIn().getDayOfMonth();
-			int end = dto.getCheckOut().getDayOfMonth();
+			for (ReservationDTO dto : reservationDTOS) {
+				int start = dto.getCheckIn().getDayOfMonth();
+				int end = dto.getCheckOut().getDayOfMonth();
 
-			for (int i = start; i <= end; i++) {
-				roomCount[i] += 1;
+				for (int i = start; i <= end; i++) {
+					roomCount[i] += 1;
+				}
 			}
-		}
-		System.out.println();
-		System.out.println("\t\t\t << " + date.getYear() + "년 " + date.getMonthValue() + "월 >>");
-		System.out.println("  Su    Mo    Tu    We    Th    Fr    Sa");
+			System.out.println();
+			System.out.println("\t\t\t << " + date.getYear() + "년 " + date.getMonthValue() + "월 >>");
+			System.out.println("  Su    Mo    Tu    We    Th    Fr    Sa");
 
-		// 첫 주 전까지 공백을 출력합니다.
-		for (int i = 1; i < startDayOfWeek; i++) {
-			System.out.print("      ");
-		}
-
-		// 날짜를 출력합니다.
-		for (int day = 1; day <= lastDayOfMonth; day++) {
-			char status = '^';
-			if (roomCount[day] == 0) status = 'O';
-			else if (roomCount[day] >= capacity) status = '*';
-
-			System.out.printf("%2d(%c) ", day, status);
-			if ((startDayOfWeek + day - 1) % 7 == 0) {
-				System.out.println();
+			// 첫 주 전까지 공백을 출력합니다.
+			for (int i = 1; i < startDayOfWeek; i++) {
+				System.out.print("      ");
 			}
+
+			// 날짜를 출력합니다.
+			for (int day = 1; day <= lastDayOfMonth; day++) {
+				char status = '^';
+				if (roomCount[day] == 0) status = 'O';
+				else if (roomCount[day] >= capacity) status = '*';
+
+				System.out.printf("%2d(%c) ", day, status);
+				if ((startDayOfWeek + day - 1) % 7 == 0) {
+					System.out.println();
+				}
+			}
+			System.out.println();
+		}else{
+			System.out.println("예약정보가 없습니다.");
 		}
-		System.out.println();
 	}
 
 	public void displayReservations(List<ReservationDTO> reservationDTOS) {

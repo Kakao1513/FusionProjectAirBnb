@@ -27,7 +27,7 @@ public class ReservationSQL {
         }
         if (roomID != null){
             sql.WHERE("roomID = #{roomID}");
-            sql.WHERE("(reservationInform = '예약중' OR reservationInform = '승인대기중')");
+            sql.WHERE("(reservationInfo = '예약중' OR reservationInfo = '승인대기중')");
         }
         if (checkIn != null){
             sql.WHERE("checkOut >= #{checkIn}");
@@ -40,7 +40,7 @@ public class ReservationSQL {
             sql.WHERE("checkIn <= #{checkOut}");
         }
         if (status != null){
-            sql.WHERE("reservationInform = #{status}");
+            sql.WHERE("reservationInfo = #{status}");
         }
 
         return sql.toString();
@@ -58,7 +58,7 @@ public class ReservationSQL {
     public static String updateReservation(ReservationDTO reservation){
         SQL sql = new SQL()
                 .UPDATE("Reservation")
-                .SET("reservationInform = #{reservationInfo}")
+                .SET("reservationInfo = #{reservationInfo}")
                 .WHERE("reservationID = #{reservationID}");
         return sql.toString();
     }
@@ -66,7 +66,7 @@ public class ReservationSQL {
     public static String updateGuestReservation(ReservationDTO reservation) {
         SQL sql = new SQL()
                 .UPDATE("Reservation")
-                .SET("reservationInform = #{reservationinfo}")
+                .SET("reservationInfo = #{reservationinfo}")
                 .WHERE("AccommodationID IN(SELECT AccommodationID FROM airbnb.accommodation")
                 .AND()
                 .WHERE("AccommodationID = #{accommodationID}");
