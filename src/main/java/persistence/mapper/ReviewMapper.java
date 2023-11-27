@@ -13,11 +13,9 @@ public interface ReviewMapper {
                     @Result(property = "commentID", column = "commentID"),
                     @Result(property = "accomID", column = "accommodationID"),
                     @Result(property = "userID", column = "userID"),
-                    @Result(property = "roomID", column = "roomID"),
                     @Result(property = "parentID", column = "parentCommentID"),
                     @Result(property = "text", column = "text"),
                     @Result(property = "createdDate", column = "dateCreated"),
-                    @Result(property = "modifiedDate", column = "modificationTime"),
                     @Result(property = "rate", column = "rate"),
             }
     )
@@ -26,6 +24,4 @@ public interface ReviewMapper {
     @InsertProvider(type = ReviewSQL.class, method = "insertReview")
     int insertReview(ReviewDTO review);
 
-    @InsertProvider(type = ReviewSQL.class, method = "insertReviewReply")
-    int insertReviewReply(ReviewDTO reply);
 }

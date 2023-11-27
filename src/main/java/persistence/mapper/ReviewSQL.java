@@ -16,28 +16,17 @@ public class ReviewSQL {
     public static String insertReview(ReviewDTO reservation){
         SQL sql = new SQL()
                 .INSERT_INTO("Review")
-                .INTO_COLUMNS("accommodationID, userID, roomID, text, dateCreated, rate")
-                .INTO_VALUES("#{review.accommodationID}, #{review.userID}, #{review.roomID}")
-                .INTO_VALUES("#{review.text}, #{review.dateCreated}, #{review.rate}");
+                .INTO_COLUMNS("accommodationID, userID, text, dateCreated")
+                .INTO_VALUES("#{review.accommodationID}, #{review.userID}")
+                .INTO_VALUES("#{review.text}, #{review.dateCreated}");
         if (reservation.getParentID() != null){
             sql.INTO_COLUMNS("parentCommentID").INTO_VALUES("#{parentCommentID}");
         }
-        if (reservation.getModifiedDate() != null){
-            sql.INTO_COLUMNS("modificationTime").INTO_VALUES("#{modificationTime}");
+        if (reservation.getRate() != null){
+            sql.INTO_COLUMNS("rate").INTO_VALUES("#{review.rate}");
         }
 
         return  sql.toString();
     }
 
-    public static String insertReviewReply(ReviewDTO reply){
-        SQL sql = new SQL()
-                .INSERT_INTO("Review")
-                .INTO_COLUMNS("userID, roomID, parentCommentID, text, dateCreated")
-                .INTO_VALUES("#{userID}, #{roomID}, #{CommentID}, #{text}, #{dateCreated}");
-        if(reply.getModifiedDate() != null){
-            sql.INTO_COLUMNS("modificationTime").INTO_VALUES("#{modificationTime}");
-        }
-
-        return sql.toString();
-    }
 }

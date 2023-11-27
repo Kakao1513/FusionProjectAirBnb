@@ -7,6 +7,8 @@ import persistence.dao.UserDAO;
 import service.AccommodationService;
 import service.UserService;
 import view.AccommodationView;
+import view.ReservationView;
+import view.ReviewView;
 import view.UserView;
 
 import java.sql.SQLException;

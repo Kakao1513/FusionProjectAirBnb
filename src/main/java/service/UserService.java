@@ -83,9 +83,6 @@ public class UserService {
 	}
 
 	// 6. 게스트 리뷰에 대한 답글 등록 : 답글의 parentID를 댓글의 commentID로 설정한 뒤 INSERT
-	public void insertReviewReply(ReviewDTO reviewDTO) {
-		reviewDAO.insertReviewReply(reviewDTO);
-	}
 
 	// 17. (MyPage)리뷰와 별점 등록
 	public void insertReview(ReviewDTO reviewDTO) {

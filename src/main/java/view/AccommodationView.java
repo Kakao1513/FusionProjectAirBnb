@@ -66,11 +66,6 @@ public class AccommodationView extends View<AccommodationDTO> {
 		return readInt();
 	}
 
-	public int getReviewNumberFromUser() {
-		System.out.println("답글을 작성할 리뷰 번호를 입력하세요 : ");
-		return readInt();
-	}
-
 	public int displayFilterList() {
 		System.out.println("==========검색 필터==========");
 		System.out.println("1. 숙소 이름으로 검색");
