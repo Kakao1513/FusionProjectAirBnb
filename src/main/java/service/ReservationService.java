@@ -133,41 +133,54 @@ public class ReservationService {
 
     public List<AccommodationDTO> getFilteredAccomList(Map<String, Object> filters){
         List<AccommodationDTO> accomDTOS = accomDAO.selectAccom(filters);
-        int headcount = (int)filters.get("headcount");
-
         List<AccommodationDTO> filteredAccomList = new ArrayList<>();
 
-        LocalDate startDate = (LocalDate)filters.get("checkIn");
-        LocalDate endDate = (LocalDate)filters.get("checkOut");
-
-        int term = (int)ChronoUnit.DAYS.between(startDate, endDate);
-
-        for(AccommodationDTO accomDTO : accomDTOS){
-            Map<String, Object> reservationFilters = new HashMap<>();
-            reservationFilters.put("accomID", accomDTO.getAccomID());
-            reservationFilters.put("checkIn", startDate);
-            reservationFilters.put("checkOut", endDate);
-            List<ReservationDTO> reservationDTOS = reservationDAO.getReservations(reservationFilters);
-
-            int[] roomCount = new int[term+1];
-
-            for (ReservationDTO dto : reservationDTOS) {
-                List<LocalDate> dateList = getDatesBetween(dto.getCheckIn(), dto.getCheckOut());
-
-                for (LocalDate date : dateList){
-                    int idx = (int) ChronoUnit.DAYS.between(startDate, date);
-                    roomCount[idx] += dto.getHeadCount();
-                }
-            }
-            if(accomDTO.getCapacity() - Arrays.stream(roomCount).max().getAsInt() >= headcount ||
-                    (accomDTO.getType().equals("공간 전체") && Arrays.stream(roomCount).max().getAsInt() == 0)){
+        for (AccommodationDTO accomDTO : accomDTOS) {
+            if (isAccommodationAvailable(accomDTO, filters)) {
                 filteredAccomList.add(accomDTO);
             }
         }
 
         return filteredAccomList;
-
     }
+
+
+    private boolean isAccommodationAvailable(AccommodationDTO accomDTO, Map<String, Object> filters) {
+        LocalDate startDate = (LocalDate)filters.get("checkIn");
+        LocalDate endDate = (LocalDate)filters.get("checkOut");
+        int term = (int)ChronoUnit.DAYS.between(startDate, endDate);
+        int headcount = (int)filters.get("headcount");
+
+        Map<String, Object> reservationFilters = new HashMap<>();
+        reservationFilters.put("accomID", accomDTO.getAccomID());
+        reservationFilters.put("checkIn", startDate);
+        reservationFilters.put("checkOut", endDate);
+        List<ReservationDTO> reservationDTOS = reservationDAO.getReservations(reservationFilters);
+
+        int[] roomCount = new int[term + 1];
+
+        for (ReservationDTO dto : reservationDTOS) {
+            List<LocalDate> dateList = getDatesBetween(dto.getCheckIn(), dto.getCheckOut());
+
+            for (LocalDate date : dateList) {
+                int idx = (int) ChronoUnit.DAYS.between(startDate, date);
+                roomCount[idx] += dto.getHeadCount();
+            }
+        }
+
+        return accomDTO.getCapacity() - Arrays.stream(roomCount).max().getAsInt() >= headcount ||
+                (accomDTO.getType().equals("공간 전체") && Arrays.stream(roomCount).max().getAsInt() == 0);
+    }
+
+    public boolean isReservationAvailable(ReservationDTO reservationDTO){
+        AccommodationDTO accomDTO = accomDAO.getAccom(reservationDTO.getAccommodationID());
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("headcount", accomDTO.getCapacity());
+        filters.put("checkIn", reservationDTO.getCheckIn());
+        filters.put("checkOut", reservationDTO.getCheckOut());
+        return isAccommodationAvailable(accomDTO, filters);
+    }
+
 
 
     private static List<LocalDate> getDatesBetween(LocalDate startDate, LocalDate endDate) {
@@ -206,21 +219,11 @@ public class ReservationService {
         //리스트에서 숙소를 선택하면 숙소 상세 정보 + 후기 표시(1. 예약 2. 뒤로 가기)
         //예약을 선택하면 예약 완료 화면으로 이동한다
 
-
-        Map<String, Object> filters = new HashMap<>();
-        filters.put("accomID", userInputReserve.getReservationID());
-        filters.put("checkIn", userInputReserve.getCheckIn());
-        filters.put("checkOut", userInputReserve.getCheckOut());
-
-        List<ReservationDTO> reserves = reservationDAO.getReservations(filters);
-        if (reserves.isEmpty()) { //해당 날짜에 예약된 방이 없음을 의미.
+        if (isReservationAvailable(userInputReserve)){
             reservationDAO.insertReservation(userInputReserve);
             return true;
         } else {
             return false;
         }
     }
-
-
-
 }

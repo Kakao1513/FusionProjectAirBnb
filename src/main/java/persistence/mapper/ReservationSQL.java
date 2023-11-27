@@ -32,12 +32,12 @@ public class ReservationSQL {
         if (checkIn != null){
             sql.WHERE("checkOut >= #{checkIn}");
         }
+        if (checkOut != null){
+            sql.WHERE("checkIn <= #{checkOut}");
+        }
         if (now != null){
             // 숙박이 완료된 예약에 대해서만 조회
             sql.WHERE("checkOut <= #{now}");
-        }
-        if (checkOut != null){
-            sql.WHERE("checkIn <= #{checkOut}");
         }
         if (status != null){
             sql.WHERE("reservationInfo = #{status}");
