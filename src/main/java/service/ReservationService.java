@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ReservationService {
     private ReservationDAO reservationDAO;
@@ -133,10 +134,11 @@ public class ReservationService {
 
     public List<AccommodationDTO> getFilteredAccomList(Map<String, Object> filters){
         List<AccommodationDTO> accomDTOS = accomDAO.selectAccom(filters);
+        List<ReservationDTO> reservationDTOS = reservationDAO.getReservations(filters);
         List<AccommodationDTO> filteredAccomList = new ArrayList<>();
 
         for (AccommodationDTO accomDTO : accomDTOS) {
-            if (isAccommodationAvailable(accomDTO, filters)) {
+            if (isAccommodationAvailable(accomDTO, filterReservationsByAccomID(reservationDTOS, accomDTO.getAccomID()), filters)) {
                 filteredAccomList.add(accomDTO);
             }
         }
@@ -145,17 +147,11 @@ public class ReservationService {
     }
 
 
-    private boolean isAccommodationAvailable(AccommodationDTO accomDTO, Map<String, Object> filters) {
+    private boolean isAccommodationAvailable(AccommodationDTO accomDTO, List<ReservationDTO> reservationDTOS, Map<String, Object> filters) {
         LocalDate startDate = (LocalDate)filters.get("checkIn");
         LocalDate endDate = (LocalDate)filters.get("checkOut");
         int term = (int)ChronoUnit.DAYS.between(startDate, endDate);
         int headcount = (int)filters.get("headcount");
-
-        Map<String, Object> reservationFilters = new HashMap<>();
-        reservationFilters.put("accomID", accomDTO.getAccomID());
-        reservationFilters.put("checkIn", startDate);
-        reservationFilters.put("checkOut", endDate);
-        List<ReservationDTO> reservationDTOS = reservationDAO.getReservations(reservationFilters);
 
         int[] roomCount = new int[term + 1];
 
@@ -167,9 +163,9 @@ public class ReservationService {
                 roomCount[idx] += dto.getHeadCount();
             }
         }
+        int max = Arrays.stream(roomCount).max().getAsInt();
 
-        return accomDTO.getCapacity() - Arrays.stream(roomCount).max().getAsInt() >= headcount ||
-                (accomDTO.getType().equals("공간 전체") && Arrays.stream(roomCount).max().getAsInt() == 0);
+        return (accomDTO.getType().equals("공간 전체") && max == 0) || accomDTO.getCapacity() - max  >= headcount;
     }
 
     public boolean isReservationAvailable(ReservationDTO reservationDTO){
@@ -178,7 +174,16 @@ public class ReservationService {
         filters.put("headcount", accomDTO.getCapacity());
         filters.put("checkIn", reservationDTO.getCheckIn());
         filters.put("checkOut", reservationDTO.getCheckOut());
-        return isAccommodationAvailable(accomDTO, filters);
+        filters.put("accomID", accomDTO.getAccomID());
+        List<ReservationDTO> reservationDTOS = reservationDAO.getReservations(filters);
+
+        return isAccommodationAvailable(accomDTO, reservationDTOS, filters);
+    }
+
+    private List<ReservationDTO> filterReservationsByAccomID(List<ReservationDTO> reservationDTOS, int accomID){
+        return reservationDTOS.stream()
+                .filter(reservationDTO -> reservationDTO.getAccommodationID() == accomID)
+                .collect(Collectors.toList());
     }
 
 
