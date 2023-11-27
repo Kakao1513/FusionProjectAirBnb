@@ -7,6 +7,7 @@ import persistence.dao.ReservationDAO;
 import persistence.dto.*;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.*;
 
 public class ReservationService {
@@ -21,6 +22,21 @@ public class ReservationService {
         this.discountDAO = iocContainer.discountPolicyDAO();
     }
 
+    // 8 숙소별 월별 예약 현황 확인
+    public List<ReservationDTO> checkReservationStatus(int accomId, YearMonth yearMonth)
+    {
+        Map<String, Object> filters = new HashMap<>();
+        LocalDate date = yearMonth.atDay(1);
+
+        filters.put("accomID", accomId);
+        filters.put("checkIn", date);
+        filters.put("checkOut", date.plusMonths(1));
+
+        return calculateReservationCharge(reservationDAO.getReservations(filters));
+    }
+
+
+
     // 4.2 숙박 예약 현황 보기(달력 화면 구성으로)
     // 13.4 숙소의 예약 가능 일자 확인
     public List<ReservationDTO> getConfirmReservationList(AccommodationDTO accomDTO, LocalDate date){
@@ -30,7 +46,7 @@ public class ReservationService {
         filters.put("checkOut", date.plusMonths(1));
         filters.put("status", "예약중");
 
-        return reservationDAO.getReservations(filters);
+        return calculateReservationCharge(reservationDAO.getReservations(filters));
     }
     public List<ReservationDTO> getReadyReservationList(AccommodationDTO accomDTO) {
         Map<String, Object> filters = new HashMap<>();

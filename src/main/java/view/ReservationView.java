@@ -15,7 +15,8 @@ public class ReservationView extends View<ReservationDTO> {
 		int month = readInt();
 		return LocalDate.of(year, month, 1);
 	}
-	public LocalDate getCheckIn(){
+
+	public LocalDate getCheckIn() {
 		System.out.println("체크인 날짜를 입력하세요 ");
 		System.out.print("년(ex. 2023) : ");
 		int year = readInt();
@@ -25,7 +26,8 @@ public class ReservationView extends View<ReservationDTO> {
 		int day = readInt();
 		return LocalDate.of(year, month, day);
 	}
-	public LocalDate getCheckOut(){
+
+	public LocalDate getCheckOut() {
 		System.out.println("체크아웃 날짜를 입력하세요 ");
 		System.out.print("년(ex. 2023) : ");
 		int year = readInt();
@@ -80,14 +82,19 @@ public class ReservationView extends View<ReservationDTO> {
 	}
 
 	public void displayReservations(List<ReservationDTO> reservationDTOS) {
-		System.out.println("====================================================예약 리스트=================================================");
-		System.out.println("|예약 번호|   유저ID    |   숙소ID   |       예약 신청 시간      |  CheckIn  | CheckOut |   총요금  |   예약 상태   |");
-		int i = 1;
-		for (ReservationDTO dto : reservationDTOS) {
-			System.out.printf("|%-8d|%-12d|%-12d|%-25s|%-10s|%-10s|%-10s|%-12s|\n", i, dto.getUserID(), dto.getAccommodationID(), dto.getReserveDate(), dto.getCheckIn(), dto.getCheckOut(), dto.getCharge(), dto.getReservationInfo());
-			i++;
+		if (reservationDTOS.isEmpty()) {
+			System.out.println("예약 내역이 없습니다.");
+			return;
+		} else {
+			System.out.println("====================================================예약 리스트=================================================");
+			System.out.println("|예약 번호|   유저ID    |   숙소ID   |       예약 신청 시간      |  CheckIn  | CheckOut |   총요금  |   예약 상태   |");
+			int i = 1;
+			for (ReservationDTO dto : reservationDTOS) {
+				System.out.printf("|%-8d|%-12d|%-12d|%-25s|%-10s|%-10s|%-10s|%-12s|\n", i, dto.getUserID(), dto.getAccommodationID(), dto.getReserveDate(), dto.getCheckIn(), dto.getCheckOut(), dto.getCharge(), dto.getReservationInfo());
+				i++;
+			}
+			System.out.println("===============================================================================================================");
 		}
-		System.out.println("===============================================================================================================");
 	}
 
 	public int readReservationIndex(List<ReservationDTO> reservationDTOList) {

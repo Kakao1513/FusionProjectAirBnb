@@ -21,7 +21,7 @@ public interface ReservationMapper {
                     @Result(property = "checkIn", column = "checkIn"),
                     @Result(property = "checkOut", column = "checkOut"),
                     @Result(property = "charge", column = "charge"),
-                    @Result(property = "reservationInfo", column = "ReservationInform"),
+                    @Result(property = "reservationInfo", column = "ReservationInfo"),
             }
     )
     List<ReservationDTO> selectReservations(Map<String, Object> filters);

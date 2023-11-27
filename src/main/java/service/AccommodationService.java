@@ -86,20 +86,7 @@ public class AccommodationService {
 	public void updateAccomStatus(int id, String status) {
 		accomDAO.updateAccomStatus(id, status);
 	}
-	
-	// 8 숙소별 월별 예약 현황 확인
-	public List<ReservationDTO> checkReservationStatus(int accomId, int month)
-	{
-		Map<String, Object> filters = new HashMap<>();
-		LocalDate date = LocalDate.now().withDayOfMonth(1).withMonth(month);
-		
-		filters.put("accomID", accomId);
-		filters.put("checkIn", date);
-		filters.put("checkOut", date.plusMonths(1));
-		
-		return reservationDAO.getReservations(filters);
-	}
-	
+
 	// 9 숙소별 월별 총매출 확인
 	public int checkTotalSales(int accomID, int month) {
 		Map<String, Object> filters = new HashMap<>();

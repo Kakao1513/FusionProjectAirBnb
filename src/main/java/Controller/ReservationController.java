@@ -14,6 +14,7 @@ import service.ReservationService;
 import service.UserService;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @AllArgsConstructor
@@ -56,6 +57,7 @@ public class ReservationController implements MethodController {
 			case COMMON -> {
 			}
 			case ADMIN -> {
+				res = getReservationListByAccom(req);
 			}
 			case HOST -> {
 				res = getReservationList(req);
@@ -65,6 +67,19 @@ public class ReservationController implements MethodController {
 			}
 		}
 		return res;
+	}
+
+	private Response getReservationListByAccom(Request req) {
+		Object[] payload = (Object[]) req.getPayload();
+		AccommodationDTO selectedAccom = (AccommodationDTO) payload[0];
+		YearMonth nowMonth = (YearMonth) payload[1];
+		List<ReservationDTO> reservationDTOS = null;
+		if (nowMonth != null) {
+			reservationDTOS = reservationService.checkReservationStatus(selectedAccom.getAccomID(), nowMonth);
+		} else {
+			reservationDTOS = reservationService.getReadyReservationList(selectedAccom); //승인대기중인 목록만 가져옴
+		}
+		return Response.builder().isSuccess(true).payload(reservationDTOS).build();
 	}
 
 	private Response getReservationListByUser(Request req) {

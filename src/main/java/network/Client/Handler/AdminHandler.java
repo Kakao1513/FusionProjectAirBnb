@@ -10,9 +10,11 @@ import network.Protocol.Packet.AccomRecognizeInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.AccommodationDTO;
+import persistence.dto.ReservationDTO;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.YearMonth;
 import java.util.List;
 
 public class AdminHandler extends ActorHandler {
@@ -39,11 +41,38 @@ public class AdminHandler extends ActorHandler {
 				accomRecognizeChange();
 			}
 			case 2 -> { //TODO : 숙소별 월별 예약 현황확인
-
+				showReservationByAccom();
 			}
 			case 3 -> { //TODO : 숙소별 월별 총매출 확인
 
 			}
+		}
+	}
+
+	private void showReservationByAccom() {
+		Request request = Request.builder().roleType(RoleType.GUEST).payloadType(PayloadType.ACCOMMODATION).method(Method.GET).build();
+		Response response = requestToServer(request);
+		if (response.getIsSuccess()) {
+			List<AccommodationDTO> accomList = (List<AccommodationDTO>) response.getPayload();
+			accomView.displayAccomList(accomList);
+			int select = accomView.readAccomIndex(accomList);
+			AccommodationDTO selectAccom = accomList.get(select);
+			System.out.println("조회할 년도를 입력하세요 : ");
+			int year = Integer.parseInt(sc.nextLine());
+			System.out.println("조회할 월을 입력하세요 : ");
+			int month = Integer.parseInt(sc.nextLine());
+			Request request2 = Request.builder().roleType(RoleType.ADMIN).payloadType(PayloadType.RESERVATION).method(Method.GET).build();
+			YearMonth yearMonth = YearMonth.of(year, month);
+			Object[] payload = {selectAccom, yearMonth};
+			request2.setPayload(payload);
+			Response response2 = requestToServer(request2);
+			if (response2.getIsSuccess()) {
+				List<ReservationDTO> reservationList = (List<ReservationDTO>) response2.getPayload();
+				System.out.println(selectAccom.getAccomName() + "의 " + year + "년 " + month + "월 예약 현황");
+				reservationView.displayReservations(reservationList);
+			}
+		}else{
+			System.out.println("숙소 정보가 없습니다.");
 		}
 	}
 
