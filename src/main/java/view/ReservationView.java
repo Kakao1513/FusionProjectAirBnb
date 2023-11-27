@@ -71,8 +71,8 @@ public class ReservationView extends View<ReservationDTO> {
 			// 날짜를 출력합니다.
 			for (int day = 1; day <= lastDayOfMonth; day++) {
 				char status = '^';
-				if (roomCount[day] == 0) status = 'O';
-				else if (roomCount[day] >= capacity) status = '*';
+				if (roomCount[day] == 0) status = '*';
+				else if (roomCount[day] >= capacity) status = 'O';
 
 				System.out.printf("%2d(%c) ", day, status);
 				if ((startDayOfWeek + day - 1) % 7 == 0) {

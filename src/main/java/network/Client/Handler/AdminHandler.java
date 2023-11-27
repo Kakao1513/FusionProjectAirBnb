@@ -69,7 +69,7 @@ public class AdminHandler extends ActorHandler {
 			if (response2.getIsSuccess()) {
 				List<ReservationDTO> reservationList = (List<ReservationDTO>) response2.getPayload();
 				System.out.println(selectAccom.getAccomName() + "의 " + year + "년 " + month + "월 예약 현황");
-				reservationView.displayReservations(reservationList);
+				reservationView.displayReservationCalendar(yearMonth.atDay(1),selectAccom.getCapacity(),reservationList);
 			}
 		}else{
 			System.out.println("숙소 정보가 없습니다.");

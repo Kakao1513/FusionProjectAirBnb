@@ -6,6 +6,7 @@ import persistence.dao.RatePolicyDAO;
 import persistence.dao.ReservationDAO;
 import persistence.dto.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.*;
@@ -140,9 +141,9 @@ public class ReservationService {
     }
 
     private static boolean isWeekday(LocalDate date) {
-        // 월요일(1)부터 금요일(5)까지가 주중
-        int dayOfWeek = date.getDayOfWeek().getValue();
-        return dayOfWeek >= 1 && dayOfWeek <= 5;
+        // 월요일(1)부터 목요일(4)까지가 주중
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        return !(dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY);
     }
 
     // 14. 숙소 예약 신청(to 호스트). 단, 일정이 중복된 예약을 시도할 때,
