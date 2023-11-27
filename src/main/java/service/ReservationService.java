@@ -224,11 +224,9 @@ public class ReservationService {
         //리스트에서 숙소를 선택하면 숙소 상세 정보 + 후기 표시(1. 예약 2. 뒤로 가기)
         //예약을 선택하면 예약 완료 화면으로 이동한다
 
-        if (isReservationAvailable(userInputReserve)){
-            reservationDAO.insertReservation(userInputReserve);
-            return true;
-        } else {
-            return false;
+        if (isReservationAvailable(userInputReserve)) {
+            return reservationDAO.insertReservation(userInputReserve) != 0;
         }
+        return false;
     }
 }

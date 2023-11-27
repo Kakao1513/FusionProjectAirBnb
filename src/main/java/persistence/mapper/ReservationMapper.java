@@ -16,7 +16,7 @@ public interface ReservationMapper {
                     @Result(property = "reservationID", column = "reservationID"),
                     @Result(property = "userID", column = "userID"),
                     @Result(property = "accommodationID", column = "accommodationID"),
-                    @Result(property = "headCount", column = "headCount"),
+                    @Result(property = "headcount", column = "headcount"),
                     @Result(property = "reserveDate", column = "reserveDate"),
                     @Result(property = "checkIn", column = "checkIn"),
                     @Result(property = "checkOut", column = "checkOut"),
@@ -26,7 +26,7 @@ public interface ReservationMapper {
     List<ReservationDTO> selectReservations(Map<String, Object> filters);
 
     @InsertProvider(type = ReservationSQL.class, method = "insertReservation")
-    void insertReservation(ReservationDTO rDTO);
+    int insertReservation(ReservationDTO rDTO);
 
     @UpdateProvider(type = ReservationSQL.class, method = "updateReservation")
     int updateReservation(ReservationDTO rDTO);

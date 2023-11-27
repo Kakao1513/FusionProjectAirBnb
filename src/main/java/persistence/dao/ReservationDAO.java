@@ -31,13 +31,16 @@ public class ReservationDAO {
 		return DTOS;
 	}
 
-	public void insertReservation(ReservationDTO rDTO) {
+	public int  insertReservation(ReservationDTO rDTO) {
+		int num = 0;
 		try (SqlSession session = sqlSessionFactory.openSession()){
             ReservationMapper reservationMapper = session.getMapper(ReservationMapper.class);
-			reservationMapper.insertReservation(rDTO);
+			num = reservationMapper.insertReservation(rDTO);
+			session.commit();
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+		return num;
 	}
 
 	public int updateReservation(ReservationDTO rDTO) {
