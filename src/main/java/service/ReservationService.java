@@ -1,24 +1,27 @@
 package service;
 
 import Container.IocContainer;
+import persistence.dao.AccommodationDAO;
 import persistence.dao.DiscountPolicyDAO;
 import persistence.dao.RatePolicyDAO;
 import persistence.dao.ReservationDAO;
 import persistence.dto.*;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class ReservationService {
     private ReservationDAO reservationDAO;
     private RatePolicyDAO ratePolicyDAO;
     private DiscountPolicyDAO discountDAO;
+    private AccommodationDAO accomDAO;
 
 
     public ReservationService(IocContainer iocContainer){
         this.reservationDAO = iocContainer.reservationDAO();
+        this.accomDAO = iocContainer.accommodationDAO();
         this.ratePolicyDAO = iocContainer.ratePolicyDAO();
         this.discountDAO = iocContainer.discountPolicyDAO();
     }
@@ -47,7 +50,7 @@ public class ReservationService {
         filters.put("checkOut", date.plusMonths(1));
         filters.put("status", "예약중");
 
-        return calculateReservationCharge(reservationDAO.getReservations(filters));
+        return reservationDAO.getReservations(filters);
     }
     public List<ReservationDTO> getReadyReservationList(AccommodationDTO accomDTO) {
         Map<String, Object> filters = new HashMap<>();
@@ -128,6 +131,45 @@ public class ReservationService {
         return sumCharge;
     }
 
+    public List<AccommodationDTO> getFilteredAccomList(Map<String, Object> filters){
+        List<AccommodationDTO> accomDTOS = accomDAO.selectAccom(filters);
+        int headcount = (int)filters.get("headcount");
+
+        List<AccommodationDTO> filteredAccomList = new ArrayList<>();
+
+        LocalDate startDate = (LocalDate)filters.get("checkIn");
+        LocalDate endDate = (LocalDate)filters.get("checkOut");
+
+        int term = (int)ChronoUnit.DAYS.between(startDate, endDate);
+
+        for(AccommodationDTO accomDTO : accomDTOS){
+            Map<String, Object> reservationFilters = new HashMap<>();
+            reservationFilters.put("accomID", accomDTO.getAccomID());
+            reservationFilters.put("checkIn", startDate);
+            reservationFilters.put("checkOut", endDate);
+            List<ReservationDTO> reservationDTOS = reservationDAO.getReservations(reservationFilters);
+
+            int[] roomCount = new int[term+1];
+
+            for (ReservationDTO dto : reservationDTOS) {
+                List<LocalDate> dateList = getDatesBetween(dto.getCheckIn(), dto.getCheckOut());
+
+                for (LocalDate date : dateList){
+                    int idx = (int) ChronoUnit.DAYS.between(startDate, date);
+                    roomCount[idx] += dto.getHeadCount();
+                }
+            }
+            if(accomDTO.getCapacity() - Arrays.stream(roomCount).max().getAsInt() >= headcount ||
+                    (accomDTO.getType().equals("공간 전체") && Arrays.stream(roomCount).max().getAsInt() == 0)){
+                filteredAccomList.add(accomDTO);
+            }
+        }
+
+        return filteredAccomList;
+
+    }
+
+
     private static List<LocalDate> getDatesBetween(LocalDate startDate, LocalDate endDate) {
         List<LocalDate> datesInRange = new ArrayList<>();
 
@@ -141,18 +183,14 @@ public class ReservationService {
     }
 
     private static boolean isWeekday(LocalDate date) {
-        // 월요일(1)부터 목요일(4)까지가 주중
-        DayOfWeek dayOfWeek = date.getDayOfWeek();
-        return !(dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY);
+        // 월요일(1)부터 금요일(5)까지가 주중
+        int dayOfWeek = date.getDayOfWeek().getValue();
+        return dayOfWeek >= 1 && dayOfWeek <= 5;
     }
 
     // 14. 숙소 예약 신청(to 호스트). 단, 일정이 중복된 예약을 시도할 때,
     // 적절한 메시지와 함께 예약 이 불가함을 보임. 예약 신청 시 게스트는 총 요금을 확인할 수 있다
-/*
-    // 14.1 예약 가능한 방 목록을 조회
-    public List<RoomDTO> getAvailableRoomList(ReservationDTO reservationDTO){
-        return reservationDAO.getAvailableRoomList(reservationDTO);
-    }*/
+
     //14.2 해당 예약 날짜에 같은 방에 대한 다른 예약이 없다면 예약 성공
     synchronized public boolean reserveRequest(ReservationDTO userInputReserve) {
 
@@ -171,7 +209,6 @@ public class ReservationService {
 
         Map<String, Object> filters = new HashMap<>();
         filters.put("accomID", userInputReserve.getReservationID());
-        filters.put("roomID", userInputReserve.getHeadCount());
         filters.put("checkIn", userInputReserve.getCheckIn());
         filters.put("checkOut", userInputReserve.getCheckOut());
 
@@ -183,7 +220,7 @@ public class ReservationService {
             return false;
         }
     }
-    //사용자로부터 인원수, 체크인, 체크아웃 날짜를 입력받아서 조건에맞는 숙소 리스트를 반환한다.
+
 
 
 }
