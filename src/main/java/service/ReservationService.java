@@ -157,7 +157,12 @@ public class ReservationService {
         int[] roomCount = new int[term + 1];
 
         for (ReservationDTO dto : reservationDTOS) {
-            List<LocalDate> dateList = getDatesBetween(dto.getCheckIn(), dto.getCheckOut());
+            LocalDate checkIn = dto.getCheckIn();
+
+            if (checkIn.isBefore(startDate))
+                checkIn = startDate;
+
+            List<LocalDate> dateList = getDatesBetween(checkIn, dto.getCheckOut());
 
             for (LocalDate date : dateList) {
                 if(date.isAfter(endDate)){
