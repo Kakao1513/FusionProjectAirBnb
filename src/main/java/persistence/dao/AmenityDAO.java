@@ -6,6 +6,8 @@ import persistence.dto.AccommodationDTO;
 import persistence.dto.AmenityDTO;
 import persistence.mapper.AccommodationMapper;
 import persistence.mapper.AmenityMapper;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -15,7 +17,7 @@ public class AmenityDAO extends DAO<AmenityDTO> {
     }
 
     public List<AmenityDTO> selectAmenityByCategory(String category) {
-        List<AmenityDTO> DTOS = null;
+        List<AmenityDTO> DTOS = new ArrayList<>();
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             AmenityMapper amenityMapper = session.getMapper(AmenityMapper.class);
@@ -27,7 +29,7 @@ public class AmenityDAO extends DAO<AmenityDTO> {
     }
 
     public List<AmenityDTO> selectAmenityByAccomID(int accomID) {
-        List<AmenityDTO> DTOS = null;
+        List<AmenityDTO> DTOS = new ArrayList<>();
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             AmenityMapper amenityMapper = session.getMapper(AmenityMapper.class);

@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import persistence.dto.DiscountPolicyDTO;
 import persistence.mapper.DiscountPolicyMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -15,7 +16,7 @@ public class DiscountPolicyDAO {
         this.sqlSessionFactory = sessionFactory;
     }
     public List<DiscountPolicyDTO> getDiscount(int accomID) {
-        List<DiscountPolicyDTO> DTOS = null;
+        List<DiscountPolicyDTO> DTOS = new ArrayList<>();
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             DiscountPolicyMapper discountpolicyMapper = session.getMapper(DiscountPolicyMapper.class);

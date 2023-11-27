@@ -37,7 +37,7 @@ public class AccommodationSQL {
 			@Param("status") String status,
 			@Param("accomName") String accomName,
 			@Param("period") String[] period,
-			@Param("capacity") String capacity,
+			@Param("capacity") Integer capacity,
 			@Param("type") String type
 	) {
 		SQL mainQuery = new SQL()

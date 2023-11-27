@@ -9,6 +9,7 @@ import persistence.mapper.AccommodationMapper;
 import persistence.mapper.ReservationMapper;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class ReservationDAO {
 	}
 
 	public List<ReservationDTO> getReservations(Map<String, Object> filters) {
-		List<ReservationDTO> DTOS = null;
+		List<ReservationDTO> DTOS = new ArrayList<>();
 
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			ReservationMapper reservationMapper = session.getMapper(ReservationMapper.class);

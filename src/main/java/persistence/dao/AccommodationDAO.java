@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import persistence.dto.AccommodationDTO;
 import persistence.mapper.AccommodationMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 	}
 
 	public List<AccommodationDTO> selectAccom(Map<String, Object> filters) {
-		List<AccommodationDTO> DTOs = null;
+		List<AccommodationDTO> DTOs = new ArrayList<>();
 
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);

@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import persistence.dto.UserDTO;
 import persistence.mapper.UserMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO extends DAO<UserDTO> {
@@ -19,7 +20,7 @@ public class UserDAO extends DAO<UserDTO> {
 	}
 
 	public List<UserDTO> selectAll() {
-		List<UserDTO> DTOs = null;
+		List<UserDTO> DTOs = new ArrayList<>();
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			UserMapper mapper = session.getMapper(UserMapper.class);
 			DTOs = mapper.getAll();

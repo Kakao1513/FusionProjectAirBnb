@@ -34,7 +34,7 @@ public class RatePolicyDAO{
     }
 
     public int updateRatePolicy(RatePolicyDTO rateDTO) {
-        int num=0;
+        int num = 0;
         try (SqlSession session = sqlSessionFactory.openSession()) {
             RatePolicyMapper ratepolicyMapper = session.getMapper(RatePolicyMapper.class);
             num = ratepolicyMapper.updateRatePolicy(rateDTO);

@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import persistence.dto.ReviewDTO;
 import persistence.mapper.ReviewMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewDAO {
@@ -13,7 +14,7 @@ public class ReviewDAO {
         this.sqlSessionFactory = sessionFactory;
     }
     public List<ReviewDTO> selectReviews(int accomID) {
-        List<ReviewDTO> DTOS = null;
+        List<ReviewDTO> DTOS = new ArrayList<>();
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
             ReviewMapper reservationMapper = session.getMapper(ReviewMapper.class);

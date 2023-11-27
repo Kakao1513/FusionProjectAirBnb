@@ -50,7 +50,7 @@ public class ReservationSQL {
         SQL sql = new SQL()
                 .INSERT_INTO("Reservation")
                 .INTO_COLUMNS("UserID, AccommodationID, Headcount, ReserveDate, CheckIn, CheckOut, ReservationInfo")
-                .INTO_VALUES("#{userID}, #{accommodationID} #{accommodationID}, #{roomID}, #{reserveDate}, #{checkIn}, #{checkOut}, #{reservationInfo}");
+                .INTO_VALUES("#{userID}, #{accommodationID}, #{headcount}, #{reserveDate}, #{checkIn}, #{checkOut}, #{reservationInfo}");
 
         return  sql.toString();
     }
