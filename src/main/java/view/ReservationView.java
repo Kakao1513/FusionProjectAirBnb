@@ -78,7 +78,7 @@ public class ReservationView extends View<ReservationDTO> {
 			System.out.println("  Su    Mo    Tu    We    Th    Fr    Sa");
 
 			// 첫 주 전까지 공백을 출력합니다.
-			for (int i = 1; i < startDayOfWeek; i++) {
+			for (int i = 0; i < startDayOfWeek; i++) {
 				System.out.print("      ");
 			}
 
@@ -89,7 +89,7 @@ public class ReservationView extends View<ReservationDTO> {
 				else if (roomCount[day] >= capacity) status = 'O';
 
 				System.out.printf("%2d(%c) ", day, status);
-				if ((startDayOfWeek + day - 1) % 7 == 0) {
+				if ((startDayOfWeek + day) % 7 == 0) {
 					System.out.println();
 				}
 			}
