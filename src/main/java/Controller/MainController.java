@@ -17,6 +17,7 @@ public class MainController implements Controller {
 	private UserController userController;
 	private AccommodationController accommodationController;
 	private ReservationController reservationController;
+	private ReviewController reviewController;
 	private Map<PayloadType, Controller> controllerMap;
 
 
@@ -24,10 +25,12 @@ public class MainController implements Controller {
 		userController = new UserController(iocContainer);
 		accommodationController = new AccommodationController(iocContainer);
 		reservationController = new ReservationController(iocContainer);
+		reviewController = new ReviewController(iocContainer);
 		controllerMap = new HashMap<>();
 		controllerMap.put(PayloadType.USER, userController);
 		controllerMap.put(PayloadType.ACCOMMODATION, accommodationController);
 		controllerMap.put(PayloadType.RESERVATION, reservationController);
+		controllerMap.put(PayloadType.REVIEW, reviewController);
 		//TODO: 컨트롤러 추가시 더 추가됨
 	}
 

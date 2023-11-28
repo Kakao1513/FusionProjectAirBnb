@@ -4,6 +4,7 @@ import Container.IocContainer;
 import lombok.AllArgsConstructor;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.RoleType;
+import network.Protocol.Packet.AccommodationByYearMonth;
 import network.Protocol.Packet.ReservationInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
@@ -87,18 +88,18 @@ public class ReservationController implements MethodController {
 	private Response getReservationListByUser(Request req) {
 		UserDTO userDTO = (UserDTO) req.getPayload();
 		List<ReservationDTO> reservationDTOS = reservationService.getReservationListByUserID(userDTO);
-		List<String> accomNames = new ArrayList<>();
-		List<String> userNames = new ArrayList<>();
+		List<AccommodationDTO> accomNames = new ArrayList<>();
+		List<UserDTO> userNames = new ArrayList<>();
 		for (ReservationDTO reservationDTO : reservationDTOS) {
 			AccommodationDTO accommodationDTO = accommodationService.selectAccomByAccomID(reservationDTO.getAccommodationID()); //예약 정보에 있는 숙소 이름
 			UserDTO guest = userService.selectByUserID(reservationDTO.getUserID()); //예약 정보에 있는 유저 이름
-			accomNames.add(accommodationDTO.getAccomName());
-			userNames.add(guest.getName());
+			accomNames.add(accommodationDTO);
+			userNames.add(guest);
 		}
 		ReservationInfo reservationInfo = ReservationInfo.builder()
 				.reservationDTOS(reservationDTOS)
-				.AccommodationName(accomNames)
-				.UserName(userNames).build();
+				.accommodationDTOS(accomNames)
+				.userDTOS(userNames).build();
 		return Response.builder().isSuccess(true).payload(reservationInfo).build();
 	}
 
@@ -107,8 +108,8 @@ public class ReservationController implements MethodController {
 		AccommodationDTO selectedAccom = (AccommodationDTO) payload[0];
 		LocalDate nowMonth = (LocalDate) payload[1];
 		List<ReservationDTO> reservationDTOS = null;
-		List<String> accommoNames = new ArrayList<>();
-		List<String> userNames = new ArrayList<>();
+		List<AccommodationDTO> accoms = new ArrayList<>();
+		List<UserDTO> userList = new ArrayList<>();
 		if (nowMonth != null) {
 			reservationDTOS = reservationService.getConfirmReservationList(selectedAccom, nowMonth);
 		} else {
@@ -116,11 +117,14 @@ public class ReservationController implements MethodController {
 			for (ReservationDTO reservationDTO : reservationDTOS) {
 				AccommodationDTO accommodationDTO = accommodationService.selectAccomByAccomID(reservationDTO.getAccommodationID()); //예약 정보에 있는 숙소 이름
 				UserDTO guest = userService.selectByUserID(reservationDTO.getUserID()); //예약 정보에 있는 유저 이름
-				accommoNames.add(accommodationDTO.getAccomName());
-				userNames.add(guest.getName());
+				accoms.add(accommodationDTO);
+				userList.add(guest);
 			}
 		}
-		ReservationInfo reservationInfo = new ReservationInfo(reservationDTOS, accommoNames, userNames);
+		ReservationInfo reservationInfo = ReservationInfo.builder()
+				.reservationDTOS(reservationDTOS)
+				.accommodationDTOS(accoms)
+				.userDTOS(userList).build();
 		return Response.builder().isSuccess(true).payload(reservationInfo).build();
 	}
 
@@ -131,6 +135,7 @@ public class ReservationController implements MethodController {
 			case COMMON -> {
 			}
 			case ADMIN -> {
+				res = totalSalesByAccomWithMonth(req);
 			}
 			case HOST -> {
 				res = putGuestReservation(req);
@@ -140,6 +145,12 @@ public class ReservationController implements MethodController {
 		}
 
 		return res;
+	}
+
+	private Response totalSalesByAccomWithMonth(Request req) {
+		AccommodationByYearMonth accommodationByYearMonth = (AccommodationByYearMonth) req.getPayload();
+		int totalSales = reservationService.getTotalSalesByAccom(accommodationByYearMonth.getAccommodationDTO(), accommodationByYearMonth.getYearMonth());
+		return Response.builder().isSuccess(true).payload(totalSales).build();
 	}
 
 	private Response putGuestReservation(Request req) {
@@ -201,11 +212,11 @@ public class ReservationController implements MethodController {
 		ReservationDTO reservationDTO = (ReservationDTO) req.getPayload();
 
 		if (reservationDTO.getCheckIn().getDayOfYear() - LocalDate.now().getDayOfYear() >= 3) {
-			reservationService.updateReservation(reservationDTO);
 			reservationDTO.setReservationInfo("취소됨");
+			reservationService.updateReservation(reservationDTO);
 			return Response.builder().isSuccess(true).message("예약이 성공적으로 취소되었습니다.").build();
 		} else {
-			return Response.builder().isSuccess(false).message("CheckIn 까지 3일 전까지만 예약 취소가 가능합니다.").build();
+			return Response.builder().isSuccess(false).message("CheckIn 3일 전까지만 예약 취소가 가능합니다.").build();
 		}
 	}
 }

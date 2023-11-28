@@ -3,6 +3,9 @@ package persistence.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 import persistence.dto.ReviewDTO;
+
+import java.time.LocalDateTime;
+
 public class ReviewSQL {
 
     public static String selectReviews(@Param("accomID") int accomID){
@@ -13,12 +16,13 @@ public class ReviewSQL {
 
         return sql.toString();
     }
-    public static String insertReview(ReviewDTO reservation){
+
+    public static String insertReview(ReviewDTO review){
         SQL sql = new SQL()
                 .INSERT_INTO("Review")
                 .INTO_COLUMNS("accommodationID, userID, text, dateCreated, parentCommentID, rate")
-                .INTO_VALUES("#{review.accommodationID}, #{review.userID}, #{review.text}")
-                .INTO_VALUES("#{review.dateCreated}, #{parentCommentID}, #{review.rate}");
+                .INTO_VALUES("#{accomID}, #{userID}, #{text}")
+                .INTO_VALUES("#{createdDate}, #{parentID}, #{rate}");
 
         return  sql.toString();
     }

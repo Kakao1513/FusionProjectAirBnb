@@ -11,6 +11,7 @@ import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.AccommodationDTO;
 import persistence.dto.ReservationDTO;
+import persistence.dto.ReviewDTO;
 import persistence.dto.UserDTO;
 
 import java.io.ObjectInputStream;
@@ -18,6 +19,7 @@ import java.io.ObjectOutputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,8 +68,8 @@ public class GuestHandler extends ActorHandler {
 			case 1 -> {
 				ReservationInfo reservationInfo = getMyReservationList();
 				List<ReservationDTO> reservationDTOList = reservationInfo.getReservationDTOS();
-				List<String> userNames = reservationInfo.getUserName();
-				List<String> accomNames = reservationInfo.getAccommodationName();
+				List<UserDTO> userNames = reservationInfo.getUserDTOS();
+				List<AccommodationDTO> accomNames = reservationInfo.getAccommodationDTOS();
 				reservationView.displayReservations(reservationDTOList, accomNames, userNames);
 			}
 			case 2 -> {
@@ -75,7 +77,8 @@ public class GuestHandler extends ActorHandler {
 				cancelReservation();
 			}
 			case 3 -> {
-				//리뷰와 별점 등록
+				//리뷰 등록
+				registReview();
 			}
 			case 4 -> {
 				changePrivacy();
@@ -83,13 +86,44 @@ public class GuestHandler extends ActorHandler {
 		}
 	}
 
+	private void registReview() {
+		ReservationInfo reservationInfo = getMyReservationList();
+		List<AccommodationDTO> reserveAccom = reservationInfo.getAccommodationDTOS();
+		List<ReservationDTO> reservationDTOList = reservationInfo.getReservationDTOS();
+		List<String> accomNames = new ArrayList<>();
+		List<ReservationDTO> reviewableReservations = new ArrayList<>();
+		for (int i = 0; i < reservationDTOList.size(); i++) {
+			ReservationDTO reservationDTO = reservationDTOList.get(i);
+			if(reservationDTO.getReservationInfo().equals("숙박 완료")){
+				accomNames.add(reserveAccom.get(i).getAccomName());
+				reviewableReservations.add(reservationDTO);
+			}
+		}
+		if (reviewableReservations.isEmpty()) {
+			System.out.println("리뷰를 등록할 수 있는 예약이 없습니다.");
+			return;
+		}
+
+		int select = reservationView.selectReserveAccom(reviewableReservations, accomNames);
+		AccommodationDTO selectedAccom = reserveAccom.get(select);
+		ReviewDTO reviewDTO = reviewView.getReviewFromUser(currentUser, selectedAccom);
+		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.POST).payloadType(PayloadType.REVIEW).payload(reviewDTO).build();
+		Response response = requestToServer(request);
+		if (response != null && response.getIsSuccess()) {
+			System.out.println("리뷰 등록이 완료되었습니다.");
+		} else {
+			System.out.println("리뷰 등록이 실패하였습니다. 사유:" + response.getMessage());
+		}
+		//reviewView.getReviewFromUser(currentUser, reviewableReservations);
+	}
+
 	private void cancelReservation() { //TODO : 해야됨
 		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.DELETE).payloadType(PayloadType.RESERVATION).build();
 		ReservationInfo reservationInfo = getMyReservationList();
 		List<ReservationDTO> reservationDTOList = reservationInfo.getReservationDTOS();
-		List<String> userNames = reservationInfo.getUserName();
-		List<String> accomNames = reservationInfo.getAccommodationName();
-		reservationView.displayReservations(reservationDTOList, accomNames, userNames);
+		List<UserDTO> userNames = reservationInfo.getUserDTOS();
+		List<AccommodationDTO> accomNames = reservationInfo.getAccommodationDTOS();
+		reservationView.displayReadyReservations(reservationDTOList, accomNames, userNames);
 		int select = reservationView.readReservationIndex(reservationDTOList);
 		ReservationDTO selectedReservation = reservationDTOList.get(select);
 		request.setPayload(selectedReservation);
@@ -103,7 +137,6 @@ public class GuestHandler extends ActorHandler {
 
 	private void requestReservation() {
 		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.POST).payloadType(PayloadType.RESERVATION).build();
-		;
 
 		ReservationDTO reservationDTO = new ReservationDTO();
 		Object[] accomAndFilters = accomFiltering();
@@ -151,7 +184,7 @@ public class GuestHandler extends ActorHandler {
 		Response response = requestToServer(request);
 		ReservationInfo reservationInfo = null;
 		if (response.getIsSuccess()) {
-			 reservationInfo= (ReservationInfo) response.getPayload();
+			reservationInfo = (ReservationInfo) response.getPayload();
 		}
 		return reservationInfo;
 	}

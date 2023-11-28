@@ -1,9 +1,12 @@
 package view;
 
 import persistence.dto.AccommodationDTO;
+import persistence.dto.ReservationDTO;
 import persistence.dto.ReviewDTO;
 import persistence.dto.UserDTO;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -32,7 +35,8 @@ public class ReviewView extends View<UserDTO>{
                 .collect(Collectors.toList());
     }
 
-    public ReviewDTO getReviewFromUser(UserDTO userDTO, AccommodationDTO accomDTO){
+
+    public ReviewDTO getReviewFromUser(UserDTO userDTO, AccommodationDTO accommodationDTO){
         System.out.println("[후기 등록]");
         System.out.print("별점을 입력하세요 (1~5) : ");
         int rate = readInt();
@@ -41,8 +45,9 @@ public class ReviewView extends View<UserDTO>{
 
         return ReviewDTO.builder()
                 .userID(userDTO.getUserId())
-                .accomID(accomDTO.getAccomID())
+                .accomID(accommodationDTO.getAccomID())
                 .rate(rate)
+                .createdDate(LocalDateTime.now())
                 .text(text)
                 .build();
     }

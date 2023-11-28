@@ -1,9 +1,6 @@
 package Container;
 
-import view.AccommodationView;
-import view.AmenityView;
-import view.ReservationView;
-import view.UserView;
+import view.*;
 
 public class ViewContainer {
 
@@ -12,6 +9,8 @@ public class ViewContainer {
 	private static final AccommodationView acView = new AccommodationView();
 	private static final AmenityView amenityView = new AmenityView();
 
+	private static final ReviewView reviewView = new ReviewView();
+
 	private static final ReservationView reservationView = new ReservationView();
 
 	private ViewContainer() {
@@ -19,6 +18,10 @@ public class ViewContainer {
 
 	public static ViewContainer getInstance() {
 		return viewContainer;
+	}
+
+	public ReviewView reviewView() {
+		return reviewView;
 	}
 
 	public AccommodationView accommodationView() {

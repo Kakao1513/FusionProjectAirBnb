@@ -265,4 +265,76 @@ public class ReservationService {
         }
         return false;
     }
+
+    // 9 숙소별 월별 총매출 확인
+    public int checkTotalSales(int accomID, YearMonth month) {
+        Map<String, Object> filters = new HashMap<>();
+        LocalDate date = month.atDay(1);
+
+        filters.put("Reservationinfo", "예약중");
+        filters.put("accomID", accomID);
+        filters.put("checkIn", date);
+        filters.put("checkOut", date.plusMonths(1));
+
+        List<ReservationDTO> reservationList = reservationDAO.getReservations(filters); // reservation list
+        List<Integer> rates = getRatesFromReservations(reservationList, accomID, month); // list's rate
+
+        return rates.stream().mapToInt(Integer::intValue).sum();
+    }
+
+    // 9.1 총매출 계산
+    private List<Integer> getRatesFromReservations(List<ReservationDTO> reservationList, int accomID, YearMonth yearMonth) {
+        List<Integer> rates = new ArrayList<>();
+        AccommodationDTO accommodationDTO = accomDAO.getAccom(accomID);
+        List<DiscountPolicyDTO> discountDTOS = discountDAO.getDiscount(accomID);
+
+        for (ReservationDTO reservation : reservationList) {
+            LocalDate curDate = reservation.getCheckIn();
+            if(curDate.isBefore(yearMonth.atDay(1)))
+                curDate = yearMonth.atDay(1);
+            LocalDate endDate = reservation.getCheckOut();
+            if(endDate.isAfter(yearMonth.atEndOfMonth()))
+                endDate = yearMonth.atEndOfMonth();
+
+            while (curDate.isBefore(endDate)) {
+                int charge = getCharge(reservation, discountDTOS, curDate);
+                if(accommodationDTO.getType().equals("개인실"))
+                    charge *= reservation.getHeadcount();
+                rates.add(charge);
+                curDate = curDate.plusDays(1);
+            }
+        }
+        return rates;
+    }
+
+    // 9.2 할인 적용된 값 계산
+    private int getCharge(ReservationDTO reservation, List<DiscountPolicyDTO> discountDTOS, LocalDate curDate)
+    {
+        RatePolicyDTO ratePolicyDTO = ratePolicyDAO.getRate(reservation.getAccommodationID());
+        int charge = isWeekdayCharge(ratePolicyDTO, curDate);
+
+        // 할인이 있다면
+        if (discountDTOS != null) {
+            for (DiscountPolicyDTO discountDTO : discountDTOS) {
+                if (curDate.isAfter(discountDTO.getStartDate().minusDays(1)) && curDate.isBefore(discountDTO.getEndDate().plusDays(1))) {
+                    if (Objects.equals(discountDTO.getDiscountType(), "정량")) {
+                        charge -= discountDTO.getValue();
+                    }
+                    else {
+                        charge *= (int) ((100 - discountDTO.getValue()) * 0.01);
+                    }
+                }
+            }
+        }
+        return charge;
+    }
+
+    // 9.3 주말 주일 가격
+    private int isWeekdayCharge(RatePolicyDTO ratePolicyDTO, LocalDate date) {
+        int dayOfWeek = date.getDayOfWeek().getValue();
+        boolean isWeekend = (dayOfWeek == 5 || dayOfWeek == 6 || dayOfWeek == 7);
+
+        return isWeekend ? ratePolicyDTO.getWeekend() : ratePolicyDTO.getWeekday();
+    }
+
 }

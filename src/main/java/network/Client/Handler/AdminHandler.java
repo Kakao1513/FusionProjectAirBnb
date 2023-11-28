@@ -7,6 +7,7 @@ import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
 import network.Protocol.Enums.RoleType;
 import network.Protocol.Packet.AccomRecognizeInfo;
+import network.Protocol.Packet.AccommodationByYearMonth;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.AccommodationDTO;
@@ -44,8 +45,40 @@ public class AdminHandler extends ActorHandler {
 				showReservationByAccom();
 			}
 			case 3 -> { //TODO : 숙소별 월별 총매출 확인
-
+				showTotalSalesByAccom();
 			}
+		}
+	}
+
+	private List<AccommodationDTO> getAccomList() {
+		Request request = Request.builder().roleType(RoleType.GUEST).payloadType(PayloadType.ACCOMMODATION).method(Method.GET).build();
+		Response response = requestToServer(request);
+		List<AccommodationDTO> accomList = null;
+		if (response.getIsSuccess()) {
+			accomList = (List<AccommodationDTO>) response.getPayload();
+		} else {
+			System.out.println("숙소 정보가 없습니다.");
+		}
+		return accomList;
+	}
+
+	private void showTotalSalesByAccom() {
+		List<AccommodationDTO> accomList = getAccomList();
+		accomView.displayAccomList(accomList);
+		int select = accomView.readAccomIndex(accomList);
+		AccommodationDTO selectAccom = accomList.get(select);
+		System.out.println("조회할 년도를 입력하세요 (ex. 2023): ");
+		int year = Integer.parseInt(sc.nextLine());
+		System.out.println("조회할 월을 입력하세요 (ex. 09): ");
+		int month = Integer.parseInt(sc.nextLine());
+		Request request = Request.builder().roleType(RoleType.ADMIN).payloadType(PayloadType.RESERVATION).method(Method.PUT).build();
+		YearMonth yearMonth = YearMonth.of(year, month);
+		AccommodationByYearMonth accomByYearMonth = AccommodationByYearMonth.builder().accommodationDTO(selectAccom).yearMonth(yearMonth).build();
+		request.setPayload(accomByYearMonth);
+		Response response = requestToServer(request);
+		if (response.getIsSuccess()) {
+			Integer totalSales = (Integer) response.getPayload();
+			System.out.println(selectAccom.getAccomName() + "의 " + year + "년 " + month + "총 매출액 : " + totalSales);
 		}
 	}
 
@@ -69,9 +102,9 @@ public class AdminHandler extends ActorHandler {
 			if (response2.getIsSuccess()) {
 				List<ReservationDTO> reservationList = (List<ReservationDTO>) response2.getPayload();
 				System.out.println(selectAccom.getAccomName() + "의 " + year + "년 " + month + "월 예약 현황");
-				reservationView.displayReservationCalendar(yearMonth.atDay(1),selectAccom.getCapacity(),reservationList);
+				reservationView.displayReservationCalendar(yearMonth.atDay(1), selectAccom.getCapacity(), reservationList);
 			}
-		}else{
+		} else {
 			System.out.println("숙소 정보가 없습니다.");
 		}
 	}
@@ -107,7 +140,7 @@ public class AdminHandler extends ActorHandler {
 			if (response.getIsSuccess()) {
 				System.out.println("갱신이 완료되었습니다.");
 			}
-		}else{
+		} else {
 			System.out.println("숙소 정보가 없습니다.");
 		}
 	}

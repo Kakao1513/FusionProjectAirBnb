@@ -9,10 +9,7 @@ import network.Protocol.Packet.AccommodationRegister;
 import network.Protocol.Packet.ReservationInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
-import persistence.dto.AccommodationDTO;
-import persistence.dto.DiscountPolicyDTO;
-import persistence.dto.RatePolicyDTO;
-import persistence.dto.ReservationDTO;
+import persistence.dto.*;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -57,7 +54,7 @@ public class HostHandler extends ActorHandler {
 				reservationConfirmOrRefuse();
 			}
 			case 6 -> {
-
+				//답글등록
 			}
 			case 7 -> {
 				selectAccomByUser();
@@ -72,8 +69,8 @@ public class HostHandler extends ActorHandler {
 			AccommodationDTO selectedAccom = myAccomList.get(select);
 			ReservationInfo reservationInfo = getReservationListByAccomodation(selectedAccom, null);
 			List<ReservationDTO> reservationDTOS = reservationInfo.getReservationDTOS();
-			List<String> userNames = reservationInfo.getUserName();
-			List<String> accomNames = reservationInfo.getAccommodationName();
+			List<UserDTO> userNames = reservationInfo.getUserDTOS();
+			List<AccommodationDTO> accomNames = reservationInfo.getAccommodationDTOS();
 			if (!reservationDTOS.isEmpty()) {
 				reservationView.displayReservations(reservationDTOS, accomNames, userNames);
 				int reserveSelect = reservationView.readReservationIndex(reservationDTOS);

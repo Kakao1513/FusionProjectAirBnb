@@ -99,61 +99,6 @@ public class AccommodationService {
 		return reservationDAO.getReservations(filters);
 	}
 	
-	// 9 숙소별 월별 총매출 확인
-	public int checkTotalSales(int accomID, int month) {
-		Map<String, Object> filters = new HashMap<>();
-		LocalDate date = LocalDate.now().withDayOfMonth(1).withMonth(month);
-		
-		filters.put("Reservationinfo", "예약중");
-		filters.put("accomID", accomID);
-		filters.put("checkIn", date);
-		filters.put("checkOut", date.plusMonths(1));
-		
-		List<ReservationDTO> reservationList = reservationDAO.getReservations(filters); // reservation list
-		List<Integer> rates = getRatesFromReservations(reservationList, accomID); // list's rate
-		
-		return rates.stream().mapToInt(Integer::intValue).sum();
-	}
-	
-	// 9.1 총매출 계산
-	private List<Integer> getRatesFromReservations(List<ReservationDTO> reservationList, int accomID) {
-		List<Integer> rates = new ArrayList<>();
-		List<DiscountPolicyDTO> discountDTOS = discountDAO.getDiscount(accomID);
-		
-		for (ReservationDTO reservation : reservationList) {
-			LocalDate curDate = reservation.getCheckIn();
-			LocalDate endDate = reservation.getCheckOut();
-			
-			while (curDate.isBefore(endDate)) {
-				int charge = getCharge(reservation, discountDTOS, curDate);
-				rates.add(charge);
-				curDate = curDate.plusDays(1);
-			}
-		}
-		return rates;
-	}
-	
-	// 9.2 할인 적용된 값 계산
-	private static int getCharge(ReservationDTO reservation, List<DiscountPolicyDTO> discountDTOS, LocalDate curDate)
-	{
-		int charge = reservation.getCharge();
-		
-		// 할인이 있다면
-		if (discountDTOS != null) {
-			for (DiscountPolicyDTO discountDTO : discountDTOS) {
-				if (curDate.isAfter(discountDTO.getStartDate().minusDays(1)) && curDate.isBefore(discountDTO.getEndDate().plusDays(1))) {
-					if (Objects.equals(discountDTO.getDiscountType(), "정량")) {
-						charge -= discountDTO.getValue();
-					}
-					else {
-						charge *= (int) ((100 - discountDTO.getValue()) * 0.01);
-					}
-				}
-			}
-		}
-		return charge;
-	}
-	
 	// 11. 숙소 목록 보기(전체 목록 조회)
 	public List<AccommodationDTO> selectAccom(String status) {
 		Map<String, Object> filters = new HashMap<>();

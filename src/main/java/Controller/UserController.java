@@ -97,6 +97,7 @@ public class UserController implements MethodController {
 			case COMMON -> {
 			}
 			case ADMIN -> {
+
 			}
 			case HOST -> {
 				res = selectAccomByUser(req);

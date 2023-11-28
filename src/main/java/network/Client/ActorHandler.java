@@ -7,10 +7,7 @@ import lombok.Setter;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.UserDTO;
-import view.AccommodationView;
-import view.AmenityView;
-import view.ReservationView;
-import view.UserView;
+import view.*;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -24,6 +21,7 @@ public abstract class ActorHandler {
 	protected AccommodationView accomView;
 	protected ReservationView reservationView;
 	protected AmenityView amenityView;
+	protected ReviewView reviewView;
 	protected ObjectOutputStream oos;
 	protected ObjectInputStream ois;
 	protected static UserDTO currentUser;
@@ -35,6 +33,7 @@ public abstract class ActorHandler {
 		accomView = viewContainer.accommodationView();
 		amenityView = viewContainer.amenityView();
 		reservationView = viewContainer.reservationView();
+		reviewView = viewContainer.reviewView();
 		this.oos = oos;
 		this.ois = ois;
 	}
