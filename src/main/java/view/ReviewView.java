@@ -19,14 +19,24 @@ public class ReviewView extends View<UserDTO>{
         for(ReviewDTO reviewDTO : reviewList){
             if(reviewDTO.getParentID() == null){
                 System.out.printf("[%d][ID:%d](%d) %s\n", reviewDTO.getCommentID(), reviewDTO.getUserID(), reviewDTO.getRate(), reviewDTO.getText());
-
                 for (ReviewDTO reply : getReplies(reviewList, reviewDTO.getCommentID())){
                     System.out.printf("==> [%d][ID:%d] %s\n", reply.getCommentID(), reply.getUserID(), reply.getText());
                 }
             }
         }
         System.out.println("=================================================");
+    }
+    public ReviewDTO selectReview(List<ReviewDTO> reviewList){
+        System.out.println("리뷰를 선택하세요");
+        System.out.print("ID : ");
+        int reviewID = readInt();
 
+        for(ReviewDTO reviewDTO : reviewList){
+            if(reviewDTO.getCommentID() == reviewID){
+                return reviewDTO;
+            }
+        }
+        return null;
     }
 
     private List<ReviewDTO> getReplies(List<ReviewDTO> reviewList, Integer reviewID){
@@ -53,15 +63,15 @@ public class ReviewView extends View<UserDTO>{
                 .build();
     }
 
-    public ReviewDTO getReplyFromUser(UserDTO userDTO, ReservationDTO reservationDTO, ReviewDTO reviewDTO){
+    public ReviewDTO getReplyFromUser(UserDTO userDTO, ReviewDTO reviewDTO){
         System.out.println("[답글 등록]");
         System.out.print("답글 내용을 입력하세요 : ");
         String text = SCANNER.nextLine();
 
         return ReviewDTO.builder()
-                .reservationID(reservationDTO.getReservationID())
+                .reservationID(reviewDTO.getReservationID())
                 .userID(userDTO.getUserId())
-                .accomID(reservationDTO.getAccommodationID())
+                .accomID(reviewDTO.getAccomID())
                 .parentID(reviewDTO.getParentID())
                 .text(text)
                 .createdDate(LocalDateTime.now())

@@ -10,6 +10,7 @@ import network.Protocol.Packet.ReservationInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.*;
+import view.ReviewView;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HostHandler extends ActorHandler {
 	public HostHandler(ViewContainer viewContainer, ObjectOutputStream oos, ObjectInputStream ois) {
@@ -54,11 +56,48 @@ public class HostHandler extends ActorHandler {
 				reservationConfirmOrRefuse();
 			}
 			case 6 -> {
-				//답글등록
+				registReply();
 			}
 			case 7 -> {
 				selectAccomByUser();
 			}
+		}
+	}
+	private List<ReviewDTO> getReviewsByAccommodation(AccommodationDTO accommodationDTO){
+		Request request = Request.builder().method(Method.GET).roleType(RoleType.HOST).payloadType(PayloadType.REVIEW).payload(accommodationDTO).build();
+		Response response = requestToServer(request);
+		List<ReviewDTO> reviewDTOS = null;
+		if (response != null && response.getIsSuccess()) {
+			reviewDTOS = (List<ReviewDTO>) response.getPayload();
+		}
+		return reviewDTOS;
+	}
+
+	private void registReply() {
+		List<AccommodationDTO> myAccomList = selectConfirmedAccomByUser();
+		if (!myAccomList.isEmpty()) {
+			int select = accomView.readAccomIndex(myAccomList);
+			AccommodationDTO selectedAccom = myAccomList.get(select);
+			List<ReviewDTO> reviewDTOS = getReviewsByAccommodation(selectedAccom);
+			if (!reviewDTOS.isEmpty()) {
+				reviewView.displayReview(reviewDTOS);
+				ReviewDTO selectReview = reviewView.selectReview(reviewDTOS);
+				reviewView.getReplyFromUser(currentUser, selectReview);
+				Request request = Request.builder().payloadType(PayloadType.REVIEW).roleType(RoleType.HOST).method(Method.POST).payload(reviewDTOS).build();
+				Response response = requestToServer(request);
+				if (response != null && response.getIsSuccess()) {
+					System.out.println("답글이 정상적으로 등록 되었습니다.");
+					List<ReviewDTO> reviewDTOS1 = (List<ReviewDTO>) response.getPayload();
+					reviewView.displayReview(reviewDTOS1);
+				}else{
+					System.out.println("답글을 정상적으로 등록하지 못하였습니다.");
+					System.out.println("사유" + Objects.requireNonNull(response).getMessage());
+				}
+			} else {
+				System.out.println("후기 정보가 없습니다.");
+			}
+		} else {
+			System.out.println("숙소 정보가 없습니다.");
 		}
 	}
 

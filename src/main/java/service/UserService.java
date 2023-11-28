@@ -12,11 +12,10 @@ import persistence.dto.UserDTO;
 import java.sql.Date;
 import java.util.Optional;
 
-@Builder
 public class UserService {
-	private UserDAO userDAO;
-	private AccommodationDAO acDAO;
-	private ReservationDAO rDAO;
+	private final UserDAO userDAO;
+	private final AccommodationDAO acDAO;
+	private final ReservationDAO rDAO;
 
 	public UserService(IocContainer iocContainer){
 		this.userDAO = iocContainer.userDAO();

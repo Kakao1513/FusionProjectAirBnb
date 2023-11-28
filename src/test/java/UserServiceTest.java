@@ -1,3 +1,4 @@
+import Container.IocContainer;
 import org.junit.jupiter.api.Test;
 import persistence.MyBatisConnectionFactory;
 import persistence.dao.UserDAO;
@@ -9,15 +10,12 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class UserServiceTest {
-	private Scanner sc;
 	private UserService userService;
-	private UserDAO userDAO;
 	private UserView userView;
 
 	@Test
 	public void loginSuccess() {
-		userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-		userService = new UserService(userDAO);
+		userService = new UserService(IocContainer.iocContainer());
 		userView = new UserView();
 		String id = "minj21", pw = "mjmj0221";
 		System.out.print("ID : "); //View로 변경
@@ -29,8 +27,7 @@ public class UserServiceTest {
 
 	@Test
 	public void loginFail(){
-		userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-		userService = new UserService(userDAO);
+		userService = new UserService(IocContainer.iocContainer());
 		userView = new UserView();
 		String id = "bell", pw = "fail";
 		Optional<UserDTO> userDTO = userService.loginUser(id, pw);
