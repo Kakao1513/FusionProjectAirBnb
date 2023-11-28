@@ -37,17 +37,32 @@ public class ReservationService {
         filters.put("checkIn", date);
         filters.put("checkOut", date.plusMonths(1));
 
-        return calculateReservationCharge(reservationDAO.getReservations(filters));
+        return calculateReservationsCharge(reservationDAO.getReservations(filters));
     }
 
     // 9 숙소별 월별 총매출 확인
     public int getTotalSalesByAccom(AccommodationDTO accomDTO, YearMonth yearMonth){
-        List<ReservationDTO> reservationDTOS = getConfirmReservationList(accomDTO, yearMonth.atDay(1));
+        LocalDate firstDayOfMonth = yearMonth.atDay(1);
 
-        return reservationDTOS.stream().mapToInt(ReservationDTO::getCharge).sum();
+        List<ReservationDTO> reservationDTOS = getConfirmReservationList(accomDTO, firstDayOfMonth);
+
+        int sum = 0;
+
+        for(ReservationDTO reservationDTO : reservationDTOS){
+            LocalDate startDate = reservationDTO.getCheckIn();
+            LocalDate endDate = reservationDTO.getCheckOut();
+
+            if(startDate.isBefore(firstDayOfMonth))
+                startDate = firstDayOfMonth;
+            if(endDate.isAfter(yearMonth.atEndOfMonth()))
+                endDate = firstDayOfMonth.plusMonths(1);
+
+            sum += calculateReservationCharge(reservationDTO, startDate, endDate);
+
+        }
+
+        return sum;
     }
-
-
 
     // 4.2 숙박 예약 현황 보기(달력 화면 구성으로)
     // 13.4 숙소의 예약 가능 일자 확인
@@ -58,14 +73,14 @@ public class ReservationService {
         filters.put("checkOut", date.plusMonths(1));
         filters.put("reservationInfo", "예약중");
 
-        return calculateReservationCharge(reservationDAO.getReservations(filters));
+        return calculateReservationsCharge(reservationDAO.getReservations(filters));
     }
     public List<ReservationDTO> getReadyReservationList(AccommodationDTO accomDTO) {
         Map<String, Object> filters = new HashMap<>();
         filters.put("accomID", accomDTO.getAccomID());
         filters.put("reservationInfo", "승인대기중");
 
-        return calculateReservationCharge(reservationDAO.getReservations(filters));
+        return calculateReservationsCharge(reservationDAO.getReservations(filters));
     }
 
     // 숙박이 완료된 예약 조회, 리뷰 등록을 위해 사용됨
@@ -74,7 +89,7 @@ public class ReservationService {
         filters.put("now", LocalDate.now());
         filters.put("reservationInfo", "예약중");
 
-        return calculateReservationCharge(reservationDAO.getReservations(filters));
+        return calculateReservationsCharge(reservationDAO.getReservations(filters));
     }
 
     // 15. (MyPage)예약 취소
@@ -88,24 +103,28 @@ public class ReservationService {
         filters.put("userID", user.getUserId());
       //  filters.put("reservationInfo", status);
 
-        return calculateReservationCharge(reservationDAO.getReservations(filters));
+        return calculateReservationsCharge(reservationDAO.getReservations(filters));
     }
 
-    private List<ReservationDTO> calculateReservationCharge(List<ReservationDTO> reservationDTOS){
-        if (reservationDTOS != null){
-            for(ReservationDTO reservationDTO : reservationDTOS){
-                reservationDTO.setCharge(calculateReservationCharge(reservationDTO));
-                if(reservationDTO.getCheckOut().isBefore(LocalDate.now()) && reservationDTO.getReservationInfo().equals("예약중"))
-                    reservationDTO.setReservationInfo("숙박 완료");
-            }
+    private List<ReservationDTO> calculateReservationsCharge(List<ReservationDTO> reservationDTOS){
+        for(ReservationDTO reservationDTO : reservationDTOS){
+            reservationDTO.setCharge(calculateReservationCharge(reservationDTO));
+
+            if(reservationDTO.getCheckOut().isBefore(LocalDate.now()) && reservationDTO.getReservationInfo().equals("예약중"))
+                reservationDTO.setReservationInfo("숙박 완료");
         }
         return reservationDTOS;
     }
 
-    public int calculateReservationCharge(ReservationDTO rDTO){
+    public int calculateReservationCharge(ReservationDTO reservationDTO){
+        LocalDate startDate = reservationDTO.getCheckIn();
+        LocalDate endDate = reservationDTO.getCheckOut();
+
+        return calculateReservationCharge(reservationDTO, startDate, endDate);
+    }
+
+    public int calculateReservationCharge(ReservationDTO rDTO, LocalDate startDate, LocalDate endDate){
         AccommodationDTO accomDTO = accomDAO.getAccom(rDTO.getAccommodationID());
-        LocalDate startDate = rDTO.getCheckIn();
-        LocalDate endDate = rDTO.getCheckOut();
         RatePolicyDTO rateDTO = ratePolicyDAO.getRate(rDTO.getAccommodationID());
         List<DiscountPolicyDTO> discountDTOS = discountDAO.getDiscount(rDTO.getAccommodationID());
 
@@ -114,17 +133,12 @@ public class ReservationService {
         int sumCharge = 0;
 
         for (LocalDate date : datesInRange) {
-            int charge = 0;
-
-            if(isWeekday(date))
-                charge = rateDTO.getWeekday();
-            else
-                charge = rateDTO.getWeekend();
+            int charge = isWeekday(date) ? rateDTO.getWeekday() : rateDTO.getWeekend();
 
             if (discountDTOS != null){
                 for(DiscountPolicyDTO discountDTO : discountDTOS){
-                    if((date.isEqual(discountDTO.getStartDate()) || date.isAfter(discountDTO.getStartDate())) &&
-                        (date.isEqual(discountDTO.getEndDate()) || date.isBefore(discountDTO.getEndDate()))){
+                    // 할인 기간일 경우
+                    if(!date.isBefore(discountDTO.getStartDate()) && !date.isAfter(discountDTO.getEndDate())){
                         if(discountDTO.getDiscountType().equals("정량")){
                             charge -= discountDTO.getValue();
                         }
@@ -145,6 +159,7 @@ public class ReservationService {
 
         return sumCharge;
     }
+
 
     public List<AccommodationDTO> getFilteredAccomList(Map<String, Object> filters){
         filters.put("capacity", (int)filters.get("headcount"));
