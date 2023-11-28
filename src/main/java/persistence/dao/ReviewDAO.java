@@ -24,13 +24,13 @@ public class ReviewDAO {
         }
         return DTOS;
     }
-    public void insertReview(ReviewDTO dto){
+    public void insertReview(ReviewDTO dto) throws Exception{
         try (SqlSession session = sqlSessionFactory.openSession()) {
             ReviewMapper reviewMapper = session.getMapper(ReviewMapper.class);
             reviewMapper.insertReview(dto);
             session.commit();
         }catch (Exception e){
-            e.printStackTrace();
+            throw new Exception();
         }
     }
 }

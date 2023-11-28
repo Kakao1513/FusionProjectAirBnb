@@ -36,7 +36,7 @@ public class ReviewView extends View<UserDTO>{
     }
 
 
-    public ReviewDTO getReviewFromUser(UserDTO userDTO, AccommodationDTO accommodationDTO){
+    public ReviewDTO getReviewFromUser(UserDTO userDTO, ReservationDTO reservationDTO){
         System.out.println("[후기 등록]");
         System.out.print("별점을 입력하세요 (1~5) : ");
         int rate = readInt();
@@ -44,24 +44,27 @@ public class ReviewView extends View<UserDTO>{
         String text = SCANNER.nextLine();
 
         return ReviewDTO.builder()
+                .reservationID(reservationDTO.getReservationID())
                 .userID(userDTO.getUserId())
-                .accomID(accommodationDTO.getAccomID())
+                .accomID(reservationDTO.getAccommodationID())
                 .rate(rate)
-                .createdDate(LocalDateTime.now())
                 .text(text)
+                .createdDate(LocalDateTime.now())
                 .build();
     }
 
-    public ReviewDTO getReplyFromUser(UserDTO userDTO, AccommodationDTO accomDTO, ReviewDTO reviewDTO){
+    public ReviewDTO getReplyFromUser(UserDTO userDTO, ReservationDTO reservationDTO, ReviewDTO reviewDTO){
         System.out.println("[답글 등록]");
         System.out.print("답글 내용을 입력하세요 : ");
         String text = SCANNER.nextLine();
 
         return ReviewDTO.builder()
+                .reservationID(reservationDTO.getReservationID())
                 .userID(userDTO.getUserId())
-                .accomID(accomDTO.getAccomID())
+                .accomID(reservationDTO.getAccommodationID())
                 .parentID(reviewDTO.getParentID())
                 .text(text)
+                .createdDate(LocalDateTime.now())
                 .build();
     }
 

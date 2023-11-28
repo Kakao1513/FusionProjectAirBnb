@@ -11,6 +11,7 @@ public interface ReviewMapper {
             id = "ReviewResultSet",
             value = {
                     @Result(property = "commentID", column = "commentID"),
+                    @Result(property = "reviewID", column = "reviewID"),
                     @Result(property = "accomID", column = "accommodationID"),
                     @Result(property = "userID", column = "userID"),
                     @Result(property = "parentID", column = "parentCommentID"),

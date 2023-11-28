@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ReviewDTO extends DTO {
     private int commentID;
+    private int reservationID;
     private int accomID;
     private int userID;
     private Integer parentID;
