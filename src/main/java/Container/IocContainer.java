@@ -5,6 +5,7 @@ import persistence.MyBatisConnectionFactory;
 import persistence.dao.*;
 import service.AccommodationService;
 import service.ReservationService;
+import service.ReviewService;
 import service.UserService;
 import view.AccommodationView;
 import view.AmenityView;
@@ -31,6 +32,8 @@ public class IocContainer { //추후 스레드 동시성 문제 발생시 일반
 	private static final AccommodationService acService = new AccommodationService(instance);
 
 	private static final ReservationService reservationService = new ReservationService(instance);
+
+	private static final ReviewService reviewService = new ReviewService(instance);
 
 	private IocContainer() {
 	}
@@ -85,6 +88,10 @@ public class IocContainer { //추후 스레드 동시성 문제 발생시 일반
 
 	public ReservationService reservationService(){
 		return reservationService;
+	}
+
+	public ReviewService reviewService(){
+		return reviewService;
 	}
 
 }

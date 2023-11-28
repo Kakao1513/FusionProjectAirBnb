@@ -9,6 +9,7 @@ import network.Protocol.Response;
 import persistence.dto.*;
 import service.AccommodationService;
 import service.ReservationService;
+import service.ReviewService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,10 +18,12 @@ import java.util.Map;
 public class AccommodationController implements MethodController {
 	private final AccommodationService accomService;
 	private final ReservationService reservationService;
+	private final ReviewService reviewService;
 
 	public AccommodationController(IocContainer iocContainer) {
 		this.accomService = iocContainer.accommodationService();
 		this.reservationService = iocContainer.reservationService();
+		this.reviewService = iocContainer.reviewService();
 	}
 
 	public Response selectReadyAccomList() { //승인 대기중인 숙소 목록
@@ -71,7 +74,7 @@ public class AccommodationController implements MethodController {
 		AccommodationDTO curAccom = accomService.selectAccomByAccomID(accomID);
 		RatePolicyDTO accomRate = accomService.getRate(curAccom);
 		List<AmenityDTO> amenityList = accomService.getAmenityList(curAccom);
-		List<ReviewDTO> reviewList = accomService.getReviews(curAccom);
+		List<ReviewDTO> reviewList = reviewService.getReviews(curAccom);
 		List<ReservationDTO> reservationList = reservationService.getConfirmReservationList(curAccom, date);
 		AccomMoreInfo accomMoreInfo = AccomMoreInfo.builder()
 				.curAccom(curAccom)

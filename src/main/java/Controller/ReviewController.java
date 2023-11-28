@@ -10,6 +10,7 @@ import persistence.dto.ReviewDTO;
 import persistence.mapper.ReviewSQL;
 import service.AccommodationService;
 import service.ReservationService;
+import service.ReviewService;
 import service.UserService;
 
 public class ReviewController implements MethodController {
@@ -17,11 +18,13 @@ public class ReviewController implements MethodController {
 
     private final AccommodationService accommodationService;
     private final UserService userService;
+    private final ReviewService reviewService;
 
     public ReviewController(IocContainer iocContainer) {
         this.reservationService = iocContainer.reservationService();
         this.accommodationService = iocContainer.accommodationService();
         this.userService = iocContainer.userService();
+        this.reviewService = iocContainer.reviewService();
     }
 
     @Override
@@ -84,7 +87,7 @@ public class ReviewController implements MethodController {
         ReviewDTO reviewDTO = (ReviewDTO) req.getPayload();
         Response response = null;
         try {
-            userService.insertReview(reviewDTO);
+            reviewService.insertReview(reviewDTO);
             response = Response.builder().isSuccess(true).build();
         } catch (Exception e) {
             response = Response.builder().isSuccess(false).message("이미 후기가 작성되었습니다.").build();

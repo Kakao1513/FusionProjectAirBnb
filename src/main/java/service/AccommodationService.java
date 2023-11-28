@@ -14,7 +14,6 @@ public class AccommodationService {
 	private final ReservationDAO reservationDAO;
 	private final RatePolicyDAO ratePolicyDAO;
 	private final DailyRateDAO dailyRateDAO;
-	private final ReviewDAO reviewDAO;
 	private final DiscountPolicyDAO discountDAO;
 
 	public AccommodationService(IocContainer iocContainer) {
@@ -22,7 +21,6 @@ public class AccommodationService {
 		this.amenityDAO = iocContainer.amenityDAO();
 		this.reservationDAO = iocContainer.reservationDAO();
 		this.ratePolicyDAO = iocContainer.ratePolicyDAO();
-		this.reviewDAO = iocContainer.reviewDAO();
 		this.dailyRateDAO = iocContainer.dailyRateDAO();
 		this.discountDAO = iocContainer.discountPolicyDAO();
 
@@ -145,9 +143,6 @@ public class AccommodationService {
 	}
 
 	// 13.4 예약 가능 일자 -> ReservationService.getReservationList
-	// 13.5 후기
-	public List<ReviewDTO> getReviews(AccommodationDTO accomDTO) {
-		return reviewDAO.selectReviews(accomDTO.getAccomID());
-	}
+	// 13.5 후기 -> ReviewService.getReview
 	/////////////////////////////////////////////
 }

@@ -17,26 +17,12 @@ public class UserService {
 	private UserDAO userDAO;
 	private AccommodationDAO acDAO;
 	private ReservationDAO rDAO;
-	private ReviewDAO reviewDAO;
 
-	public UserService(UserDAO userDAO) {
-		this.userDAO = userDAO;
-	}
-
-
-	public UserService(UserDAO userDAO, AccommodationDAO accommodationDAO, ReservationDAO rDAO, ReviewDAO reviewDAO) {
-		this.userDAO = userDAO;
-		acDAO = accommodationDAO;
-		this.rDAO = rDAO;
-		this.reviewDAO = reviewDAO;
-	}
 	public UserService(IocContainer iocContainer){
 		this.userDAO = iocContainer.userDAO();
 		this.acDAO = iocContainer.accommodationDAO();
 		this.rDAO = iocContainer.reservationDAO();
-		this.reviewDAO = iocContainer.reviewDAO();
 	}
-
 
 
 	// 18. 로그인 기능: 호스트, 관리자, 게스트가 로그인 이후 동작하는 것을 보임
@@ -82,10 +68,5 @@ public class UserService {
 	}
 
 	// 6. 게스트 리뷰에 대한 답글 등록 : 답글의 parentID를 댓글의 commentID로 설정한 뒤 INSERT
-
-	// 17. (MyPage)리뷰와 별점 등록
-	public void insertReview(ReviewDTO reviewDTO) throws Exception{
-		reviewDAO.insertReview(reviewDTO);
-	}
 
 }
