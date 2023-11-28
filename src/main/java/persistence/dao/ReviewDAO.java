@@ -5,6 +5,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import persistence.dto.ReviewDTO;
 import persistence.mapper.ReviewMapper;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +27,12 @@ public class ReviewDAO {
         return DTOS;
     }
     public void insertReview(ReviewDTO dto) throws Exception{
-        try (SqlSession session = sqlSessionFactory.openSession()) {
+         try (SqlSession session = sqlSessionFactory.openSession()) {
             ReviewMapper reviewMapper = session.getMapper(ReviewMapper.class);
             reviewMapper.insertReview(dto);
             session.commit();
         }catch (Exception e){
-            throw new Exception();
+            throw new Exception("리뷰를 등록할 수 없습니다.");
         }
     }
 }

@@ -105,14 +105,14 @@ public class GuestHandler extends ActorHandler {
 		}
 
 		int select = reservationView.selectReserveAccom(reviewableReservations, accomNames);
-		AccommodationDTO selectedAccom = reserveAccom.get(select);
-		ReviewDTO reviewDTO = reviewView.getReviewFromUser(currentUser, selectedAccom);
+		ReservationDTO selectedReservation = reviewableReservations.get(select);
+		ReviewDTO reviewDTO = reviewView.getReviewFromUser(currentUser, selectedReservation);
 		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.POST).payloadType(PayloadType.REVIEW).payload(reviewDTO).build();
 		Response response = requestToServer(request);
 		if (response != null && response.getIsSuccess()) {
 			System.out.println("리뷰 등록이 완료되었습니다.");
 		} else {
-			System.out.println("리뷰 등록이 실패하였습니다. 사유:" + response.getMessage());
+			System.out.println(response.getMessage());
 		}
 		//reviewView.getReviewFromUser(currentUser, reviewableReservations);
 	}

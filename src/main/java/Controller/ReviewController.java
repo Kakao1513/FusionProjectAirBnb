@@ -87,7 +87,7 @@ public class ReviewController implements MethodController {
             userService.insertReview(reviewDTO);
             response = Response.builder().isSuccess(true).build();
         } catch (Exception e) {
-            response = Response.builder().isSuccess(false).message("리뷰 등록에 실패하였습니다.").build();
+            response = Response.builder().isSuccess(false).message("이미 후기가 작성되었습니다.").build();
         }
         return response;
     }
