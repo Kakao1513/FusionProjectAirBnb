@@ -50,11 +50,24 @@ public class ReservationView extends View<ReservationDTO> {
 			// 해당 월의 마지막 날짜를 구합니다.
 			int lastDayOfMonth = date.lengthOfMonth();
 
+			LocalDate firstDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
+			LocalDate lastDate = LocalDate.of(date.getYear(), date.getMonth(), lastDayOfMonth);
+
 			int[] roomCount = new int[lastDayOfMonth + 1];
 
 			for (ReservationDTO dto : reservationDTOS) {
-				int start = dto.getCheckIn().getDayOfMonth();
-				int end = dto.getCheckOut().getDayOfMonth() - 1;
+				LocalDate startDate = dto.getCheckIn();
+				LocalDate endDate = dto.getCheckOut().minusDays(1);
+
+				int start = startDate.getDayOfMonth();
+				int end = endDate.getDayOfMonth();
+
+				if(startDate.isBefore(firstDate)){
+					start = 1;
+				}
+				if(endDate.isAfter(lastDate)){
+					end = lastDayOfMonth;
+				}
 
 				for (int i = start; i <= end; i++) {
 					roomCount[i] += dto.getHeadcount();
