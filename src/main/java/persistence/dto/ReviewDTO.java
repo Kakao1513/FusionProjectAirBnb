@@ -1,15 +1,13 @@
 package persistence.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ReviewDTO extends DTO {
     private int commentID;

@@ -2,9 +2,7 @@ package persistence.mapper;
 
 import org.apache.ibatis.annotations.*;
 import persistence.dto.ReservationDTO;
-import persistence.dto.RoomDTO;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 

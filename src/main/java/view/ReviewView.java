@@ -7,6 +7,7 @@ import persistence.dto.UserDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ public class ReviewView extends View<UserDTO>{
 
 
     public void displayReview(List<ReviewDTO> reviewList){
+        reviewList.sort(Comparator.comparingInt(ReviewDTO::getCommentID));
         System.out.println("====================리뷰 리스트====================");
         for(ReviewDTO reviewDTO : reviewList){
             if(reviewDTO.getParentID() == null){
@@ -58,6 +60,7 @@ public class ReviewView extends View<UserDTO>{
                 .userID(userDTO.getUserId())
                 .accomID(reservationDTO.getAccommodationID())
                 .rate(rate)
+
                 .text(text)
                 .createdDate(LocalDateTime.now())
                 .build();
@@ -72,7 +75,7 @@ public class ReviewView extends View<UserDTO>{
                 .reservationID(reviewDTO.getReservationID())
                 .userID(userDTO.getUserId())
                 .accomID(reviewDTO.getAccomID())
-                .parentID(reviewDTO.getParentID())
+                .parentID(reviewDTO.getCommentID())
                 .text(text)
                 .createdDate(LocalDateTime.now())
                 .build();

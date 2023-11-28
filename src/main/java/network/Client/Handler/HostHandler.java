@@ -6,6 +6,7 @@ import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
 import network.Protocol.Enums.RoleType;
 import network.Protocol.Packet.AccommodationRegister;
+import network.Protocol.Packet.ReplyInfo;
 import network.Protocol.Packet.ReservationInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
@@ -82,8 +83,9 @@ public class HostHandler extends ActorHandler {
 			if (!reviewDTOS.isEmpty()) {
 				reviewView.displayReview(reviewDTOS);
 				ReviewDTO selectReview = reviewView.selectReview(reviewDTOS);
-				reviewView.getReplyFromUser(currentUser, selectReview);
-				Request request = Request.builder().payloadType(PayloadType.REVIEW).roleType(RoleType.HOST).method(Method.POST).payload(reviewDTOS).build();
+				ReviewDTO reply = reviewView.getReplyFromUser(currentUser, selectReview);
+				ReplyInfo replyInfo = new ReplyInfo(reply, selectedAccom);
+				Request request = Request.builder().payloadType(PayloadType.REVIEW).roleType(RoleType.HOST).method(Method.POST).payload(replyInfo).build();
 				Response response = requestToServer(request);
 				if (response != null && response.getIsSuccess()) {
 					System.out.println("답글이 정상적으로 등록 되었습니다.");

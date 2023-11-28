@@ -2,13 +2,9 @@ package persistence.dao;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import persistence.dto.AccommodationDTO;
 import persistence.dto.ReservationDTO;
-import persistence.dto.RoomDTO;
-import persistence.mapper.AccommodationMapper;
 import persistence.mapper.ReservationMapper;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

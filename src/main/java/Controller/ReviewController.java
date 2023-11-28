@@ -3,6 +3,7 @@ package Controller;
 import Container.IocContainer;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.RoleType;
+import network.Protocol.Packet.ReplyInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.AccommodationDTO;
@@ -100,13 +101,16 @@ public class ReviewController implements MethodController {
 	}
 
 	private Response postReply(Request req) {
-		ReviewDTO reply = (ReviewDTO) req.getPayload();
+		ReplyInfo reply = (ReplyInfo) req.getPayload();
 		Response response = null;
 		try {
-			reviewService.insertReview(reply);
-			response = Response.builder().isSuccess(true).build();
+			ReviewDTO reviewDTO = reply.getReviewDTO();
+			AccommodationDTO accommodationDTO = reply.getAccommodationDTO();
+			reviewService.insertReview(reviewDTO);
+			List<ReviewDTO> reviewDTOS = reviewService.getReviews(accommodationDTO);
+			response = Response.builder().isSuccess(true).payload(reviewDTOS).build();
 		} catch (Exception e) {
-			response = Response.builder().isSuccess(false).message("이미 답글이 작성되었습니다.").build();
+			response = Response.builder().isSuccess(false).message("답글 작성에 실패하였습니다.").build();
 		}
 		return response;
 	}
