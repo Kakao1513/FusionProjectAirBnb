@@ -8,7 +8,7 @@ import java.util.List;
 public class ReservationView extends View<ReservationDTO> {
 
 	public LocalDate getReservationDate() {
-		System.out.println("예약할 날짜를 입력하세요 ");
+		System.out.println("확인할 날짜를 입력하세요 ");
 		System.out.print("년(ex. 2023) : ");
 		int year = readInt();
 		System.out.print("월(ex. 11) : ");

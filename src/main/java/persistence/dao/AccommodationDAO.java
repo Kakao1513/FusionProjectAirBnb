@@ -58,17 +58,18 @@ public class AccommodationDAO extends DAO<AccommodationDTO> {
 			e.printStackTrace();
 		}
 	}
+/*
 
 	public int insertRooms(AccommodationDTO dto) {
 		int num = 0;
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			AccommodationMapper accomMapper = session.getMapper(AccommodationMapper.class);
-			num = accomMapper.insertRooms(dto.getAccomID(), dto.getCapacity());
 			session.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return num;
 	}
+*/
 
 }
