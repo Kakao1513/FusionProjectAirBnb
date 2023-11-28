@@ -6,6 +6,7 @@ import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
 import network.Protocol.Enums.RoleType;
 import network.Protocol.Packet.AccommodationRegister;
+import network.Protocol.Packet.ReservationInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.AccommodationDTO;
@@ -53,7 +54,7 @@ public class HostHandler extends ActorHandler {
 				showReservationByAccom();
 			}
 			case 5 -> {
-				reservationConfirmorRefuse();
+				reservationConfirmOrRefuse();
 			}
 			case 6 -> {
 
@@ -64,14 +65,17 @@ public class HostHandler extends ActorHandler {
 		}
 	}
 
-	private void reservationConfirmorRefuse() {
+	private void reservationConfirmOrRefuse() {
 		List<AccommodationDTO> myAccomList = selectConfirmedAccomByUser();
 		if (!myAccomList.isEmpty()) {
 			int select = accomView.readAccomIndex(myAccomList);
 			AccommodationDTO selectedAccom = myAccomList.get(select);
-			List<ReservationDTO> reservationDTOS = getReservationListByAccomodation(selectedAccom, null);
+			ReservationInfo reservationInfo = getReservationListByAccomodation(selectedAccom, null);
+			List<ReservationDTO> reservationDTOS = reservationInfo.getReservationDTOS();
+			List<String> userNames = reservationInfo.getUserName();
+			List<String> accomNames = reservationInfo.getAccommodationName();
 			if (!reservationDTOS.isEmpty()) {
-				reservationView.displayReservations(reservationDTOS);
+				reservationView.displayReservations(reservationDTOS, accomNames, userNames);
 				int reserveSelect = reservationView.readReservationIndex(reservationDTOS);
 				ReservationDTO selectReserve = reservationDTOS.get(reserveSelect);
 				System.out.print("1.예약 승인 2.예약 거절 : ");
@@ -96,15 +100,16 @@ public class HostHandler extends ActorHandler {
 
 	}
 
-	private List<ReservationDTO> getReservationListByAccomodation(AccommodationDTO accommodationDTO, LocalDate nowMonth) {
+	private ReservationInfo getReservationListByAccomodation(AccommodationDTO accommodationDTO, LocalDate nowMonth) {
 		Object[] payload = {accommodationDTO, nowMonth};
 		Request request = Request.builder().method(Method.GET).roleType(RoleType.HOST).payloadType(PayloadType.RESERVATION).payload(payload).build();
 		List<ReservationDTO> reservationDTOs = null;
+		ReservationInfo reservationInfo = null;
 		Response response = requestToServer(request);
 		if (response != null && response.getIsSuccess()) {
-			reservationDTOs = (List<ReservationDTO>) response.getPayload();
+			reservationInfo = (ReservationInfo) response.getPayload();
 		}
-		return reservationDTOs;
+		return reservationInfo;
 	}
 
 	private void showReservationByAccom() {
@@ -114,8 +119,8 @@ public class HostHandler extends ActorHandler {
 			AccommodationDTO selectAccom = myAccomList.get(select);
 			YearMonth yearMonth = accomView.readYearMonth();
 			LocalDate nowMonth = yearMonth.atDay(1);
-
-			List<ReservationDTO> reservationDTOs = getReservationListByAccomodation(selectAccom, nowMonth);
+			ReservationInfo reservationInfo = getReservationListByAccomodation(selectAccom, nowMonth);
+			List<ReservationDTO> reservationDTOs = reservationInfo.getReservationDTOS();
 			System.out.println("===================" + selectAccom.getAccomName() + "숙소의 예약 현황" + "========================");
 			reservationView.displayReservationCalendar(nowMonth, selectAccom.getCapacity(), reservationDTOs);
 		} else {

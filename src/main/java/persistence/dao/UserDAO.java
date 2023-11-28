@@ -41,7 +41,18 @@ public class UserDAO extends DAO<UserDTO> {
 		return password;
 	}
 
-	public UserDTO selectById(String id){
+	public UserDTO selectByAccountId(String id){
+		UserDTO userDTO = null;
+		try (SqlSession session = sqlSessionFactory.openSession()){
+			UserMapper mapper = session.getMapper(UserMapper.class);
+			userDTO = mapper.selectByAccountId(id);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return userDTO;
+	}
+
+	public UserDTO selectById(int id){
 		UserDTO userDTO = null;
 		try (SqlSession session = sqlSessionFactory.openSession()){
 			UserMapper mapper = session.getMapper(UserMapper.class);

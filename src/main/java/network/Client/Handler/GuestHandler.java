@@ -6,6 +6,7 @@ import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
 import network.Protocol.Enums.RoleType;
 import network.Protocol.Packet.AccomMoreInfo;
+import network.Protocol.Packet.ReservationInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.AccommodationDTO;
@@ -63,7 +64,11 @@ public class GuestHandler extends ActorHandler {
 				System.out.println("이전 페이지로 돌아갑니다.");
 			}
 			case 1 -> {
-				reservationView.displayReservations(getMyReservationList());
+				ReservationInfo reservationInfo = getMyReservationList();
+				List<ReservationDTO> reservationDTOList = reservationInfo.getReservationDTOS();
+				List<String> userNames = reservationInfo.getUserName();
+				List<String> accomNames = reservationInfo.getAccommodationName();
+				reservationView.displayReservations(reservationDTOList, accomNames, userNames);
 			}
 			case 2 -> {
 				//예약 취소
@@ -79,28 +84,21 @@ public class GuestHandler extends ActorHandler {
 	}
 
 	private void cancelReservation() { //TODO : 해야됨
-		reservationView.displayReservations(getMyReservationList());
 		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.DELETE).payloadType(PayloadType.RESERVATION).build();
-		List<ReservationDTO> reservationDTOS = (List<ReservationDTO>) requestToServer(request).getPayload();
-		if (reservationDTOS == null) {
-			System.out.println("예약이 없습니다.");
-			return;
-		}
-		reservationView.displayReservations(reservationDTOS);
-		int select = reservationView.readReservationIndex(reservationDTOS);
-		if (select == -1) {
-			System.out.println("예약 취소를 취소합니다.");
-			return;
-		}
-		ReservationDTO selectedReserve = reservationDTOS.get(select);
-		request.setPayload(selectedReserve);
+		ReservationInfo reservationInfo = getMyReservationList();
+		List<ReservationDTO> reservationDTOList = reservationInfo.getReservationDTOS();
+		List<String> userNames = reservationInfo.getUserName();
+		List<String> accomNames = reservationInfo.getAccommodationName();
+		reservationView.displayReservations(reservationDTOList, accomNames, userNames);
+		int select = reservationView.readReservationIndex(reservationDTOList);
+		ReservationDTO selectedReservation = reservationDTOList.get(select);
+		request.setPayload(selectedReservation);
 		Response response = requestToServer(request);
 		if (response.getIsSuccess()) {
-			System.out.println("예약 취소가 완료되었습니다.");
+			System.out.println("예약이 취소되었습니다.");
 		} else {
 			System.out.println("예약 취소가 실패하였습니다. 사유:" + response.getMessage());
 		}
-
 	}
 
 	private void requestReservation() {
@@ -138,24 +136,24 @@ public class GuestHandler extends ActorHandler {
 		if (response.getIsSuccess()) {
 			System.out.println(response.getMessage());
 			ReservationDTO resRserveDTO = (ReservationDTO) response.getPayload();
-			reservationView.displayReservationInfo(resRserveDTO);
+			reservationView.displayReservationInfo(resRserveDTO, selectedAccom.getAccomName(), currentUser.getName());
 		} else {
 			System.out.println("예약이 실패하였습니다. 사유:" + response.getMessage());
 		}
 	}
 
-	private List<ReservationDTO> getMyReservationList() {
+	private ReservationInfo getMyReservationList() {
 		Request request = new Request();
 		request.setMethod(Method.GET);
 		request.setPayloadType(PayloadType.RESERVATION);
 		request.setRoleType(RoleType.GUEST);
 		request.setPayload(currentUser);
 		Response response = requestToServer(request);
-		List<ReservationDTO> reservationDTOS = null;
+		ReservationInfo reservationInfo = null;
 		if (response.getIsSuccess()) {
-			reservationDTOS = (List<ReservationDTO>) response.getPayload();
+			 reservationInfo= (ReservationInfo) response.getPayload();
 		}
-		return reservationDTOS;
+		return reservationInfo;
 	}
 
 	private Object[] accomFiltering() {

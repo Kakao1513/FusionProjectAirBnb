@@ -6,16 +6,10 @@ import persistence.dao.AccommodationDAO;
 import persistence.dao.ReservationDAO;
 import persistence.dao.ReviewDAO;
 import persistence.dao.UserDAO;
-import persistence.dto.AccommodationDTO;
-import persistence.dto.ReservationDTO;
 import persistence.dto.ReviewDTO;
 import persistence.dto.UserDTO;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Builder
@@ -43,6 +37,8 @@ public class UserService {
 		this.reviewDAO = iocContainer.reviewDAO();
 	}
 
+
+
 	// 18. 로그인 기능: 호스트, 관리자, 게스트가 로그인 이후 동작하는 것을 보임
 	private boolean login(String id, String pw) {
 		return pw.equals(userDAO.selectPwById(id));
@@ -50,7 +46,7 @@ public class UserService {
 
 	public Optional<UserDTO> loginUser(String id, String pw) {
 		if (login(id, pw)) {
-			return Optional.of(userDAO.selectById(id));
+			return Optional.of(userDAO.selectByAccountId(id));
 		} else {
 			return Optional.empty();
 		}
@@ -80,6 +76,9 @@ public class UserService {
 		userDTO.setBirth(newBirth);
 		userDAO.updateUser(userDTO);
 		return userDTO;
+	}
+	public UserDTO selectByUserID(int id){
+		return userDAO.selectById(id);
 	}
 
 	// 6. 게스트 리뷰에 대한 답글 등록 : 답글의 parentID를 댓글의 commentID로 설정한 뒤 INSERT

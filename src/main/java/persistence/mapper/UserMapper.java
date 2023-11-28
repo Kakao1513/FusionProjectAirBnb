@@ -39,8 +39,10 @@ public interface UserMapper {
 	String selectPassword(String id);
 
 	@Select("Select * from user where accountid= #{id} ")
-	UserDTO selectById(String id);
+	UserDTO selectByAccountId(String id);
 
+	@Select("Select * from user where userid= #{id} ")
+	UserDTO selectById(int id);
 
 	@Update("Update user SET name=#{name}, phone=#{phone}, birth=#{birth} WHERE accountid=#{accountId}")
 	void updateUser(UserDTO userDTO);
