@@ -1,5 +1,6 @@
 package view;
 
+import persistence.dto.AccommodationDTO;
 import persistence.dto.ReviewDTO;
 import persistence.dto.UserDTO;
 
@@ -30,4 +31,33 @@ public class ReviewView extends View<UserDTO>{
                 .filter(ReviewDTO -> Objects.equals(ReviewDTO.getParentID(), reviewID))
                 .collect(Collectors.toList());
     }
+
+    public ReviewDTO getReviewFromUser(UserDTO userDTO, AccommodationDTO accomDTO){
+        System.out.println("[후기 등록]");
+        System.out.print("별점을 입력하세요 (1~5) : ");
+        int rate = readInt();
+        System.out.print("내용을 입력하세요 : ");
+        String text = SCANNER.nextLine();
+
+        return ReviewDTO.builder()
+                .userID(userDTO.getUserId())
+                .accomID(accomDTO.getAccomID())
+                .rate(rate)
+                .text(text)
+                .build();
+    }
+
+    public ReviewDTO getReplyFromUser(UserDTO userDTO, AccommodationDTO accomDTO, ReviewDTO reviewDTO){
+        System.out.println("[답글 등록]");
+        System.out.print("답글 내용을 입력하세요 : ");
+        String text = SCANNER.nextLine();
+
+        return ReviewDTO.builder()
+                .userID(userDTO.getUserId())
+                .accomID(accomDTO.getAccomID())
+                .parentID(reviewDTO.getParentID())
+                .text(text)
+                .build();
+    }
+
 }

@@ -16,15 +16,9 @@ public class ReviewSQL {
     public static String insertReview(ReviewDTO reservation){
         SQL sql = new SQL()
                 .INSERT_INTO("Review")
-                .INTO_COLUMNS("accommodationID, userID, text, dateCreated")
-                .INTO_VALUES("#{review.accommodationID}, #{review.userID}")
-                .INTO_VALUES("#{review.text}, #{review.dateCreated}");
-        if (reservation.getParentID() != null){
-            sql.INTO_COLUMNS("parentCommentID").INTO_VALUES("#{parentCommentID}");
-        }
-        if (reservation.getRate() != null){
-            sql.INTO_COLUMNS("rate").INTO_VALUES("#{review.rate}");
-        }
+                .INTO_COLUMNS("accommodationID, userID, text, dateCreated, parentCommentID, rate")
+                .INTO_VALUES("#{review.accommodationID}, #{review.userID}, #{review.text}")
+                .INTO_VALUES("#{review.dateCreated}, #{parentCommentID}, #{review.rate}");
 
         return  sql.toString();
     }
