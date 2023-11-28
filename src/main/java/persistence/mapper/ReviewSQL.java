@@ -20,8 +20,8 @@ public class ReviewSQL {
     public static String insertReview(ReviewDTO review){
         SQL sql = new SQL()
                 .INSERT_INTO("Review")
-                .INTO_COLUMNS("reviewID, accommodationID, userID, text, dateCreated, parentCommentID, rate")
-                .INTO_VALUES("#{reviewID}, #{accomID}, #{userID}, #{text}")
+                .INTO_COLUMNS("reservationID, accommodationID, userID, text, dateCreated, parentCommentID, rate")
+                .INTO_VALUES("#{reservationID}, #{accomID}, #{userID}, #{text}")
                 .INTO_VALUES("#{createdDate}, #{parentID}, #{rate}");
 
         return  sql.toString();
