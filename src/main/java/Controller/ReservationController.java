@@ -85,6 +85,7 @@ public class ReservationController implements MethodController {
 	private Response getReservationListByUser(Request req) {
 		UserDTO userDTO = (UserDTO) req.getPayload();
 		List<ReservationDTO> reservationDTOS = reservationService.getReservationListByUserID(userDTO);
+
 		return Response.builder().isSuccess(true).payload(reservationDTOS).build();
 	}
 

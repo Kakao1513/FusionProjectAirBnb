@@ -179,7 +179,7 @@ public class HostHandler extends ActorHandler {
 			Response response = requestToServer(request);
 			if (response != null && response.getIsSuccess()) {
 				AccommodationDTO accom = (AccommodationDTO) response.getPayload();
-				System.out.println(accom.getAccomName() + " 숙소의 요금을 정상적으로 등록되었습니다.");
+				System.out.println(accom.getAccomName() + " 숙소의 요금이 정상적으로 등록되었습니다.");
 			} else {
 				System.out.println("요청이 잘못되었습니다.");
 			}

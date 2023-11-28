@@ -31,8 +31,8 @@ public class AccommodationService {
 	// 1. 숙박 등록 신청(이름, 숙소 소개, 객실 타입(공간 전체/개인실), 수용 정보, 편의시설)
 	public void insertAccom(AccommodationDTO accomDTO) {
 		if (accomDAO.insertAccom(accomDTO) >= 1) {
-			accomDAO.insertRooms(accomDTO);
-			RatePolicyDTO free = RatePolicyDTO
+			/*accomDAO.insertRooms(accomDTO);
+			*/RatePolicyDTO free = RatePolicyDTO
 					.builder()
 					.accomID(accomDTO.getAccomID())
 					.weekday(0)

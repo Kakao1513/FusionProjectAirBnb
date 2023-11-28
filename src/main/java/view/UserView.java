@@ -40,9 +40,8 @@ public class UserView extends View<UserDTO> {
 		System.out.println("(1) MyPage");
 		System.out.println("(2) 숙소 목록 보기");
 		System.out.println("(3) 숙소 예약 신청");
-		System.out.println("(4) 숙소 상세 정보 보기");
 		System.out.println("========================================");
-		return rangeSelect(0, 4);
+		return rangeSelect(0, 3);
 	}
 
 	public int selectHostJob() {

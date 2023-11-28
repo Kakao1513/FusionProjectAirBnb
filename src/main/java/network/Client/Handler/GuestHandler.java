@@ -54,10 +54,6 @@ public class GuestHandler extends ActorHandler {
 			case 3 -> { //숙소 예약 신청
 				requestReservation();
 			}
-			case 4 -> { //숙소 상세 정보 보기
-				selectAccomList();
-				viewAccomMoreInfo();
-			}
 		}
 	}
 
@@ -67,13 +63,14 @@ public class GuestHandler extends ActorHandler {
 				System.out.println("이전 페이지로 돌아갑니다.");
 			}
 			case 1 -> {
-				showReservationList();
+				reservationView.displayReservations(getMyReservationList());
 			}
 			case 2 -> {
-
+				//예약 취소
+				cancelReservation();
 			}
 			case 3 -> {
-
+				//리뷰와 별점 등록
 			}
 			case 4 -> {
 				changePrivacy();
@@ -81,8 +78,34 @@ public class GuestHandler extends ActorHandler {
 		}
 	}
 
+	private void cancelReservation() { //TODO : 해야됨
+		reservationView.displayReservations(getMyReservationList());
+		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.DELETE).payloadType(PayloadType.RESERVATION).build();
+		List<ReservationDTO> reservationDTOS = (List<ReservationDTO>) requestToServer(request).getPayload();
+		if (reservationDTOS == null) {
+			System.out.println("예약이 없습니다.");
+			return;
+		}
+		reservationView.displayReservations(reservationDTOS);
+		int select = reservationView.readReservationIndex(reservationDTOS);
+		if (select == -1) {
+			System.out.println("예약 취소를 취소합니다.");
+			return;
+		}
+		ReservationDTO selectedReserve = reservationDTOS.get(select);
+		request.setPayload(selectedReserve);
+		Response response = requestToServer(request);
+		if (response.getIsSuccess()) {
+			System.out.println("예약 취소가 완료되었습니다.");
+		} else {
+			System.out.println("예약 취소가 실패하였습니다. 사유:" + response.getMessage());
+		}
+
+	}
+
 	private void requestReservation() {
-		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.POST).payloadType(PayloadType.RESERVATION).build();;
+		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.POST).payloadType(PayloadType.RESERVATION).build();
+		;
 
 		ReservationDTO reservationDTO = new ReservationDTO();
 		Object[] accomAndFilters = accomFiltering();
@@ -96,6 +119,13 @@ public class GuestHandler extends ActorHandler {
 			return;
 		}
 		AccommodationDTO selectedAccom = accommodationDTOS.get(accomIndex);
+		viewAccomMoreInfo(selectedAccom);
+		//후기 표시도 들어가야됨
+		System.out.println("1.예약 2.뒤로가기.");
+		int select = Integer.parseInt(sc.nextLine());
+		if (select == 2) {
+			return;
+		}
 		reservationDTO.setHeadcount((Integer) filters.get("headcount"));
 		reservationDTO.setReserveDate(LocalDateTime.now());
 		reservationDTO.setReservationInfo("승인대기중");
@@ -114,17 +144,18 @@ public class GuestHandler extends ActorHandler {
 		}
 	}
 
-	private void showReservationList() {
+	private List<ReservationDTO> getMyReservationList() {
 		Request request = new Request();
 		request.setMethod(Method.GET);
 		request.setPayloadType(PayloadType.RESERVATION);
 		request.setRoleType(RoleType.GUEST);
 		request.setPayload(currentUser);
 		Response response = requestToServer(request);
+		List<ReservationDTO> reservationDTOS = null;
 		if (response.getIsSuccess()) {
-			List<ReservationDTO> reservationDTOS = (List<ReservationDTO>) response.getPayload();
-			reservationView.displayReservations(reservationDTOS);
+			reservationDTOS = (List<ReservationDTO>) response.getPayload();
 		}
+		return reservationDTOS;
 	}
 
 	private Object[] accomFiltering() {
@@ -175,10 +206,9 @@ public class GuestHandler extends ActorHandler {
 		return acList;
 	}
 
-	public void viewAccomMoreInfo() {
-		List<AccommodationDTO> acList = selectAccomList();
-		Integer accomID = accomView.readAccomIndex(acList);
-		accomID = acList.get(accomID).getAccomID();
+	public void viewAccomMoreInfo(AccommodationDTO accommodationDTO) {
+		System.out.println("========선택한 숙소의 상세 정보 내역입니다.========");
+		int accomID = accommodationDTO.getAccomID();
 		LocalDate date = reservationView.getReservationDate();
 		Object[] payload = {accomID, date};
 		Response response = requestToServer(new Request(Method.GET, PayloadType.ACCOMMODATION, RoleType.COMMON, payload));

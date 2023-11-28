@@ -39,8 +39,8 @@ public interface AccommodationMapper {
 	
 	@UpdateProvider(type = AccommodationSQL.class, method = "updateStatusById")
 	int updateAccomStatus(@Param("accomID") int accomID, @Param("status") String status);
-
+/*
 	@InsertProvider(type = AccommodationSQL.class, method = "insertRooms")
-	int insertRooms(@Param("accomID") int accomID, int roomNum);
+	int insertRooms(@Param("accomID") int accomID, int roomNum);*/
 
 }
