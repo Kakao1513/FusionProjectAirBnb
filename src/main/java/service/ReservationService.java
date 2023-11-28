@@ -40,6 +40,13 @@ public class ReservationService {
         return calculateReservationCharge(reservationDAO.getReservations(filters));
     }
 
+    // 9 숙소별 월별 총매출 확인
+    public int getTotalSalesByAccom(AccommodationDTO accomDTO, YearMonth yearMonth){
+        List<ReservationDTO> reservationDTOS = getConfirmReservationList(accomDTO, yearMonth.atDay(1));
+
+        return reservationDTOS.stream().mapToInt(ReservationDTO::getCharge).sum();
+    }
+
 
 
     // 4.2 숙박 예약 현황 보기(달력 화면 구성으로)
@@ -51,7 +58,7 @@ public class ReservationService {
         filters.put("checkOut", date.plusMonths(1));
         filters.put("reservationInfo", "예약중");
 
-        return reservationDAO.getReservations(filters);
+        return calculateReservationCharge(reservationDAO.getReservations(filters));
     }
     public List<ReservationDTO> getReadyReservationList(AccommodationDTO accomDTO) {
         Map<String, Object> filters = new HashMap<>();
