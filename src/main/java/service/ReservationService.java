@@ -163,7 +163,8 @@ public class ReservationService {
 
 
     public List<AccommodationDTO> getFilteredAccomList(Map<String, Object> filters){
-        filters.put("capacity", (int)filters.get("headcount"));
+        filters.put("capacity", filters.get("headcount"));
+        filters.put("notCancel", true);
         List<AccommodationDTO> accomDTOS = accomDAO.selectAccom(filters);
         List<ReservationDTO> reservationDTOS = reservationDAO.getReservations(filters);
         List<AccommodationDTO> filteredAccomList = new ArrayList<>();
