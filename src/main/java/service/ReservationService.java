@@ -36,6 +36,7 @@ public class ReservationService {
         filters.put("accomID", accomId);
         filters.put("checkIn", date);
         filters.put("checkOut", date.plusMonths(1));
+        filters.put("reservationInfo", "예약중");
 
         return calculateReservationsCharge(reservationDAO.getReservations(filters));
     }
