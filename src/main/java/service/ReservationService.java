@@ -214,6 +214,7 @@ public class ReservationService {
         filters.put("checkIn", reservationDTO.getCheckIn());
         filters.put("checkOut", reservationDTO.getCheckOut());
         filters.put("accomID", accomDTO.getAccomID());
+        filters.put("notCancel", true);
         List<ReservationDTO> reservationDTOS = reservationDAO.getReservations(filters);
 
         return isAccommodationAvailable(accomDTO, reservationDTOS, filters);

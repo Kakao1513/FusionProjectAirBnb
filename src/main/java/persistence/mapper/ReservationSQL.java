@@ -13,6 +13,7 @@ public class ReservationSQL {
             @Param("checkIn") LocalDate checkIn,
             @Param("checkOut") LocalDate checkOut,
             @Param("reservationInfo") String reservationInfo,
+            @Param("notCancel") Boolean notCancel,
             @Param("now") LocalDate now
     ) {
         SQL sql = new SQL()
@@ -36,6 +37,9 @@ public class ReservationSQL {
         }
         if (reservationInfo != null){
             sql.WHERE("reservationInfo = #{reservationInfo}");
+        }
+        if (notCancel){
+            sql.WHERE("reservationInfo != '취소됨'");
         }
 
         return sql.toString();
