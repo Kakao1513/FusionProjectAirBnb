@@ -38,7 +38,7 @@ public class ReservationSQL {
         if (reservationInfo != null){
             sql.WHERE("reservationInfo = #{reservationInfo}");
         }
-        if (notCancel){
+        if (notCancel != null){
             sql.WHERE("reservationInfo != '취소됨'");
         }
 
