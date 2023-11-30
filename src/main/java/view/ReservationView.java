@@ -118,13 +118,14 @@ public class ReservationView extends View<ReservationDTO> {
 		}
 	}
 
-	public void displayReadyReservations(List<ReservationDTO> reservationDTOS, List<AccommodationDTO> accomNames, List<UserDTO> userNames) {
+	public int displayReadyReservations(List<ReservationDTO> reservationDTOS, List<AccommodationDTO> accomNames, List<UserDTO> userNames) {
 		if (reservationDTOS.isEmpty()) {
 			System.out.println("예약 내역이 없습니다.");
-			return;
+			return -1;
 		} else {
+			int select = 0;
 			System.out.println("====================================================예약 리스트=================================================");
-			System.out.println("|   유저 이름    |   숙소 이름   |       예약 신청 시간      |  CheckIn  | CheckOut |   총요금  |   예약 상태   |");
+			System.out.println("|번호|   유저 이름    |   숙소 이름   |       예약 신청 시간      |  CheckIn  | CheckOut |   총요금  |   예약 상태   |");
 			int i = 1;
 			for (ReservationDTO dto : reservationDTOS) {
 				if(dto.getReservationInfo().equals("승인대기중") || dto.getReservationInfo().equals("예약중")) {
@@ -133,11 +134,24 @@ public class ReservationView extends View<ReservationDTO> {
 				i++;
 			}
 			System.out.println("===============================================================================================================");
+			while (true) {
+				System.out.print("예약 번호를 입력하세요:");
+				select = Integer.parseInt(SCANNER.nextLine());
+				if (0 < select && select <= reservationDTOS.size()) {
+					break;
+				} else {
+					System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+				}
+			}
+			return select - 1;
 		}
 	}
 
 	public int readReservationIndex(List<ReservationDTO> reservationDTOList) {
 		int select = 0;
+		if(reservationDTOList.isEmpty()){
+			return -1;
+		}
 		while (true) {
 			System.out.print("예약 번호를 입력하세요:");
 			select = Integer.parseInt(SCANNER.nextLine());
@@ -153,7 +167,7 @@ public class ReservationView extends View<ReservationDTO> {
 	public void displayReservationInfo(ReservationDTO reservationDTO, String accomName, String userName) {
 		System.out.println("====================================================예약 정보=================================================");
 		System.out.println("|   유저 이름    |   숙소 이름   |       예약 신청 시간      |  CheckIn  | CheckOut |   총요금  |   예약 상태   |");
-		System.out.printf("|%-16s|%-16s|%-16s|%-10s|%-10s|%-10s|%-12s|\n", userName, accomName, reservationDTO.getAccommodationID(), reservationDTO.getReserveDate(), reservationDTO.getCheckIn(), reservationDTO.getCheckOut(), reservationDTO.getCharge(), reservationDTO.getReservationInfo());
+		System.out.printf("|%-16s|%-16s|%-16s|%-10s|%-10s|%-10s|%-12s|\n", userName, accomName, reservationDTO.getReserveDate(), reservationDTO.getCheckIn(), reservationDTO.getCheckOut(), reservationDTO.getCharge(), reservationDTO.getReservationInfo());
 		System.out.println("===============================================================================================================");
 	}
 	public int selectReserveAccom(List<ReservationDTO> reservationDTOS, List<String> accomNames){

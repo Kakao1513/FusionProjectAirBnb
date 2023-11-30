@@ -13,8 +13,8 @@ import java.util.Scanner;
 public class AccommodationView extends View<AccommodationDTO> {
 	private static final Scanner SCANNER = new Scanner(System.in);
 
-	public int readAccomIndex(List<AccommodationDTO> myAccomList){
-		if(myAccomList.isEmpty()){
+	public int readAccomIndex(List<AccommodationDTO> myAccomList) {
+		if (myAccomList.isEmpty()) {
 			System.out.println("등록된 숙소가 없습니다.");
 			return -1;
 		}
@@ -28,8 +28,9 @@ public class AccommodationView extends View<AccommodationDTO> {
 				System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
 			}
 		}
-		return select-1;
+		return select - 1;
 	}
+
 	public void displayAccomList(List<AccommodationDTO> accommodationDTOS) {
 		System.out.println("=========================================숙소 리스트=================================================================================");
 		System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |                  승인상태               |");
@@ -154,19 +155,15 @@ public class AccommodationView extends View<AccommodationDTO> {
 
 	public void displayAmenity(List<AmenityDTO> amenityDTOS) {
 		System.out.println("==========편의시설 리스트==========");
-		for (AmenityDTO dto : amenityDTOS) {
-			System.out.println(dto.getName());
+		if (!amenityDTOS.isEmpty()) {
+			for (AmenityDTO dto : amenityDTOS) {
+				System.out.println(dto.getName());
+			}
+		}
+		else {
+			System.out.println("등록된 편의시설이 없습니다.");
 		}
 		System.out.println("=================================");
-	}
-
-
-	public void displayReviews(List<ReviewDTO> reviewDTOS) {
-		System.out.println("===========리뷰 리스트===========");
-		for (ReviewDTO dto : reviewDTOS) {
-			System.out.printf("[%d] %d : %s\n", dto.getRate(), dto.getUserID(), dto.getText());
-		}
-		System.out.println("================================");
 	}
 
 
@@ -236,12 +233,11 @@ public class AccommodationView extends View<AccommodationDTO> {
 				.build();
 	}
 
-	public YearMonth readYearMonth(){
+	public YearMonth readYearMonth() {
 		System.out.print("연-월을 입력하세요 (ex. 2023-11)");
 		String ym = SCANNER.nextLine();
 		return YearMonth.parse(ym);
 	}
-
 
 
 }

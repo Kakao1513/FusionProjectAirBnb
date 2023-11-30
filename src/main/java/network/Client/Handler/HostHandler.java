@@ -120,7 +120,7 @@ public class HostHandler extends ActorHandler {
 				int isConfirm = Integer.parseInt(sc.nextLine());
 				String status = switch (isConfirm) {
 					case 1 -> "예약중";
-					case 2 -> "예약반려됨";
+					case 2 -> "취소됨";
 					default -> throw new IllegalArgumentException();
 				};
 				selectReserve.setReservationInfo(status);

@@ -58,6 +58,7 @@ public class ReservationController implements MethodController {
 		Response res = null;
 		switch (roleType) {
 			case COMMON -> {
+				//총요금만 계산해서 Return;
 			}
 			case ADMIN -> {
 				res = getReservationListByAccom(req);

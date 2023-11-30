@@ -31,7 +31,7 @@ public class MainController implements Controller {
 		controllerMap.put(PayloadType.ACCOMMODATION, accommodationController);
 		controllerMap.put(PayloadType.RESERVATION, reservationController);
 		controllerMap.put(PayloadType.REVIEW, reviewController);
-		//TODO: 컨트롤러 추가시 더 추가됨
+		//컨트롤러 추가시 더 추가됨
 	}
 
 	@Override

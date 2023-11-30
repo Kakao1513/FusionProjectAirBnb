@@ -84,14 +84,7 @@ public class ReservationService {
         return calculateReservationsCharge(reservationDAO.getReservations(filters));
     }
 
-    // 숙박이 완료된 예약 조회, 리뷰 등록을 위해 사용됨
-    public List<ReservationDTO> completedReservationList(AccommodationDTO accomDTO) {
-        Map<String, Object> filters = new HashMap<>();
-        filters.put("now", LocalDate.now());
-        filters.put("reservationInfo", "예약중");
 
-        return calculateReservationsCharge(reservationDAO.getReservations(filters));
-    }
 
     // 15. (MyPage)예약 취소
     public int updateReservation(ReservationDTO rDTO){
@@ -270,11 +263,11 @@ public class ReservationService {
     }
 
     // 9 숙소별 월별 총매출 확인
-    public int checkTotalSales(int accomID, YearMonth month) {
+    public int checkTotalSales(int accomID, YearMonth month) { //안됨
         Map<String, Object> filters = new HashMap<>();
         LocalDate date = month.atDay(1);
 
-        filters.put("Reservationinfo", "예약중");
+        filters.put("reservationInfo", "예약중");
         filters.put("accomID", accomID);
         filters.put("checkIn", date);
         filters.put("checkOut", date.plusMonths(1));

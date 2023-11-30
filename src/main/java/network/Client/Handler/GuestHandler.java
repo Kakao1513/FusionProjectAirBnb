@@ -94,7 +94,7 @@ public class GuestHandler extends ActorHandler {
 		List<ReservationDTO> reviewableReservations = new ArrayList<>();
 		for (int i = 0; i < reservationDTOList.size(); i++) {
 			ReservationDTO reservationDTO = reservationDTOList.get(i);
-			if(reservationDTO.getReservationInfo().equals("숙박 완료")){
+			if (reservationDTO.getReservationInfo().equals("숙박 완료")) {
 				accomNames.add(reserveAccom.get(i).getAccomName());
 				reviewableReservations.add(reservationDTO);
 			}
@@ -123,9 +123,24 @@ public class GuestHandler extends ActorHandler {
 		List<ReservationDTO> reservationDTOList = reservationInfo.getReservationDTOS();
 		List<UserDTO> userNames = reservationInfo.getUserDTOS();
 		List<AccommodationDTO> accomNames = reservationInfo.getAccommodationDTOS();
-		reservationView.displayReadyReservations(reservationDTOList, accomNames, userNames);
-		int select = reservationView.readReservationIndex(reservationDTOList);
-		ReservationDTO selectedReservation = reservationDTOList.get(select);
+
+		List<ReservationDTO> availReserveList = new ArrayList<>();
+		List<UserDTO> availUserList = new ArrayList<>();
+		List<AccommodationDTO> availAccomList = new ArrayList<>();
+		for (int i = 0; i < reservationDTOList.size(); i++) {
+			ReservationDTO reservationDTO = reservationDTOList.get(i);
+			if (reservationDTO.getReservationInfo().equals("예약중") || reservationDTO.getReservationInfo().equals("승인대기중")) {
+				availReserveList.add(reservationDTO);
+				availAccomList.add(accomNames.get(i));
+				availUserList.add(userNames.get(i));
+			}
+		}
+		int select = reservationView.displayReadyReservations(availReserveList, availAccomList, availUserList);
+		if (select == -1) {
+			System.out.println("취소할 예약이 없습니다.");
+			return;
+		}
+		ReservationDTO selectedReservation = availReserveList.get(select);
 		request.setPayload(selectedReservation);
 		Response response = requestToServer(request);
 		if (response.getIsSuccess()) {
@@ -151,7 +166,6 @@ public class GuestHandler extends ActorHandler {
 		}
 		AccommodationDTO selectedAccom = accommodationDTOS.get(accomIndex);
 		viewAccomMoreInfo(selectedAccom);
-		//후기 표시도 들어가야됨
 		System.out.println("1.예약 2.뒤로가기.");
 		int select = Integer.parseInt(sc.nextLine());
 		if (select == 2) {
@@ -247,9 +261,9 @@ public class GuestHandler extends ActorHandler {
 		if (response.getIsSuccess()) {
 			AccomMoreInfo moreInfo = (AccomMoreInfo) response.getPayload();
 			AccommodationDTO curAccom = moreInfo.getCurAccom();
-			accomView.displayAccomInfo(curAccom, moreInfo.getAccomRate());
-			accomView.displayAmenity(moreInfo.getAmenityList());
-			accomView.displayReviews(moreInfo.getReviewList());
+			accomView.displayAccomInfo(curAccom, moreInfo.getAccomRate()); //숙소 정보
+			accomView.displayAmenity(moreInfo.getAmenityList()); //편의시설 리스트
+			reviewView.displayReview(moreInfo.getReviewList()); //리뷰 목록
 			reservationView.displayReservationCalendar(date, curAccom.getCapacity(), moreInfo.getReservationList());
 		}
 
