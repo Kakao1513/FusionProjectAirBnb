@@ -4,6 +4,7 @@ import Container.IocContainer;
 import network.Protocol.Enums.Method;
 import network.Protocol.Enums.RoleType;
 import network.Protocol.Packet.AccomMoreInfo;
+import network.Protocol.Packet.AccommodationCharge;
 import network.Protocol.Request;
 import network.Protocol.Response;
 import persistence.dto.*;
@@ -193,7 +194,7 @@ public class AccommodationController implements MethodController {
 	public Response accomFiltering(Request req) {
 		Map<String, Object> filters = (Map<String, Object>) req.getPayload();
 		filters.put("status", "Confirmed");
-		List<AccommodationDTO> acList = reservationService.getFilteredAccomList(filters);
+		List<AccommodationCharge> acList = reservationService.getFilteredAccomList(filters);
 		Response rs = new Response();
 		rs.setIsSuccess(true);
 		rs.setPayload(acList);

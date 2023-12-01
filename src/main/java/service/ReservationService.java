@@ -1,6 +1,7 @@
 package service;
 
 import Container.IocContainer;
+import network.Protocol.Packet.AccommodationCharge;
 import persistence.dao.AccommodationDAO;
 import persistence.dao.DiscountPolicyDAO;
 import persistence.dao.RatePolicyDAO;
@@ -154,7 +155,8 @@ public class ReservationService {
         return sumCharge;
     }
 
-
+/*
+ //원래 메서드
     public List<AccommodationDTO> getFilteredAccomList(Map<String, Object> filters){
         filters.put("capacity", filters.get("headcount"));
         filters.put("notCancel", true);
@@ -169,6 +171,39 @@ public class ReservationService {
         }
 
         return filteredAccomList;
+    }
+*/
+
+    public List<AccommodationCharge> getFilteredAccomList(Map<String, Object> filters){
+        filters.put("capacity", filters.get("headcount"));
+        filters.put("notCancel", true);
+        List<AccommodationDTO> accomDTOS = accomDAO.selectAccom(filters);
+        List<ReservationDTO> reservationDTOS = reservationDAO.getReservations(filters);
+        List<AccommodationDTO> filteredAccomList = new ArrayList<>();
+
+        for (AccommodationDTO accomDTO : accomDTOS) {
+            if (isAccommodationAvailable(accomDTO, filterReservationsByAccomID(reservationDTOS, accomDTO.getAccomID()), filters)) {
+                filteredAccomList.add(accomDTO);
+            }
+        }
+
+        return setChargeToAccomList(filteredAccomList, filters);
+    }
+
+    private List<AccommodationCharge> setChargeToAccomList(List<AccommodationDTO> accomDTOS, Map<String, Object> filters){
+        List<AccommodationCharge> accommodationChargeList = new ArrayList<>();
+        for(AccommodationDTO accomDTO : accomDTOS){
+            ReservationDTO reservationDTO = ReservationDTO.builder()
+                    .accommodationID(accomDTO.getAccomID())
+                    .headcount((int)filters.get("headcount"))
+                    .checkIn((LocalDate) filters.get("checkIn"))
+                    .checkOut((LocalDate)filters.get("checkOut")).build();
+
+            int charge = calculateReservationCharge(reservationDTO);
+            accommodationChargeList.add(AccommodationCharge.builder().accom(accomDTO).charge(charge).build());
+        }
+
+        return accommodationChargeList;
     }
 
 

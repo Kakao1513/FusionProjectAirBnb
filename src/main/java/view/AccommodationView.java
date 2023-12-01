@@ -1,14 +1,13 @@
 package view;
 
 import Enums.AccommodationStatus;
+import network.Protocol.Packet.AccommodationCharge;
 import persistence.dto.*;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class AccommodationView extends View<AccommodationDTO> {
 	private static final Scanner SCANNER = new Scanner(System.in);
@@ -41,6 +40,31 @@ public class AccommodationView extends View<AccommodationDTO> {
 			i++;
 		}
 		System.out.println("====================================================================================================================================");
+	}
+
+	public void displayFilteredAccomList(List<AccommodationCharge> accommodationCharges) {
+		while (true) {
+			System.out.println("=========================================필터링 된 숙소 리스트==============================================================================================");
+			System.out.println("|번호|      이름      |          주소          |  타입  | 인원 |             설명             |                승인상태             |           요금           |");
+			System.out.println("------------------------------------------------------------------------------------------===============================================================");
+			int i = 1;
+			for (AccommodationCharge acDto : accommodationCharges) {
+				AccommodationDTO dto = acDto.getAccom();
+				int charge = acDto.getCharge();
+				System.out.printf("|%-4d|%-16s|%-25s|%-8s|%-6s|%-30s|%-34s|%10d|\n", i, dto.getAccomName(), dto.getAddress(), dto.getType(), dto.getCapacity(), dto.getComment(), dto.getStatus(), charge);
+				i++;
+			}
+			System.out.println("==============================================================================================================================================================");
+			System.out.println("1. 오름차순 2. 내림차순 3. 예약");
+			int select = rangeSelect(1, 3);
+			if (select == 1) {
+				accommodationCharges.sort((o1, o2) -> o1.getCharge() - o2.getCharge());
+			} else if (select == 2) {
+				accommodationCharges.sort((o1, o2) -> o2.getCharge() - o1.getCharge());
+			} else {
+				return;
+			}
+		}
 	}
 
 	public void displayAccomListCountOrder(List<AccommodationDTO> accommodationDTOS) {
@@ -159,13 +183,11 @@ public class AccommodationView extends View<AccommodationDTO> {
 			for (AmenityDTO dto : amenityDTOS) {
 				System.out.println(dto.getName());
 			}
-		}
-		else {
+		} else {
 			System.out.println("등록된 편의시설이 없습니다.");
 		}
 		System.out.println("=================================");
 	}
-
 
 
 	// 1. 숙박 등록 신청(이름, 숙소 소개, 객실 타입(공간 전체/개인실), 수용 정보, 편의시설)

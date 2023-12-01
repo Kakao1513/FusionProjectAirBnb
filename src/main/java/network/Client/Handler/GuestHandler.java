@@ -6,6 +6,7 @@ import network.Protocol.Enums.Method;
 import network.Protocol.Enums.PayloadType;
 import network.Protocol.Enums.RoleType;
 import network.Protocol.Packet.AccomMoreInfo;
+import network.Protocol.Packet.AccommodationCharge;
 import network.Protocol.Packet.ReservationInfo;
 import network.Protocol.Request;
 import network.Protocol.Response;
@@ -203,13 +204,13 @@ public class GuestHandler extends ActorHandler {
 		return reservationInfo;
 	}
 
-	private Object[] accomFiltering() {
+	private Object[] accomFiltering() { //TODO
 		Map<String, Object> filters = new HashMap<>(); //Request의 Payload에 담겨서 온다.
 		int order = 0;
 		//선택 조건
 		while (order != 3) {
 			order = accomView.displayFilterList(); // Client로 가야됨.
-			switch (order) {
+			switch (order) { //선택 조건
 				case 1 -> filters.put("accomName", accomView.getAccomNameFromUser());
 				case 2 -> filters.put("type", accomView.getAccomTypeFromUser());
 			}
@@ -229,10 +230,14 @@ public class GuestHandler extends ActorHandler {
 		request.setPayload(filters);
 
 		Response response = requestToServer(request);
-		List<AccommodationDTO> accommodationDTOS = null;
+		List<AccommodationCharge> accommodationChargeList = null;
+		List<AccommodationDTO> accommodationDTOS = new ArrayList<>();
 		if (response.getIsSuccess()) {
-			accommodationDTOS = (List<AccommodationDTO>) response.getPayload();
-			accomView.displayAccomList(accommodationDTOS);
+			accommodationChargeList = (List<AccommodationCharge>) response.getPayload();
+			accomView.displayFilteredAccomList(accommodationChargeList);
+			for (AccommodationCharge accommodationCharge : accommodationChargeList) {
+				accommodationDTOS.add(accommodationCharge.getAccom());
+			}
 		}
 		return new Object[]{accommodationDTOS, filters};
 	}
