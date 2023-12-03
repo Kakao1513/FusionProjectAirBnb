@@ -269,6 +269,7 @@ public class GuestHandler extends ActorHandler {
 			accomView.displayAccomInfo(curAccom, moreInfo.getAccomRate()); //숙소 정보
 			accomView.displayAmenity(moreInfo.getAmenityList()); //편의시설 리스트
 			reviewView.displayReview(moreInfo.getReviewList()); //리뷰 목록
+			System.out.println("----승인 대기 중인 예약 목록을 포함한 예약 현황----");
 			reservationView.displayReservationCalendar(date, curAccom.getCapacity(), moreInfo.getReservationList());
 		}
 

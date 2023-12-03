@@ -76,7 +76,7 @@ public class AccommodationController implements MethodController {
 		RatePolicyDTO accomRate = accomService.getRate(curAccom);
 		List<AmenityDTO> amenityList = accomService.getAmenityList(curAccom);
 		List<ReviewDTO> reviewList = reviewService.getReviews(curAccom);
-		List<ReservationDTO> reservationList = reservationService.getConfirmReservationList(curAccom, date);
+		List<ReservationDTO> reservationList = reservationService.getNotCancelReservationList(curAccom, date);
 		AccomMoreInfo accomMoreInfo = AccomMoreInfo.builder()
 				.curAccom(curAccom)
 				.accomRate(accomRate)
