@@ -118,7 +118,7 @@ public class GuestHandler extends ActorHandler {
 		//reviewView.getReviewFromUser(currentUser, reviewableReservations);
 	}
 
-	private void cancelReservation() { //TODO : 해야됨
+	private void cancelReservation() {
 		Request request = Request.builder().roleType(RoleType.GUEST).method(Method.DELETE).payloadType(PayloadType.RESERVATION).build();
 		ReservationInfo reservationInfo = getMyReservationList();
 		List<ReservationDTO> reservationDTOList = reservationInfo.getReservationDTOS();
@@ -204,7 +204,7 @@ public class GuestHandler extends ActorHandler {
 		return reservationInfo;
 	}
 
-	private Object[] accomFiltering() { //TODO
+	private Object[] accomFiltering() {
 		Map<String, Object> filters = new HashMap<>(); //Request의 Payload에 담겨서 온다.
 		int order = 0;
 		//선택 조건

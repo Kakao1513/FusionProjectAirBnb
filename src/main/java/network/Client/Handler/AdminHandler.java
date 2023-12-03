@@ -38,13 +38,13 @@ public class AdminHandler extends ActorHandler {
 			case 0 -> {
 				System.out.println("이전 페이지로");
 			}
-			case 1 -> { // TODO:숙소 등록 승인 거절
+			case 1 -> {
 				accomRecognizeChange();
 			}
-			case 2 -> { //TODO : 숙소별 월별 예약 현황확인
+			case 2 -> {
 				showReservationByAccom();
 			}
-			case 3 -> { //TODO : 숙소별 월별 총매출 확인
+			case 3 -> {
 				showTotalSalesByAccom();
 			}
 		}
