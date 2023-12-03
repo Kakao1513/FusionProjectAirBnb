@@ -22,7 +22,7 @@ public class AmenityView extends View<AmenityDTO> {
 		System.out.println("7. 입력 종료");
 		System.out.println("------------------------");
 
-		System.out.print("입력 : ");
+		System.out.print("입력 (ex. 1 2 7) : ");
 		while (command != QUIT) {
 			command = SCANNER.nextInt();
 			selected[command] = true;
@@ -53,7 +53,7 @@ public class AmenityView extends View<AmenityDTO> {
 		System.out.println("11. 입력 종료");
 
 		System.out.println("------------------------");
-		System.out.print("입력 : ");
+		System.out.print("입력 (ex. 1 2 11) : ");
 		while (command != QUIT) {
 			command = SCANNER.nextInt();
 			selected[command] = true;
@@ -79,7 +79,7 @@ public class AmenityView extends View<AmenityDTO> {
 		System.out.println("6. 입력 종료");
 		System.out.println("------------------------");
 
-		System.out.print("입력 : ");
+		System.out.print("입력 (ex. 1 2 6) : ");
 		while (command != QUIT) {
 			command = SCANNER.nextInt();
 			selected[command] = true;
@@ -104,7 +104,7 @@ public class AmenityView extends View<AmenityDTO> {
 		System.out.println("5. 입력 종료");
 
 		System.out.println("------------------------");
-		System.out.print("입력 : ");
+		System.out.print("입력 (ex. 1 2 5) : ");
 		while (command != QUIT) {
 			command = SCANNER.nextInt();
 			selected[command] = true;

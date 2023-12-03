@@ -67,9 +67,9 @@ public class AdminHandler extends ActorHandler {
 		accomView.displayAccomList(accomList);
 		int select = accomView.readAccomIndex(accomList);
 		AccommodationDTO selectAccom = accomList.get(select);
-		System.out.println("조회할 년도를 입력하세요 (ex. 2023): ");
+		System.out.print("조회할 년도를 입력하세요 (ex. 2023): ");
 		int year = Integer.parseInt(sc.nextLine());
-		System.out.println("조회할 월을 입력하세요 (ex. 09): ");
+		System.out.print("조회할 월을 입력하세요 (ex. 09): ");
 		int month = Integer.parseInt(sc.nextLine());
 		Request request = Request.builder().roleType(RoleType.ADMIN).payloadType(PayloadType.RESERVATION).method(Method.PUT).build();
 		YearMonth yearMonth = YearMonth.of(year, month);
@@ -90,9 +90,9 @@ public class AdminHandler extends ActorHandler {
 			accomView.displayAccomList(accomList);
 			int select = accomView.readAccomIndex(accomList);
 			AccommodationDTO selectAccom = accomList.get(select);
-			System.out.println("조회할 년도를 입력하세요 : ");
+			System.out.print("조회할 년도를 입력하세요 (ex. 2023): ");
 			int year = Integer.parseInt(sc.nextLine());
-			System.out.println("조회할 월을 입력하세요 : ");
+			System.out.print("조회할 월을 입력하세요 (ex. 11): ");
 			int month = Integer.parseInt(sc.nextLine());
 			Request request2 = Request.builder().roleType(RoleType.ADMIN).payloadType(PayloadType.RESERVATION).method(Method.GET).build();
 			YearMonth yearMonth = YearMonth.of(year, month);
